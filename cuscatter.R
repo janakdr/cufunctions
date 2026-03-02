@@ -156,4 +156,4 @@ cuscatter = function(yvar,xvar, doline=T, showr2eqn="both", minimal=F,
   } 
   cu_plout(p,"cuscatter", ftype=ftype, fname=fname,scale=fscale,
            width=fwidth,height=fheight, dpi=dpi, remove=remove)
-}
+}

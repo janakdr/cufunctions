@@ -664,4 +664,4 @@ curepmeas = function(dsgiven, dnam, repnam, fac2=NULL, idnam=NULL, minimal=F,
     return(list(repout,rmwall))
   }
   # else write out rmwall??
-}
+}

@@ -63,4 +63,4 @@ cuvolc = function(ds, xdash=0.5, psig = 0.05, psigmin = 0.2, pfactor=1,
   volc
   options(warn = oldw)
   return(volc)
-}
+}

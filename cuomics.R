@@ -102,4 +102,4 @@ cuomics = function(funcname, dsgiven, dnamf, dnaml, fnom, ...)
   }
   else write.csv(repmat, file=fnom, row.names=F)
 
-}
+}

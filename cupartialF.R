@@ -20,4 +20,4 @@ cupartialF = function (rse1, ndf1, rse2, ndf2)
   pval = ifelse(np<=0, 1.0, ifelse(rse2==0, 0.0,
        pf(((rse1^2*ndf1-rse2^2*ndf2)/np)/rse2^2, np, ndf2, lower.tail=F)))
   pval
-}
+}

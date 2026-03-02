@@ -128,4 +128,4 @@ cu_rep1fac = function(depvar, groupvar, Subject, scale="frequency",
     if (dele==deluse) ie = ie-1
   }
   if (ifsomena) cat ("\np-value NA means n zero or same as one above")
-}  
+}  
