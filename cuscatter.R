@@ -38,8 +38,8 @@
 #' @examples
 #' \dontrun{
 #' cuscatter(tcstudy, tcpre)
-#' cuscatter(tcstudy, tcpre, showr2eqn="r2")
-#' cuscatter(tcstudy, tcpre, c("x.ticks","y.ticks"))
+#' cuscatter(tcstudy, tcpre, showr2eqn="r2")  # show just R-squared and p-value
+#' cuscatter(tcstudy, tcpre, c("x.ticks","y.ticks"))  # no tick marks
 #' }
 #' @export
 cuscatter = function(yvar,xvar, doline=T, showr2eqn="both", minimal=F,

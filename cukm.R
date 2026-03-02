@@ -26,7 +26,7 @@
 #' @examples
 #' \dontrun{
 #' cukm(TimeToEvent, Outcome, Treatment)
-#' cukm(TimeToEvent, Outcome, Treatment, kmtype="ci")
+#' cukm(TimeToEvent, Outcome, Treatment, kmtype="ci")  # for cumulative incidence
 #' }
 #' @export
 cukm = function(timevar, statvar, ttmtvar, kmtype="survival", pvalue=T,

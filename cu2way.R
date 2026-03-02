@@ -72,9 +72,9 @@
 #' @return returns nothing
 #' @examples
 #' \dontrun{
-#' cu2way(tcchange, Diet, sex)
-#' cu2way(tcchange, Diet, sex, interact=F)
-#' cu2way(feel,WTCAT,Sex)
+#' cu2way(tcchange, Diet, sex)  # two-factor anova with interaction (all possible contrasts)
+#' cu2way(tcchange, Diet, sex, interact=F)  # two-factor anova with no interaction (all possible contrasts)
+#' cu2way(feel,WTCAT,Sex)  # contingency tables (all possible 2x2s)
 #' }
 #' @export
 cu2way = function(depvar,group1,group2, interact=TRUE, dosimpler=F, partialF=TRUE, ordinal=NULL,

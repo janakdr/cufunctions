@@ -42,8 +42,8 @@
 #' @return returns nothing
 #' @examples
 #' \dontrun{
-#' cucov1way (tcstudy, tcpre, Diet)
-#' cucov1way (tcstudy, tcpre, Diet, c(150,220))
+#' cucov1way (tcstudy, tcpre, Diet)  # for regression, plot, contrasts (parallel lines, no interaction)
+#' cucov1way (tcstudy, tcpre, Diet, c(150,220))  # for regression, plot, contrasts at tcpre=150,220 (non-parallel lines)
 #' }
 #' @export
 cucov1way = function(depvar, covar, group1, xs=NULL, breakpt=F,

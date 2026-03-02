@@ -82,10 +82,10 @@
 #' @return one line of summary means/SDs and p-values, data if normvisit
 #' @examples
 #' \dontrun{
-#' curepmeas(delta,"TG","Diet")
-#' curepmeas(delta,"TG","Diet", "sex")
-#' curepmeas(delta,"TG","Diet", "sex", interact=F)
-#' curepmeas(delta,"TG","Diet", "sex", cov="age+sex*age")
+#' curepmeas(delta,"TG","Diet")  # one line per subject; TG.xx TG.yy etc as names of TG data
+#' curepmeas(delta,"TG","Diet", "sex")  # with sex as second factor, Diet*sex interaction in model
+#' curepmeas(delta,"TG","Diet", "sex", interact=F)  # no Diet*sex interaction
+#' curepmeas(delta,"TG","Diet", "sex", cov="age+sex*age")  # with covariate adjustment
 #' }
 #' @export
 curepmeas = function(dsgiven, dnam, repnam, fac2=NULL, idnam=NULL, minimal=F,

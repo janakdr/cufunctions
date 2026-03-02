@@ -74,12 +74,12 @@
 #' @examples
 #' \dontrun{
 #' cutable1(tgpre,Diet)
-#' cutable1(NEJM,plot="violin")
-#' cutable1(NEJM,Diet,plot="no")
-#' cutable1(NEJM,Diet,brief=T)
-#' cutable1(NEJM,Diet,brief=T,sdsamerow=F)
-#' cutable1(NEJM,Diet,brief=T,pnorm=0)
-#' cutable1(NEJM,Diet,brief=T,pnorm=1)
+#' cutable1(NEJM,plot="violin")  # single table all variables, violin plots
+#' cutable1(NEJM,Diet,plot="no")  # separate tables all variables, no plots
+#' cutable1(NEJM,Diet,brief=T)  # single table for all variables by Diet columns
+#' cutable1(NEJM,Diet,brief=T,sdsamerow=F)  # to put SD/IQR on separate line
+#' cutable1(NEJM,Diet,brief=T,pnorm=0)  # to get only mean&SD
+#' cutable1(NEJM,Diet,brief=T,pnorm=1)  # to get only median&IQR
 #' }
 #' @export
 cutable1 = function(ds, group1=NULL, group2=NULL, doAll=T, brief=F, 

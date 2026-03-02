@@ -64,8 +64,8 @@
 #' @return one line of summary means/SDs and p-values
 #' @examples
 #' \dontrun{
-#' cu_rep2way(TG, Diet, sex, ID)
-#' cu_rep2way(TG, Diet, sex, ID, interact=F)
+#' cu_rep2way(TG, Diet, sex, ID)  # with interaction between the two fixed factors
+#' cu_rep2way(TG, Diet, sex, ID, interact=F)  # with no interaction (pointless, same result as without 2nd factor)
 #' }
 cu_rep2way = function(ddep,dgp1,dgp2,dsub,depvar, group1, group2, Subject,
                      interact=TRUE, partialF=FALSE, mainx=1, itrans, minimal=F,
