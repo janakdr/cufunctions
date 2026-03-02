@@ -1,6 +1,7 @@
+#' internal cufunction to prepare for p-value horizontals
+#' @keywords internal
 cu_pvline = function(df,pvpairs,pvalues,nlev1,nlev2,pvlab,pnosig,psignif,p2stars,p3stars,p4stars,
                      letbar,pvypos,pvnshide,pvspill,chpvref,ebars,dots,yscale) {
-  #' internal cufunction to prepare for p-value horizontals
   if (pvlab == "p.signif") pvlab = "*"
   pvcuts = c(pnosig,psignif,p2stars,p3stars,p4stars)
   if (pvlab == "*") pvcuts[1] = ifelse(pvnshide,pvcuts[2],1)

@@ -1,19 +1,21 @@
+#' Volcano plot
+#'
+#' @param ds data frame with column "varnam" column "fold" and column "pval"
+#' @param xdash =0.5 (default) to locate dashed vertical lines
+#' @param psig =0.05 (default) for p-value threshold of interest
+#' @param psigmin =0.2 (default) for upper limit of p-values to display
+#' @param pfactor =1 (default) for factor to divide psig by for multiple comparison correction
+#' @param foldmin =NULL (default) for left end of log2(FoldChange) (usually set to -2)
+#' @param foldmax =NULL (default) for right end of log2(FoldChange) (usually set to 2)
+#' @param ylim =5 (default) for upper limit of graph (-log10(pval))
+#' @examples
+#' \dontrun{
+#' cuvolc(tgpre,Diet)
+#' }
+#' @export
 cuvolc = function(ds, xdash=0.5, psig = 0.05, psigmin = 0.2, pfactor=1, 
                   foldmin=NULL, foldmax=NULL, ylim=5, title="Volcano Plot")
 {
-  #' Volcano plot
-  #'
-  #' @param ds data frame with column "varnam" column "fold" and column "pval"
-  #' @param xdash =0.5 (default) to locate dashed vertical lines
-  #' @param psig =0.05 (default) for p-value threshold of interest
-  #' @param psigmin =0.2 (default) for upper limit of p-values to display
-  #' @param pfactor =1 (default) for factor to divide psig by for multiple comparison correction
-  #' @param foldmin =NULL (default) for left end of log2(FoldChange) (usually set to -2)
-  #' @param foldmax =NULL (default) for right end of log2(FoldChange) (usually set to 2)
-  #' @param ylim =5 (default) for upper limit of graph (-log10(pval))
-  #' @examples
-  #' cuvolc(tgpre,Diet)
-  #' @export
   
   # https://biocorecrg.github.io/CRG_RIntroduction/volcano-plots.html
   # https://github.com/erikaduan/r_tips/blob/master/tutorials/dv-volcano_plots_with_ggplot/dv-volcano_plots_with_ggplot.md#import-a-test-dataset

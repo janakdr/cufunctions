@@ -1,5 +1,6 @@
+#' internal cufunction used if bars are reordered with "order="
+#' @keywords internal
 cu_mapor2 = function(order,levnams,gp1,gp2,nlev) {
-  #' internal cufunction used if bars are reordered with "order="
   mapord = rep(0,nlev); locord = rep(0,gp1)
   if (!is.null(order)) {
     if (length(order) != gp1) {

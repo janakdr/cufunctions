@@ -1,3 +1,34 @@
+#' Kaplan-Meier curves with p-value, # at risk
+#'
+#' Does K-M curves of 2nd argument vs 1st for different levels of 3rd argument.
+#' Displays table of # at risk, and p-value. Does survival (default) or cumulative incidence.
+#' Plus sign indicates loss to follow-up (right-censoring).
+#' @param timevar , statvar, ttmtvar (3 required)
+#' @param kmtype ="survival" (default) or "ci" (cumulative incidence)
+#' @param pvalue =T (default) or F (for no p-value)
+#' @param allkmpairs =T (default) or F (to not compare each pair of curves)
+#' @param tmax =0 (default for no max T), numeric study end time
+#' @param xlab /ylab/title=NULL to override labels of x-axis/y-axis/title
+#' @param rho =0 (log-rank default) or 1 (Peto-Peto)
+#' @param legend ="top" (default), "bottom", "right", "left" to locate legend
+#' @param legend.labs =NULL(default)/c(...) to override risk factor level names
+#' @param risk.table.y.text =F (default) =T to list level names in risk table
+#' @param scale ="percent" to have y-axis display percent instead of decimal (default)
+#' @param linetype =1 (default for solid), 2 (dashed), 3 (dotted)
+#' @param censor =T (default) or F to show (or not) censoring on curves
+#' @param censor.shape ="+" (default) or any character to indicate censoring
+#' @param ftype =NULL(default)/eps/pdf/jpg/jpeg/tiff/png/emf (for hires file or name.emf for Mac)
+#' @param fname =NULL(default) or set to prefix for "funcname.ftype"
+#' @param fscale ,fwidth,fheight =NULL(default) or set to numerical value
+#' @param dpi =300 (default) or set to desired resolution in dpi in file
+#' @param remove choose from =c("xlab","ylab","x.text","y.text","x.ticks","y.ticks","grid","x.grid","y.grid","axis","x.axis","y.axis")
+#' @return returns nothing
+#' @examples
+#' \dontrun{
+#' cukm(TimeToEvent, Outcome, Treatment)
+#' cukm(TimeToEvent, Outcome, Treatment, kmtype="ci")
+#' }
+#' @export
 cukm = function(timevar, statvar, ttmtvar, kmtype="survival", pvalue=T,
                 allkmpairs=T, tmax=0, xlab="Time", ylab=NULL, title=NULL,
                 rho=0, legend="top", legend.labs=NULL, risk.table.y.text=F,
@@ -5,35 +36,6 @@ cukm = function(timevar, statvar, ttmtvar, kmtype="survival", pvalue=T,
                 ftype=NULL,fname=NULL,fscale=NULL,fwidth=NULL,
                 fheight=NULL, dpi=300, remove=NULL)
 {
-  #' Kaplan-Meier curves with p-value, # at risk
-  #'
-  #' Does K-M curves of 2nd argument vs 1st for different levels of 3rd argument.
-  #' Displays table of # at risk, and p-value. Does survival (default) or cumulative incidence.
-  #' Plus sign indicates loss to follow-up (right-censoring).
-  #' @param timevar , statvar, ttmtvar (3 required)
-  #' @param kmtype ="survival" (default) or "ci" (cumulative incidence)
-  #' @param pvalue =T (default) or F (for no p-value)
-  #' @param allkmpairs =T (default) or F (to not compare each pair of curves)
-  #' @param tmax =0 (default for no max T), numeric study end time
-  #' @param xlab /ylab/title=NULL to override labels of x-axis/y-axis/title
-  #' @param rho =0 (log-rank default) or 1 (Peto-Peto)
-  #' @param legend ="top" (default), "bottom", "right", "left" to locate legend
-  #' @param legend.labs =NULL(default)/c(...) to override risk factor level names
-  #' @param risk.table.y.text =F (default) =T to list level names in risk table
-  #' @param scale ="percent" to have y-axis display percent instead of decimal (default)
-  #' @param linetype =1 (default for solid), 2 (dashed), 3 (dotted)
-  #' @param censor =T (default) or F to show (or not) censoring on curves
-  #' @param censor.shape ="+" (default) or any character to indicate censoring
-  #' @param ftype =NULL(default)/eps/pdf/jpg/jpeg/tiff/png/emf (for hires file or name.emf for Mac)
-  #' @param fname =NULL(default) or set to prefix for "funcname.ftype"
-  #' @param fscale ,fwidth,fheight =NULL(default) or set to numerical value
-  #' @param dpi =300 (default) or set to desired resolution in dpi in file
-  #' @param remove choose from =c("xlab","ylab","x.text","y.text","x.ticks","y.ticks","grid","x.grid","y.grid","axis","x.axis","y.axis")
-  #' @return returns nothing
-  #' @examples
-  #' cukm(TimeToEvent, Outcome, Treatment)
-  #' cukm(TimeToEvent, Outcome, Treatment, kmtype="ci") for cumulative incidence
-  #' @export
   TimeNam = deparse(substitute(timevar))
   TtmtNam = deparse(substitute(ttmtvar))
   StatNam = deparse(substitute(statvar))

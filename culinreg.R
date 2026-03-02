@@ -1,31 +1,33 @@
+#' Multiple linear regression, all possible models, summarize best (or specified) model,
+#' do added variable plots
+#' @param dsgiven , depnam, formula required: dataset, char-string of name of variable being analyzed, 
+#' @param formula of model "preda+predb+predc*predd" etc. Add "+0" for zero intercept
+#' @param printfit =F (default) to get (T) or not get (F) fitted values for all subjects
+#' @param ndecfit =3 (default) for the number of decimal digits in fitted values
+#' @param dodredge =T (default) to get (T) or not get (F) all possible models
+#' @param usemod =1 (default) to use the usemod-th best found by dredge
+#' @param nmodshow =16 (default) to show top nmodshow models by dredge
+#' @param m.min and m.max= to set smallest and largest model sizes in dredge
+#' @param fixed = c(,,,) to specify variables that must be in model
+#' @param subset =logical expression describing models to keep in dredge
+#' @param fitasx =T(default) or set to T to plot observed as x
+#' @param ftype =NULL(default)/eps/pdf/jpg/jpeg/tiff/png/emf (for hires file or name.emf for Mac)
+#' @param fname =NULL(default) or set to prefix for "funcname.ftype"
+#' @param fscale ,fwidth,fheight =NULL(default) or set to numerical value
+#' @param dpi =300 (default) or set to desired resolution in dpi in file
+#' @param remove choose from =c("xlab","ylab","x.text","y.text","x.ticks","y.ticks","grid","x.grid","y.grid","axis","x.axis","y.axis")
+#' @return returns nothing
+#' @examples
+#' \dontrun{
+#' culinreg(NEJM, "tcstudy", "tcpre+tgpre+Diet")
+#' }
+#' @export
 culinreg = function(dsgiven, depnam, formula,
                   weights=NULL, printfit=F, ndecfit=2, dodredge=T, usemod=1,
                   nmodshow=16, m.min=1, m.max=99, fixed=NULL, subset=as.expression(1),
                   fitasx=T,ftype=NULL,fname=NULL,fscale=NULL,fwidth=NULL,
                   fheight=NULL, dpi=300, remove=NULL)
 {
-  #' Multiple linear regression, all possible models, summarize best (or specified) model,
-  #' do added variable plots
-  #' @param dsgiven , depnam, formula required: dataset, char-string of name of variable being analyzed, 
-  #' @param formula of model "preda+predb+predc*predd" etc. Add "+0" for zero intercept
-  #' @param printfit =F (default) to get (T) or not get (F) fitted values for all subjects
-  #' @param ndecfit =3 (default) for the number of decimal digits in fitted values
-  #' @param dodredge =T (default) to get (T) or not get (F) all possible models
-  #' @param usemod =1 (default) to use the usemod-th best found by dredge
-  #' @param nmodshow =16 (default) to show top nmodshow models by dredge
-  #' @param m.min and m.max= to set smallest and largest model sizes in dredge
-  #' @param fixed = c(,,,) to specify variables that must be in model
-  #' @param subset =logical expression describing models to keep in dredge
-  #' @param fitasx =T(default) or set to T to plot observed as x
-  #' @param ftype =NULL(default)/eps/pdf/jpg/jpeg/tiff/png/emf (for hires file or name.emf for Mac)
-  #' @param fname =NULL(default) or set to prefix for "funcname.ftype"
-  #' @param fscale ,fwidth,fheight =NULL(default) or set to numerical value
-  #' @param dpi =300 (default) or set to desired resolution in dpi in file
-  #' @param remove choose from =c("xlab","ylab","x.text","y.text","x.ticks","y.ticks","grid","x.grid","y.grid","axis","x.axis","y.axis")
-  #' @return returns nothing
-  #' @examples
-  #' culinreg(NEJM, "tcstudy", "tcpre+tgpre+Diet")
-  #' @export
   ds = dsgiven; idep = 0
   for (i in 1:length(ds)) {
     if (names(ds[i])==depnam) idep=i

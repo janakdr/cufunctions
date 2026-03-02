@@ -1,7 +1,8 @@
+#' internal cufunction to do dredge work, called by culogist, cucox, culinreg
+#' @keywords internal
 cu_dredge = function(regobj,forlag,
              nmodshow=16, m.min=1, m.max=99, fixed=NULL, subset=as.expression(1))
 {
-  #' internal cufunction to do dredge work, called by culogist, cucox, culinreg
   coefvec = regobj$coefficients; ncoef = length(coefvec); dobj = ncoef-1; forla = forlag
   print(coefvec); print(ncoef); print(forla); print(dobj)
   if (ncoef > 2) { # no need to dredge with just one predictor

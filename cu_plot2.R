@@ -1,3 +1,5 @@
+#' internal cufunction to plot data by two factors
+#' @keywords internal
 cu_plot2 = function(progname,depvar,group1,group2,nlev1,nlev2, g1order, g1name, depname, g2name, title,
                     plot="bar", linetype="n", linecolor="black", linesize=1,
                     letbar=NULL, ebars=4, dots=1, barcolor="black", barfill="colors",
@@ -15,7 +17,6 @@ cu_plot2 = function(progname,depvar,group1,group2,nlev1,nlev2, g1order, g1name, 
                     titlejust="center", legheadsize=12, legtextsize = 10,
                     ftype=NULL,fname=NULL,fscale=NULL,fwidth=NULL,
                     fheight=NULL, dpi=300, remove=NULL, suff=NULL) {
-  #' internal cufunction to plot data by two factors
   barntoxm = function(barno) {
     ig = (barno-1)%/%nlev2; jg = (barno-1)%%nlev2 #; cat("\nig,jg:",ig,jg)
     return((barno-1)%/%nlev2 + 0.55 + ((barno-1)%%nlev2 +0.5) * 0.9/nlev2)

@@ -1,6 +1,7 @@
+#' internal function to get list of the names in chstr separated by + *
+#' @keywords internal
 cu_parsexp = function(chstr)
 {
-  #' internal function to get list of the names in chstr separated by + *
   vnams = NULL
   while (chstr != "") {
     ipl = regexpr("\\+",chstr); imu = regexpr("\\*",chstr)

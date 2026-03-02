@@ -1,3 +1,9 @@
+#' Reorder factor levels
+#'
+#' @param group Factor variable to reorder.
+#' @param order Character vector specifying new level order, or NULL.
+#' @return Factor with reordered levels.
+#' @keywords internal
  cu_reorder = function(group, order) {
    # internal cu function to reorder factor variable
    group = as.factor(group); nameord=deparse(substitute(order))

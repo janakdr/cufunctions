@@ -1,5 +1,6 @@
+#' internal cufunction to print p.value with labels (in cucov2way)
+#' @keywords internal
 cu_pvalmatout = function(p.value,levnams) {
-  #' internal cufunction to print p.value with labels (in cucov2way)
   nlev = length(levnams); nlevm1 = nlev-1
   cat(sprintf("%-9.9s",""))
   #print(p.value)

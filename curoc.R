@@ -1,26 +1,28 @@
+#' For logistic-regression, does ROC curve(s), AUC, and summary table with best accuracy
+#' @param LRobj logistic-regression object (glm or polr) (required)
+#' @param depvar outcome variable (required)
+#' @param twolev =T (default) for glm object; =F for polr object (>2 levels)
+#' @param xs list of probability cut points for 2x2 tables (besides 0.5)
+#' @param namedep outcome variable name labeling graph
+#' @param logitlog ="logit" (default) to model odds ("logit") or risk ("log")
+#' @param emf =F(default)/T/name (to create culogist.emf or name.emf needed on Mac)
+#' @param xlabroc ="x axis label" (default "1 - Specificity")
+#' @param ylabroc ="y axis label" (default "Sensitivity")
+#' @param label.ordering = c(two labels) to override alphabetical order
+#' @param color ="red" (default) for single ROC curve color (glm object)
+#' @param veccolor =c("red","blue","green","black") (default) for multiple curves (polr object)
+#' @return returns nothing
+#' @examples
+#' \dontrun{
+#' curoc(logstep, MetSyn)
+#' curoc(logstep, MetSyn,c(0.3,0.7))
+#' curoc(logstep, MetSyn, twolev=F)
+#' }
+#' @export
 curoc = function(LRobj, depvar, twolev=TRUE, xs=NULL, namedep=NULL, logitlog="logit", 
                  printfit=F, emf=F, xlabroc="1 - Specificity", ylabroc="Sensitivity",
                  label.ordering = NULL, color="red", veccolor=c("red","blue","green","black"))
 {
-  #' For logistic-regression, does ROC curve(s), AUC, and summary table with best accuracy
-  #' @param LRobj logistic-regression object (glm or polr) (required)
-  #' @param depvar outcome variable (required)
-  #' @param twolev =T (default) for glm object; =F for polr object (>2 levels)
-  #' @param xs list of probability cut points for 2x2 tables (besides 0.5)
-  #' @param namedep outcome variable name labeling graph
-  #' @param logitlog ="logit" (default) to model odds ("logit") or risk ("log")
-  #' @param emf =F(default)/T/name (to create culogist.emf or name.emf needed on Mac)
-  #' @param xlabroc ="x axis label" (default "1 - Specificity")
-  #' @param ylabroc ="y axis label" (default "Sensitivity")
-  #' @param label.ordering = c(two labels) to override alphabetical order
-  #' @param color ="red" (default) for single ROC curve color (glm object)
-  #' @param veccolor =c("red","blue","green","black") (default) for multiple curves (polr object)
-  #' @return returns nothing
-  #' @examples
-  #' curoc(logstep, MetSyn) for AUC and summary table with best accuracy
-  #' curoc(logstep, MetSyn,c(0.3,0.7)) for AUC and 3 summary tables (best accuracy, prob=0.3, 0.7)
-  #' curoc(logstep, MetSyn, twolev=F) for multi-level outcome variable analyzed by polr
-  #' @export
   if (is.null(namedep)) namedep = deparse(substitute(depvar))
   depvar = as.factor(depvar)
   levnames = levels(depvar); nlev = nlevels(depvar); nsubj <- length(depvar)

@@ -1,8 +1,13 @@
+#' Data frame method for cusum
+#' @param object Data frame to summarize.
+#' @param maxsum Maximum number of levels to show for factors.
+#' @param digits Number of significant digits.
+#' @param ... Additional arguments.
+#' @return Summary table.
+#' @export
 cusum.data.frame = function (object, maxsum = 7L, digits = max(3L, getOption("digits") -
                                                                  3L), ...)
 {
-  #' internal for cusum
-  #' @export
   ncw <- function(x) {
     z <- nchar(x, type = "w")
     if (any(na <- is.na(z))) {

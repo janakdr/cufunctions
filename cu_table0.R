@@ -1,7 +1,8 @@
+#' internal cufunction to calculate summary stats for variables
+#' @keywords internal
 cu_table0 = function(depvar, group1=NULL, brief=FALSE, sdsamerow=FALSE,
     doAll=FALSE, pnorm=.05, chariqr=":",  nlevmax=9)
 {
-  #' internal cufunction to calculate summary stats for variables
   nrowmax = 16; irmean=3; irmed=9; # constants
   # options(warn = 1)
   if (is.character(depvar) && nlevels(as.factor(depvar)) > nlevmax) 

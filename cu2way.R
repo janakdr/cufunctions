@@ -1,3 +1,82 @@
+#' Does two-way anova and post-hoc tests or contingency tables, and makes a bar graph
+#' @param depvar ,group1,group2 required: variable being analyzed, grouping factors 1 & 2
+#' @param interact =TRUE (default), F or FALSE for no interaction
+#' @param dosimpler =F (default) or T not to do or to do 2 1ways first
+#' @param partialF =TRUE (default), F or FALSE for no partial F vs simpler models
+#' @param ordinal =NULL (default)/T/c("...") to treat variable as no/yes ordinal
+#' @param scale ="frequency" (default) or "percent"
+#' @param ebars =1 (default)/2/3 (post-hoc t, SD/SE/CL) or 4 (nonparametric, IQR) or -N (nonparm if any norm fail)
+#' @param dots =0 (default), 1 to display data on graph
+#' @param plot ="bar" (default) for bar graphs; "box" "violin" "rod" "no"
+#' @param ytrans ="none" (default) to transform depvar: "sqrt" "log"
+#' @param barfill ="lancet" (default) for colors by group ("lancet" for 2 factors, other journal options "aaas", "jco", "uchicago", "npg"
+#' @param casecontrol =F (default)/T if depvar has 2 levels control and case
+#' @param maxfor2 =5 (default)/x for max p-values on a line for categorical data
+#' @param g1order =NULL (default) to reorder bars (1st Factor)
+#' @param g2order =NULL (default) to reorder bars (2nd Factor)
+#' @param psigcld =0 (no letters)/x for CLD letters on bars (any shared letter means P>psigcld, 0 for no letters)
+#' @param conf.int =0.95 (default)/x/0 for confidence interval width of contrast estimates (0 for none)
+#' @param depname /g1name/g2name/title=NULL to override names of dependent/Factor1/Factor2/title
+#' @param caption =NULL (default)/"yes"/"caption text" to get caption ("yes" to list n's)
+#' @param minimal =F (default)/T for minimal console output and no graph
+#' @param padj ="none"(default), p-value adjustment for multiple comparisons, can be "bonferroni", "holm")
+#' @param pbart =0.05 (default)/x for Bartlett test threshold for variance homogeneity
+#' @param pnorm =0.05 (default)/x for normality test threshold
+#' @param chariqr =":" (default)/x for character to separate quartiles ("-" "," etc)
+#' @param charamp ="&" (default)/x for character to separate group1&2 levels ("-" etc)
+#' @param pvpairs="std" (default)/"all"/i/c(ij,ik,...) to show std or all or vs.i or pval's of i/j, i/k ...
+#' @param pvypos=NULL (default)/position of pval lines
+#' @param pvstinc=0.05 (default)/increment for pvypos from one pval line to next
+#' @param pvlab="p"/"*" to display numerical or asterisks
+#' @param pvprefix="p=" (default)/"" etc prefix to p-values
+#' @param pvsize=NULL (default 3.5,7)/size of p-values or **
+#' @param chpvref="ref" (default) char above i-th group bar when pvpairs=i
+#' @param pvspill=F/T to not allow p-values to spill outside range or to allow
+#' @param pnosig =0.2 (default)/x for threshold to show p-values even if nonsigificant
+#' @param psignif =0.05 (default)/x for threshold to significance
+#' @param p2stars =0.01 (default)/x for threshold to two stars
+#' @param p3stars =0.001 (default)/x for threshold to three stars
+#' @param pvnshide=T (default)/F to hide NS p-values or not
+#' @param pvtipl=0.01 (default)/length of p-value line tips
+#' @param doAll =T (default) for "All" column; F for no; "I" in quotes for All first.
+#' @param linetype ="n" (default)/x for no connecting lines ("solid" "dashed" "dotted" "blank" "longdash" "dotdash" "twodash")
+#' @param linesize =1 (default)/x for line thickness
+#' @param legend (default="top"), can be "bottom", "right", "left"
+#' @param size numeric value (e.g. size=1), to change size of points and outlines
+#' @param width numeric value between 0 and 1 specifying box width
+#' @param yscale (default="none"), can be "log2", "log10", "sqrt"
+#' @param letleft =T (default) or F to letter the bars from the left (T) or from most similar (F)
+#' @param nletbarmax =3 (default)/x for max consecutive letters on bar before using "-"
+#' @param xangle /yangle for axis value angles: 0 (default) horizontal, 90 vertical, or any value between
+#' @param orientation (default="vertical"), can be "horizontal" or "reverse"
+#' @param posd =NULL (default) set to values around 0.9 to fine-tune group2 bar spacing
+#' @param binwfac =30 (default) set to fraction of range within which points will be binned
+#' @param dotsize =NULL (default 1) set to fraction of binwidth for dot size
+#' @param theme ="bw" (default)/x for white background ("classic" (no grid lines),"linedraw" "gray" "minimal" "void")
+#' @param fontfamily ="sans" (default), can be "serif" "mono" 
+#' @param ymin, ymax =NA (default) or value to start/end y-axis 
+#' @param fontmain =c(14,"bold","black") default, change for title, 0 for not title 
+#' @param fontxname .fontyname,fontxticks,fontyticks = c(12,"plain","black") default, 0 to suppress
+#' @param axiscolor ,tickcolor="black" (default)/x for axis/tick color
+#' @param axisthick ,tickthick=0.5 (default)/x for axis/tick thickness
+#' @param ticklength =1 (default)/x for tick length in mm
+#' @param xticks.by ,yticks.by =NULL (default)/s for x/y tick spacing by s
+#' @param titlejust ="center" (default) or "left" or "right"
+#' @param legheadsize =12 (default) for font size of legend heading
+#' @param legtextsize =10 (default) for the font size of legend text
+#' @param ftype =NULL(default)/eps/pdf/jpg/jpeg/tiff/png/emf (for hires file or name.emf for Mac)
+#' @param fname =NULL(default) or set to prefix for "funcname.ftype"
+#' @param fscale ,fwidth,fheight =NULL(default) or set to numerical value
+#' @param dpi =300 (default) or set to desired resolution in dpi in file
+#' @param remove choose from =c("xlab","ylab","x.text","y.text","x.ticks","y.ticks","grid","x.grid","y.grid","axis","x.axis","y.axis")
+#' @return returns nothing
+#' @examples
+#' \dontrun{
+#' cu2way(tcchange, Diet, sex)
+#' cu2way(tcchange, Diet, sex, interact=F)
+#' cu2way(feel,WTCAT,Sex)
+#' }
+#' @export
 cu2way = function(depvar,group1,group2, interact=TRUE, dosimpler=F, partialF=TRUE, ordinal=NULL,
                   scale="frequency", ebars=1, dots=0, plot="bar", ytrans="none",
                   barcolor="black", barfill="colors", casecontrol=F,
@@ -21,83 +100,6 @@ cu2way = function(depvar,group1,group2, interact=TRUE, dosimpler=F, partialF=TRU
                   ftype=NULL,fname=NULL,fscale=NULL,fwidth=NULL,
                   fheight=NULL, dpi=300, remove=NULL) 
 {
-  #' Does two-way anova and post-hoc tests or contingency tables, and makes a bar graph
-  #' @param depvar ,group1,group2 required: variable being analyzed, grouping factors 1 & 2
-  #' @param interact =TRUE (default), F or FALSE for no interaction
-  #' @param dosimpler =F (default) or T not to do or to do 2 1ways first
-  #' @param partialF =TRUE (default), F or FALSE for no partial F vs simpler models
-  #' @param ordinal =NULL (default)/T/c("...") to treat variable as no/yes ordinal
-  #' @param scale ="frequency" (default) or "percent"
-  #' @param ebars =1 (default)/2/3 (post-hoc t, SD/SE/CL) or 4 (nonparametric, IQR) or -N (nonparm if any norm fail)
-  #' @param dots =0 (default), 1 to display data on graph
-  #' @param plot ="bar" (default) for bar graphs; "box" "violin" "rod" "no"
-  #' @param ytrans ="none" (default) to transform depvar: "sqrt" "log"
-  #' @param barfill ="lancet" (default) for colors by group ("lancet" for 2 factors, other journal options "aaas", "jco", "uchicago", "npg"
-  #' @param casecontrol =F (default)/T if depvar has 2 levels control and case
-  #' @param maxfor2 =5 (default)/x for max p-values on a line for categorical data
-  #' @param g1order =NULL (default) to reorder bars (1st Factor)
-  #' @param g2order =NULL (default) to reorder bars (2nd Factor)
-  #' @param psigcld =0 (no letters)/x for CLD letters on bars (any shared letter means P>psigcld, 0 for no letters)
-  #' @param conf.int =0.95 (default)/x/0 for confidence interval width of contrast estimates (0 for none)
-  #' @param depname /g1name/g2name/title=NULL to override names of dependent/Factor1/Factor2/title
-  #' @param caption =NULL (default)/"yes"/"caption text" to get caption ("yes" to list n's)
-  #' @param minimal =F (default)/T for minimal console output and no graph
-  #' @param padj ="none"(default), p-value adjustment for multiple comparisons, can be "bonferroni", "holm")
-  #' @param pbart =0.05 (default)/x for Bartlett test threshold for variance homogeneity
-  #' @param pnorm =0.05 (default)/x for normality test threshold
-  #' @param chariqr =":" (default)/x for character to separate quartiles ("-" "," etc)
-  #' @param charamp ="&" (default)/x for character to separate group1&2 levels ("-" etc)
-  #' @param pvpairs="std" (default)/"all"/i/c(ij,ik,...) to show std or all or vs.i or pval's of i/j, i/k ...
-  #' @param pvypos=NULL (default)/position of pval lines
-  #' @param pvstinc=0.05 (default)/increment for pvypos from one pval line to next
-  #' @param pvlab="p"/"*" to display numerical or asterisks
-  #' @param pvprefix="p=" (default)/"" etc prefix to p-values
-  #' @param pvsize=NULL (default 3.5,7)/size of p-values or **
-  #' @param chpvref="ref" (default) char above i-th group bar when pvpairs=i
-  #' @param pvspill=F/T to not allow p-values to spill outside range or to allow
-  #' @param pnosig =0.2 (default)/x for threshold to show p-values even if nonsigificant
-  #' @param psignif =0.05 (default)/x for threshold to significance
-  #' @param p2stars =0.01 (default)/x for threshold to two stars
-  #' @param p3stars =0.001 (default)/x for threshold to three stars
-  #' @param pvnshide=T (default)/F to hide NS p-values or not
-  #' @param pvtipl=0.01 (default)/length of p-value line tips
-  #' @param doAll =T (default) for "All" column; F for no; "I" in quotes for All first.
-  #' @param linetype ="n" (default)/x for no connecting lines ("solid" "dashed" "dotted" "blank" "longdash" "dotdash" "twodash")
-  #' @param linesize =1 (default)/x for line thickness
-  #' @param legend (default="top"), can be "bottom", "right", "left"
-  #' @param size numeric value (e.g. size=1), to change size of points and outlines
-  #' @param width numeric value between 0 and 1 specifying box width
-  #' @param yscale (default="none"), can be "log2", "log10", "sqrt"
-  #' @param letleft =T (default) or F to letter the bars from the left (T) or from most similar (F)
-  #' @param nletbarmax =3 (default)/x for max consecutive letters on bar before using "-"
-  #' @param xangle /yangle for axis value angles: 0 (default) horizontal, 90 vertical, or any value between
-  #' @param orientation (default="vertical"), can be "horizontal" or "reverse"
-  #' @param posd =NULL (default) set to values around 0.9 to fine-tune group2 bar spacing
-  #' @param binwfac =30 (default) set to fraction of range within which points will be binned
-  #' @param dotsize =NULL (default 1) set to fraction of binwidth for dot size
-  #' @param theme ="bw" (default)/x for white background ("classic" (no grid lines),"linedraw" "gray" "minimal" "void")
-  #' @param fontfamily ="sans" (default), can be "serif" "mono" 
-  #' @param ymin, ymax =NA (default) or value to start/end y-axis 
-  #' @param fontmain =c(14,"bold","black") default, change for title, 0 for not title 
-  #' @param fontxname .fontyname,fontxticks,fontyticks = c(12,"plain","black") default, 0 to suppress
-  #' @param axiscolor ,tickcolor="black" (default)/x for axis/tick color
-  #' @param axisthick ,tickthick=0.5 (default)/x for axis/tick thickness
-  #' @param ticklength =1 (default)/x for tick length in mm
-  #' @param xticks.by ,yticks.by =NULL (default)/s for x/y tick spacing by s
-  #' @param titlejust ="center" (default) or "left" or "right"
-  #' @param legheadsize =12 (default) for font size of legend heading
-  #' @param legtextsize =10 (default) for the font size of legend text
-  #' @param ftype =NULL(default)/eps/pdf/jpg/jpeg/tiff/png/emf (for hires file or name.emf for Mac)
-  #' @param fname =NULL(default) or set to prefix for "funcname.ftype"
-  #' @param fscale ,fwidth,fheight =NULL(default) or set to numerical value
-  #' @param dpi =300 (default) or set to desired resolution in dpi in file
-  #' @param remove choose from =c("xlab","ylab","x.text","y.text","x.ticks","y.ticks","grid","x.grid","y.grid","axis","x.axis","y.axis")
-  #' @return returns nothing
-  #' @examples
-  #' cu2way(tcchange, Diet, sex) two-factor anova with interaction (all possible contrasts)
-  #' cu2way(tcchange, Diet, sex, interact=F)  two-factor anova with no interaction (all possible contrasts)
-  #' cu2way(feel,WTCAT,Sex) contingency tables (all possible 2x2s)
-  #' @export
   macmap = function() {
     mapinto12 = c(rep(-1,nlevint)) #; map12toin = c(rep(-1,nlevboth12))
     for (i in 1:nlevboth12) {

@@ -1,8 +1,9 @@
+#' internal function to display plot object, write hires .ftype or .emf file
+#' @keywords internal
 cu_plout = function(plotobj,funcname,ftype=NULL,fname=NULL,suff=NULL,seq=0,
                     scale=NULL,width=NULL,height=NULL,units="in",dpi=300,
                     avplots=F, remove=NULL)
 {
-  #' internal function to display plot object, write hires .ftype or .emf file
   if (!is.null(remove)) 
     for (k in 1:length(remove)) plotobj <- plotobj + rremove(remove[k])
   # mfr = par()$mfrow; cat("\nmmfr:"); print(mfr)

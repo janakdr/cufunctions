@@ -1,10 +1,10 @@
+#' Loads all packages needed by cufunctions (unused since package)
+#' @param call with no arguments
+#' @return returns nothing
+#' @export
 cu_require = function()
 {
   packmiss = ""
-  #' Loads all packages needed by cufunctions (unused since package)
-  #' @param call with no arguments
-  #' @return returns nothing
-  #' @export
   if (!require(Hmisc)) packmiss = paste(packmiss,"Hmisc")
   if (!require(e1071)) packmiss = paste(packmiss,"e1071")
   if (!require(survival)) packmiss = paste(packmiss,"survival")
