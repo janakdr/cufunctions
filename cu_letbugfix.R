@@ -1,3 +1,11 @@
+#' Fix reversed significance letters within factor levels
+#'
+#' @param letbar Character vector of significance letters.
+#' @param namegroup1 Name of the first grouping factor.
+#' @param gp1 Number of levels in factor 1.
+#' @param gp2 Number of levels in factor 2.
+#' @return Corrected character vector of significance letters.
+#' @keywords internal
 cu_letbugfix = function(letbar,namegroup1,gp1,gp2)
 {
 #  cat("\nDue to a bug in an outside package,")

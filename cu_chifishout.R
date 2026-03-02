@@ -1,5 +1,6 @@
+#' internal cufunction to display chi-squared and Fisher exact tables
+#' @keywords internal
 cu_chifishout = function(casecont,rrortab,chitab,fishtab,nlev,namegroup,groupvar,maxfor2) {
-  #' internal cufunction to display chi-squared and Fisher exact tables
   maxnch = min(12, max(nchar(namegroup), nchar(levels(groupvar))))
   cat("\n",cu_sprintstr(ifelse(casecont,"OR","RR"),maxnch)," ",sep="")
   for (i in 1:(nlev-1)) cat(cu_sprintstr(levels(groupvar)[i],9))

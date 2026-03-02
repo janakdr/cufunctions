@@ -1,3 +1,17 @@
+#' Does repeated measures one- or two-way anova and post-hoc tests (format wide or long - 1/many lines for each subject)
+#' @param dsgiven ,dnamf,dnaml,repnam required: dataset, char-strings of names of first&last variable being analyzed, repeated grouping factor
+#' @param fac2 char-string of name of 2nd, non-repeated grouping factor (default NULL)
+#' @param idnam (to indicate long format) =char-string of name of ID/Subject variable (default NULL)
+#' @param minimal = TRUE (default), F or FALSE to get all console output and graphs
+#' @return nothing
+#' @examples
+#' \dontrun{
+#' curepmeas(delta,"TC","TG","Diet")  # one line per subject; TG.xx TG.yy etc as names of TG data
+#' curepmeas(delta,"TC","TG","Diet", "sex")  # with sex as second factor, Diet*sex interaction in model
+#' curepmeas(delta,"TC","TG","Diet", "sex", interact=F)  # no Diet*sex interaction
+#' curepmeas(delta,"TC","TG","Diet", "sex", cov="age+sex*age")  # with covariate adjustment
+#' }
+#' @export
 curepmany = function(dsgiven, dnamf, dnaml, repnam, fac2=NULL, idnam=NULL, minimal=T,
                      interact=TRUE, partialF=TRUE, cov=NULL, ytrans="none",
                      maxlines=0, mainx=1, sumdiff=1, scale="frequency", scatter="yes",
@@ -24,18 +38,6 @@ curepmany = function(dsgiven, dnamf, dnaml, repnam, fac2=NULL, idnam=NULL, minim
                      ftype=NULL,fname=NULL,fscale=NULL,fwidth=NULL,
                      fheight=NULL,dpi=300,remove=NULL) 
 {
-  #' Does repeated measures one- or two-way anova and post-hoc tests (format wide or long - 1/many lines for each subject)
-  #' @param dsgiven ,dnamf,dnaml,repnam required: dataset, char-strings of names of first&last variable being analyzed, repeated grouping factor
-  #' @param fac2 char-string of name of 2nd, non-repeated grouping factor (default NULL)
-  #' @param idnam (to indicate long format) =char-string of name of ID/Subject variable (default NULL)
-  #' @param minimal = TRUE (default), F or FALSE to get all console output and graphs
-  #' @return nothing
-  #' @examples
-  #' curepmeas(delta,"TC","TG","Diet") one line per subject; TG.xx TG.yy etc as names of TG data
-  #' curepmeas(delta,"TC","TG","Diet", "sex") with sex as second factor, Diet*sex interaction in model
-  #' curepmeas(delta,"TC","TG","Diet", "sex", interact=F) no Diet*sex interaction
-  #' curepmeas(delta,"TC","TG","Diet", "sex", cov="age+sex*age") with covariate adjustment
-  #' @export
   if (dnamf == dnaml) stop("\nfirst and last variables same:",
     '"',dnamf,'"  "',dnaml,'"\nIf only one, just run curepmeas')
   ncols = length(dsgiven); namlist = c(); rmwall = NULL
@@ -122,4 +124,4 @@ curepmany = function(dsgiven, dnamf, dnaml, repnam, fac2=NULL, idnam=NULL, minim
     write.csv(rmwall,file=filenorm, row.names=F)
     cat ("\nTransformed data in",filenorm)
   }
-}
+}

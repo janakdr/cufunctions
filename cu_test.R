@@ -1,3 +1,8 @@
+#' Test function for internal development
+#'
+#' @param val Test input value.
+#' @return A list with test objects.
+#' @keywords internal
 cu_test = function(val) {
   obj = NULL
   obj$first = "string"; obj$second = c(7,9,11)

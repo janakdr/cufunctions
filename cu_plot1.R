@@ -1,3 +1,5 @@
+#' internal cufunction to plot data by one factor
+#' @keywords internal
 cu_plot1 = function(progname, depvar,group1, g1order, g1name, depname, title,
                     plot="bar", linetype="n", linecolor="black", linesize=1,
                     letbar=NULL, ebars=4, dots=1, barcolor="black", barfill="colors",
@@ -15,7 +17,6 @@ cu_plot1 = function(progname, depvar,group1, g1order, g1name, depname, title,
                     titlejust="center", legheadsize=12, legtextsize = 10,
                     ftype=NULL,fname=NULL,fscale=NULL,fwidth=NULL,
                     fheight=NULL, dpi=300, remove=NULL, suff=NULL) {
-  #' internal cufunction to plot data by one factor
   #print(letbar) #cat("\nenter plot1")
   df = na.omit(data.frame(depvar, group1)); depvar = df[,1]; group1 = df[,2]
   #print(colnames(df)); print(df)

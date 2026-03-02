@@ -1,3 +1,42 @@
+#' Does repeated measures anova and post-hoc tests when there is a second, non-repeated factor (long-format - multiple lines for each subject)
+#' @param depvar , group1, group2, Subject  (4 required)
+#' @param group1 repeated grouping factor
+#' @param interact =TRUE (default), F or FALSE for no interaction
+#' @param partialF =FALSE (default), T or TRUE for partial F vs simpler models
+#' @param mainx =1 (default), 2 to interchange the two factors in bar graph
+#' @param scale ="frequency" (default) or "percent"
+#' @param ebars =1 (default)/2/3 (post-hoc t, SD/SE/CL) or 4 (nonparametric, IQR)
+#' @param dots =0 (default), 1 to display data on graph
+#' @param barfill ="colors" (default) for colors by group ("lancet" for 2 factors, other journal options "aaas", "jco", "uchicago", "npg"
+#' @param plot ="bar" (default) for bar graphs; "box" "violin" "rod" "no"
+#' @param order =NULL (default)/c("...") to reorder bars
+#' @param psigcld =0 (no letters)/x for CLD letters on bars (any shared letter means P>psigcld, 0 for no letters)
+#' @param conf.int =0.95 (default)/x/0 for confidence interval width of contrast estimates (0 for none)
+#' @param depname /g1name/g2name/title to override names of depvar, groupvar, title
+#' @param legend ="top" (default), "bottom", "right", "left" to locate legend
+#' @param linetype ="n" (default)/x for no connecting lines ("dashed" "dotted")
+#' @param linesize =1 (default)/x for line thickness
+#' @param theme ="bw" (default)/x for white background (or "gray" or "classic" (no grid lines))
+#' @param size numeric value (e.g. size=1), to change size of points and outlines
+#' @param width numeric value between 0 and 1 specifying box width
+#' @param yscale (default="none"), can be "log2", "log10", "sqrt"
+#' @param xangle /yangle for axis value angles: 0 (default) horizontal, 90 vertical, or any value between
+#' @param orientation (default="vertical"), can change to "horizontal"
+#' @param posd =NULL (default) set to values around 0.9 to fine-tune group2 bar spacing
+#' @param binwfac =NULL (default 30) set to fraction of range within which points will be binned
+#' @param dotsize =NULL (default 1) set to fraction of binwidth for dot size
+#' @param dotcolor =NULL (default "white") set to dot color
+#' @param ftype =NULL(default)/eps/pdf/jpg/jpeg/tiff/png/emf (for hires file or name.emf for Mac)
+#' @param fname =NULL(default) or set to prefix for "funcname.ftype"
+#' @param fscale ,fwidth,fheight =NULL(default) or set to numerical value
+#' @param dpi =300 (default) or set to desired resolution in dpi in file
+#' @param remove choose from =c("xlab","ylab","x.text","y.text","x.ticks","y.ticks","grid","x.grid","y.grid","axis","x.axis","y.axis")
+#' @return returns nothing
+#' @examples
+#' \dontrun{
+#' cu_rep2way(TG, Diet, sex, ID)  # with interaction between the two fixed factors
+#' cu_rep2way(TG, Diet, sex, ID, interact=F)  # with no interaction (pointless, same result as without 2nd factor)
+#' }
 cu_rep2fac = function(depvar, group1, group2, Subject,
                       interact=TRUE, partialF=FALSE, mainx=1,
                       scale="frequency", ebars=1, dots=0, barcolor="black", barfill="colors", plot="bar",
@@ -14,43 +53,6 @@ cu_rep2fac = function(depvar, group1, group2, Subject,
                       ftype=NULL,fname=NULL,fscale=NULL,fwidth=NULL,
                       fheight=NULL,dpi=300,remove=NULL) 
 {
-  #' Does repeated measures anova and post-hoc tests when there is a second, non-repeated factor (long-format - multiple lines for each subject)
-  #' @param depvar , group1, group2, Subject  (4 required)
-  #' @param group1 repeated grouping factor
-  #' @param interact =TRUE (default), F or FALSE for no interaction
-  #' @param partialF =FALSE (default), T or TRUE for partial F vs simpler models
-  #' @param mainx =1 (default), 2 to interchange the two factors in bar graph
-  #' @param scale ="frequency" (default) or "percent"
-  #' @param ebars =1 (default)/2/3 (post-hoc t, SD/SE/CL) or 4 (nonparametric, IQR)
-  #' @param dots =0 (default), 1 to display data on graph
-  #' @param barfill ="colors" (default) for colors by group ("lancet" for 2 factors, other journal options "aaas", "jco", "uchicago", "npg"
-  #' @param plot ="bar" (default) for bar graphs; "box" "violin" "rod" "no"
-  #' @param order =NULL (default)/c("...") to reorder bars
-  #' @param psigcld =0 (no letters)/x for CLD letters on bars (any shared letter means P>psigcld, 0 for no letters)
-  #' @param conf.int =0.95 (default)/x/0 for confidence interval width of contrast estimates (0 for none)
-  #' @param depname /g1name/g2name/title to override names of depvar, groupvar, title
-  #' @param legend ="top" (default), "bottom", "right", "left" to locate legend
-  #' @param linetype ="n" (default)/x for no connecting lines ("dashed" "dotted")
-  #' @param linesize =1 (default)/x for line thickness
-  #' @param theme ="bw" (default)/x for white background (or "gray" or "classic" (no grid lines))
-  #' @param size numeric value (e.g. size=1), to change size of points and outlines
-  #' @param width numeric value between 0 and 1 specifying box width
-  #' @param yscale (default="none"), can be "log2", "log10", "sqrt"
-  #' @param xangle /yangle for axis value angles: 0 (default) horizontal, 90 vertical, or any value between
-  #' @param orientation (default="vertical"), can change to "horizontal"
-  #' @param posd =NULL (default) set to values around 0.9 to fine-tune group2 bar spacing
-  #' @param binwfac =NULL (default 30) set to fraction of range within which points will be binned
-  #' @param dotsize =NULL (default 1) set to fraction of binwidth for dot size
-  #' @param dotcolor =NULL (default "white") set to dot color
-  #' @param ftype =NULL(default)/eps/pdf/jpg/jpeg/tiff/png/emf (for hires file or name.emf for Mac)
-  #' @param fname =NULL(default) or set to prefix for "funcname.ftype"
-  #' @param fscale ,fwidth,fheight =NULL(default) or set to numerical value
-  #' @param dpi =300 (default) or set to desired resolution in dpi in file
-  #' @param remove choose from =c("xlab","ylab","x.text","y.text","x.ticks","y.ticks","grid","x.grid","y.grid","axis","x.axis","y.axis")
-  #' @return returns nothing
-  #' @examples
-  #' cu_rep2way(TG, Diet, sex, ID) with interaction between the two fixed factors
-  #' cu_rep2way(TG, Diet, sex, ID, interact=F) with no interaction (pointless, same result as without 2nd factor)
   if(is.null(depname)) depname = deparse(substitute(depvar))
   if(is.null(g1name)) g1name = deparse(substitute(group1))
   if(is.null(g2name)) g2name = deparse(substitute(group2))
@@ -133,4 +135,4 @@ cu_rep2fac = function(depvar, group1, group2, Subject,
     if (dele==deluse) ie = ie-1
   }
   if (ifsomena) cat ("\np-value NA means n zero or same as one above")
-}
+}

@@ -1,17 +1,19 @@
+#' Does a read.table and returns a dataframe object
+#' @param skip =lines to be skipped (default=NULL)
+#' @param nrows =lines to be read after line with names (default is all)
+#' @param maxfaclev if < levels, treated as char-string (default sqrt(n))
+#' @param maxvarprint =20 (default), or N, with no print if #variables larger
+#'
+#'
+#' @return dataframe object read
+#' @examples
+#' \dontrun{
+#' HD = curead()
+#' NEJM = curead(skip=1)
+#' }
+#' @export
 curead = function(skip=NULL, nrows=-1, maxfaclev=0, maxvarprint=20)
 {
-  #' Does a read.table and returns a dataframe object
-  #' @param skip =lines to be skipped (default=NULL)
-  #' @param nrows =lines to be read after line with names (default is all)
-  #' @param maxfaclev if < levels, treated as char-string (default sqrt(n))
-  #' @param maxvarprint =20 (default), or N, with no print if #variables larger
-  #'
-  #'
-  #' @return dataframe object read
-  #' @examples
-  #' HD = curead()
-  #' NEJM = curead(skip=1)
-  #' @export
 
   if (is.null(skip)) skip = 0
   if(Sys.info()[1]=="Windows") {

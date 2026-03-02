@@ -1,5 +1,6 @@
+#' internal cufunction to write p-value to console 9 chars
+#' @keywords internal
 cu_pval9 = function(pval) {
-  #' internal cufunction to write p-value to console 9 chars
   if (pval < -0.9) return(" NA      ")
   else if (pval < -0.7) return(" Inacc.  ")
   else if (pval < 0) return(" No need ")

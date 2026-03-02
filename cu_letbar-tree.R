@@ -1,5 +1,6 @@
+#' internal cufunction to construct significance letters on bars
+#' @keywords internal
 cu_letbar = function(pvalue,psignif,mapord,nlev,nletbarmax=3) {
-  #' internal cufunction to construct significance letters on bars
   letfromcliq = function(ncl) return(ifelse(ncl<=26, letters[ncl], 
                                             ifelse(ncl<=52, LETTERS[ncl-26], "@")))
   if (psignif <= 0) letbar = NULL

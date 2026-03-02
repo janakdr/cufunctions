@@ -1,3 +1,42 @@
+#' Cox modeling, all possible models, summarize best (or specified) model,
+#' LR tests, ROCs, K-M of Cox score strata, predicted K-M for each factor
+#' @param dsgiven , timnam, depnam, formula  required: dataset, char-strings of names of time-var and variable being analyzed, and model formula
+#' @param dopredkm =T (default) to get (T) or not get (F) predicted Kaplan-Meier curves
+#' @param doroc =T (default, at 50,75,100\% events) for ROC curves [c(,,) list to specify times]
+#' @param docoxkm =T (default, quartiles) for K-M vs Cox risk score [c(,,) list to specify cut-pts]
+#' @param wtnam =NULL (default) char-string pointing to variable with weights
+#' @param printfit =F (default) to get (T) or not get (F) fitted risk scores for all subjects
+#' @param dodredge =T (default) to get (T) or not get (F) all possible models
+#' @param usemod =1 (default) to use the usemod-th best found by dredge
+#' @param nmodshow =16 (default) to show top nmodshow models by dredge
+#' @param m.min and m.max= to set smallest and largest model sizes in dredge
+#' @param fixed = c(,,) list to specify variables that must be in model
+#' @param subset =logical expression describing models to keep in dredge
+#' @param tmax =0 (default for no max T), numeric study end time
+#' @param xlabpredkm ="Time" (default) for predicted K-M x-axis label
+#' @param ylabpredkm ="Survival" (default) for predicted K-M y-axis label
+#' @param titlepredkm ="Predicted Kaplan-Meier Curves" (default) for predicted K-M title
+#' @param palette ="hue" (default) "grey" "RdBu" "Blues" "lancet" etc
+#' @param fun ="pct" (default) for survival, "event" for cumulative events, "cumhaz" for cumulative hazard
+#' @param color ="red" (default) for single ROC curve color (glm object)
+#' @param xlabroc ="x axis label" (default "1 - Specificity")
+#' @param ylabroc ="y axis label" (default "Sensitivity")
+#' @param allkmpairs =T (default) or F (to not compare each pair of curves)
+#' @param xlabkm =NULL (default) for K-M x-axis label
+#' @param ylabkm =NULL (default) for K-M y-axis label
+#' @param titlekm =NULL (default) for K-M title
+#' @param nverkm,nhorkm,nverroc,nhorroc =2 (default) #km,rocplots vert,horiz
+#' @param ftype =NULL(default)/eps/pdf/jpg/jpeg/tiff/png/emf (for hires file or name.emf for Mac)
+#' @param fname =NULL(default) or set to prefix for "funcname.ftype"
+#' @param fscale ,fwidth,fheight =NULL(default) or set to numerical value
+#' @param dpi =300 (default) or set to desired resolution in dpi in file
+#' @param remove choose from =c("xlab","ylab","x.text","y.text","x.ticks","y.ticks","grid","x.grid","y.grid","axis","x.axis","y.axis")
+#' @return returns nothing
+#' @examples
+#' \dontrun{
+#' cucox(coxdata, "TimeToEvent", "Outcome", "C.Index + scale(LVEF) + scale(BNP)")
+#' }
+#' @export
 cucox = function(dsgiven, timnam, depnam, formula, dopredkm=T, doroc=T, docoxkm=T,
                  wtnam=NULL, printfit=F, dodredge=T, usemod=1,
                  nmodshow=16, m.min=1, m.max=99, fixed=NULL, subset=as.expression(1),
@@ -9,43 +48,6 @@ cucox = function(dsgiven, timnam, depnam, formula, dopredkm=T, doroc=T, docoxkm=
                  ftype=NULL,fname=NULL,fscale=NULL,fwidth=NULL,
                  fheight=NULL, dpi=300, remove=NULL)
 {
-  #' Cox modeling, all possible models, summarize best (or specified) model,
-  #' LR tests, ROCs, K-M of Cox score strata, predicted K-M for each factor
-  #' @param dsgiven , timnam, depnam, formula  required: dataset, char-strings of names of time-var and variable being analyzed, and model formula
-  #' @param dopredkm =T (default) to get (T) or not get (F) predicted Kaplan-Meier curves
-  #' @param doroc =T (default, at 50,75,100\% events) for ROC curves [c(,,) list to specify times]
-  #' @param docoxkm =T (default, quartiles) for K-M vs Cox risk score [c(,,) list to specify cut-pts]
-  #' @param wtnam =NULL (default) char-string pointing to variable with weights
-  #' @param printfit =F (default) to get (T) or not get (F) fitted risk scores for all subjects
-  #' @param dodredge =T (default) to get (T) or not get (F) all possible models
-  #' @param usemod =1 (default) to use the usemod-th best found by dredge
-  #' @param nmodshow =16 (default) to show top nmodshow models by dredge
-  #' @param m.min and m.max= to set smallest and largest model sizes in dredge
-  #' @param fixed = c(,,) list to specify variables that must be in model
-  #' @param subset =logical expression describing models to keep in dredge
-  #' @param tmax =0 (default for no max T), numeric study end time
-  #' @param xlabpredkm ="Time" (default) for predicted K-M x-axis label
-  #' @param ylabpredkm ="Survival" (default) for predicted K-M y-axis label
-  #' @param titlepredkm ="Predicted Kaplan-Meier Curves" (default) for predicted K-M title
-  #' @param palette ="hue" (default) "grey" "RdBu" "Blues" "lancet" etc
-  #' @param fun ="pct" (default) for survival, "event" for cumulative events, "cumhaz" for cumulative hazard
-  #' @param color ="red" (default) for single ROC curve color (glm object)
-  #' @param xlabroc ="x axis label" (default "1 - Specificity")
-  #' @param ylabroc ="y axis label" (default "Sensitivity")
-  #' @param allkmpairs =T (default) or F (to not compare each pair of curves)
-  #' @param xlabkm =NULL (default) for K-M x-axis label
-  #' @param ylabkm =NULL (default) for K-M y-axis label
-  #' @param titlekm =NULL (default) for K-M title
-  #' @param nverkm,nhorkm,nverroc,nhorroc =2 (default) #km,rocplots vert,horiz
-  #' @param ftype =NULL(default)/eps/pdf/jpg/jpeg/tiff/png/emf (for hires file or name.emf for Mac)
-  #' @param fname =NULL(default) or set to prefix for "funcname.ftype"
-  #' @param fscale ,fwidth,fheight =NULL(default) or set to numerical value
-  #' @param dpi =300 (default) or set to desired resolution in dpi in file
-  #' @param remove choose from =c("xlab","ylab","x.text","y.text","x.ticks","y.ticks","grid","x.grid","y.grid","axis","x.axis","y.axis")
-  #' @return returns nothing
-  #' @examples
-  #' cucox(coxdata, "TimeToEvent", "Outcome", "C.Index + scale(LVEF) + scale(BNP)")
-  #' @export
   ds = dsgiven; itim=0; idep = 0
   for (i in 1:length(ds)) {
     if (names(ds[i])==timnam) itim = i

@@ -1,5 +1,6 @@
+#' internal cufunction to print estimable results, return p-value
+#' @keywords internal
 cu_estout = function(fit, vec, conf.int=0.95,minimal=F) {
-  #' internal cufunction to print estimable results, return p-value
   oldw <- getOption("warn")
   for (i in (2:length(vec))) { 
     if (is.na(fit$coefficients[i])) {

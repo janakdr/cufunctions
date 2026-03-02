@@ -1,21 +1,23 @@
+#' Volcano plot
+#'
+#' @param dsomics data frame from cuomics
+#' @param gpairs list of group pairs to be compared
+#' @param xdash =0.5 (default) to locate dashed vertical lines
+#' @param psig =0.05 (default) for p-value threshold of interest
+#' @param pfactor =1 (default) for factor to divide psig by for multiple comparison correction
+#' @param psigmin =0.2 (default) for upper limit of p-values to display
+#' @param foldmin =NULL (default) for left end of log2(FoldChange) (usually set to -2)
+#' @param foldmax =NULL (default) for right end of log2(FoldChange) (usually set to 2)
+#' @param ylim =5 (default) for upper limit of graph (-log10(pval))
+#' @examples
+#' \dontrun{
+#' cuvolcano(omicnejm,c("AAD","Step1","Mono","AAD"), titlend="Volc")
+#' }
+#' @export
 cuvolcano = function(dsomics, gpairs, xdash=0.5, psig = 0.05, psigmin = 0.2, pfactor=1, 
                   foldmin=NULL, foldmax=NULL, ylim=5, titlend="Volcano Plot",
                   ftype=NULL,fname=NULL,fscale=NULL,fwidth=NULL,
                   fheight=NULL, dpi=300, remove=NULL, suff=NULL) {
-  #' Volcano plot
-  #'
-  #' @param dsomics data frame from cuomics
-  #' @param gpairs list of group pairs to be compared
-  #' @param xdash =0.5 (default) to locate dashed vertical lines
-  #' @param psig =0.05 (default) for p-value threshold of interest
-  #' @param pfactor =1 (default) for factor to divide psig by for multiple comparison correction
-  #' @param psigmin =0.2 (default) for upper limit of p-values to display
-  #' @param foldmin =NULL (default) for left end of log2(FoldChange) (usually set to -2)
-  #' @param foldmax =NULL (default) for right end of log2(FoldChange) (usually set to 2)
-  #' @param ylim =5 (default) for upper limit of graph (-log10(pval))
-  #' @examples
-  #' cuvolcano(omicnejm,c("AAD","Step1","Mono","AAD"), titlend="Volc")
-  #' @export
   locategp = function(namegp) {
     teststr = paste(namegp,"_M",sep=""); lenv = nchar(teststr)
     for (jc in 2:ncolom) {
@@ -66,4 +68,4 @@ cuvolcano = function(dsomics, gpairs, xdash=0.5, psig = 0.05, psigmin = 0.2, pfa
     cu_plout(volc,"volcano", suff=suff, ftype=ftype, fname=fname, scale=fscale,
     width=fwidth, height=fheight, dpi=dpi, remove=remove)
   }
- }
+ }

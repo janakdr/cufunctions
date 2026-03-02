@@ -1,3 +1,47 @@
+#' scatterplot of yvar vs xvar
+#' @param yvar ,xvar required
+#' @param doline =T (default) to show the regression line, F to not show
+#' @param showr2eqn ="both" (default) to show R2 and eqn,"r2" for just R2, "eqn" for just eqn, "no" for neither
+#' @param minimal =F (default)/T for minimal console output and no graph
+#' @param yname ,xname,title ="xyz" to override names of yvar, xvar, title
+#' @param caption ='' (default) or set to string to show at bottom right
+#' @param shape =1 (default) (see http://www.sthda.com/english/wiki/ggplot2-point-shapes)
+#' @param dotcolor ="black" (default) for point symbol color (="red" ="blue" etc)
+#' @param dotsize =2 (default) or x to set size of point symbols
+#' @param linetype ="solid" (default)/x for solid line ("solid" "dashed" "dotted" "blank" "longdash" "dotdash" "twodash")
+#' @param linesize =1 (default)/x for line thickness
+#' @param linecolor ="red" (default)/x for line color
+#' @param theme ="bw" (default)/x for white background ("classic" (no grid lines),"linedraw" "gray" "minimal" "void")
+#' @param xscale ,yscale ="none" (default), can be "log2", "log10", "sqrt"
+#' @param fontfamily ="sans" (default), can be "serif" "mono" 
+#' @param r2x =1 (default)/x for x-coordinate as fraction of axis of R2/eqn 
+#' @param r2y =0.95 (default)/x for y-coordinate as fraction of axis of R2/eqn 
+#' @param r2size =4 (default)/x for size of R2/eqn
+#' @param r2color ="blue" (default)/x for R2/eqn color
+#' @param r2font ="plain" (default)/x for R2/eqn font ("bold","italic","bold.italic")
+#' @param xmin ,xmax,ymin,ymax =NA (default) or value to start/end x/y-axis 
+#' @param fontmain =c(14,"bold","black") default, change for title, 0 for not title 
+#' @param fontxname .fontyname,fontxticks,fontyticks = c(12,"plain","black") default, 0 to suppress
+#' @param axiscolor ,tickcolor="black" (default)/x for axis/tick color
+#' @param axisthick ,tickthick=0.5 (default)/x for axis/tick thickness
+#' @param ticklength =1 (default)/x for tick length in mm
+#' @param xticks.by ,yticks.by =NULL (default)/s for x/y tick spacing by s
+#' @param xangle ,yangle for axis value angles: 0 (default) horizontal, 90 vertical, or any value between
+#' @param orientation (default="vertical"), can be "horizontal" or "reverse"
+#' @param titlejust ="center" (default) or "left" or "right"
+#' @param ftype =NULL(default)/eps/pdf/jpg/jpeg/tiff/png/emf (for hires file or name.emf for Mac)
+#' @param fname =NULL(default) or set to prefix for "funcname.ftype"
+#' @param fscale ,fwidth,fheight =NULL(default) or set to numerical value
+#' @param dpi =300 (default) or set to desired resolution in dpi in file
+#' @param remove choose from =c("xlab","ylab","x.text","y.text","x.ticks","y.ticks","grid","x.grid","y.grid","axis","x.axis","y.axis")
+#' @return returns list with plot object, slope, intercept, pval, R^2
+#' @examples
+#' \dontrun{
+#' cuscatter(tcstudy, tcpre)
+#' cuscatter(tcstudy, tcpre, showr2eqn="r2")  # show just R-squared and p-value
+#' cuscatter(tcstudy, tcpre, c("x.ticks","y.ticks"))  # no tick marks
+#' }
+#' @export
 cuscatter = function(yvar,xvar, doline=T, showr2eqn="both", minimal=F,
                     yname=NULL, xname=NULL, title=NULL, caption="",
                     xangle=NULL, yangle=NULL, orientation="vertical",
@@ -13,48 +57,6 @@ cuscatter = function(yvar,xvar, doline=T, showr2eqn="both", minimal=F,
                     titlejust="center", legheadsize=12, legtextsize = 10,
                     ftype=NULL,fname=NULL,fscale=NULL,fwidth=NULL,
                     fheight=NULL, dpi=300, remove=NULL) {
-  #' scatterplot of yvar vs xvar
-  #' @param yvar ,xvar required
-  #' @param doline =T (default) to show the regression line, F to not show
-  #' @param showr2eqn ="both" (default) to show R2 and eqn,"r2" for just R2, "eqn" for just eqn, "no" for neither
-  #' @param minimal =F (default)/T for minimal console output and no graph
-  #' @param yname ,xname,title ="xyz" to override names of yvar, xvar, title
-  #' @param caption ='' (default) or set to string to show at bottom right
-  #' @param shape =1 (default) (see http://www.sthda.com/english/wiki/ggplot2-point-shapes)
-  #' @param dotcolor ="black" (default) for point symbol color (="red" ="blue" etc)
-  #' @param dotsize =2 (default) or x to set size of point symbols
-  #' @param linetype ="solid" (default)/x for solid line ("solid" "dashed" "dotted" "blank" "longdash" "dotdash" "twodash")
-  #' @param linesize =1 (default)/x for line thickness
-  #' @param linecolor ="red" (default)/x for line color
-  #' @param theme ="bw" (default)/x for white background ("classic" (no grid lines),"linedraw" "gray" "minimal" "void")
-  #' @param xscale ,yscale ="none" (default), can be "log2", "log10", "sqrt"
-  #' @param fontfamily ="sans" (default), can be "serif" "mono" 
-  #' @param r2x =1 (default)/x for x-coordinate as fraction of axis of R2/eqn 
-  #' @param r2y =0.95 (default)/x for y-coordinate as fraction of axis of R2/eqn 
-  #' @param r2size =4 (default)/x for size of R2/eqn
-  #' @param r2color ="blue" (default)/x for R2/eqn color
-  #' @param r2font ="plain" (default)/x for R2/eqn font ("bold","italic","bold.italic")
-  #' @param xmin ,xmax,ymin,ymax =NA (default) or value to start/end x/y-axis 
-  #' @param fontmain =c(14,"bold","black") default, change for title, 0 for not title 
-  #' @param fontxname .fontyname,fontxticks,fontyticks = c(12,"plain","black") default, 0 to suppress
-  #' @param axiscolor ,tickcolor="black" (default)/x for axis/tick color
-  #' @param axisthick ,tickthick=0.5 (default)/x for axis/tick thickness
-  #' @param ticklength =1 (default)/x for tick length in mm
-  #' @param xticks.by ,yticks.by =NULL (default)/s for x/y tick spacing by s
-  #' @param xangle ,yangle for axis value angles: 0 (default) horizontal, 90 vertical, or any value between
-  #' @param orientation (default="vertical"), can be "horizontal" or "reverse"
-  #' @param titlejust ="center" (default) or "left" or "right"
-  #' @param ftype =NULL(default)/eps/pdf/jpg/jpeg/tiff/png/emf (for hires file or name.emf for Mac)
-  #' @param fname =NULL(default) or set to prefix for "funcname.ftype"
-  #' @param fscale ,fwidth,fheight =NULL(default) or set to numerical value
-  #' @param dpi =300 (default) or set to desired resolution in dpi in file
-  #' @param remove choose from =c("xlab","ylab","x.text","y.text","x.ticks","y.ticks","grid","x.grid","y.grid","axis","x.axis","y.axis")
-  #' @return returns list with plot object, slope, intercept, pval, R^2
-  #' @examples
-  #' cuscatter(tcstudy, tcpre) 
-  #' cuscatter(tcstudy, tcpre, showr2eqn="r2") show just R-squared and p-value 
-  #' cuscatter(tcstudy, tcpre, c("x.ticks","y.ticks")) no tick marks 
-  #' @export
   transz = function(zvar,zscale) {
     if (zscale=="log10") zv = log10(zvar)
     else if (zscale=="log2") zv = log2(zvar)
@@ -154,4 +156,4 @@ cuscatter = function(yvar,xvar, doline=T, showr2eqn="both", minimal=F,
   } 
   cu_plout(p,"cuscatter", ftype=ftype, fname=fname,scale=fscale,
            width=fwidth,height=fheight, dpi=dpi, remove=remove)
-}
+}

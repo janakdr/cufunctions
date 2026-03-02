@@ -1,7 +1,11 @@
+#' Default method for cusum
+#' @param object Object to summarize.
+#' @param ... Additional arguments.
+#' @param digits Number of significant digits.
+#' @return Summary statistics.
+#' @export
 cusum.default = function (object, ..., digits = max(3L, getOption("digits") - 3L))
 {
-  #' internal for cusum
-  #' @export
   if (is.character(object)) object = as.factor(object)
   if (is.factor(object)) {
     sumfab = summary.factor(object, ...); ntot = sum(sumfab); lenb = length(sumfab)

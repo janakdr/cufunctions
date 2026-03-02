@@ -1,5 +1,6 @@
+#' internal cufunction to print 2x2 and derived quantities
+#' @keywords internal
 cu_2x2out = function(mytab,row1name,row2name) {
-  #' internal cufunction to print 2x2 and derived quantities
   if (nrow(mytab)==2) rownames(mytab) <- c(row1name,row2name)
   else rownames(mytab)[1] <- ifelse(
     rownames(mytab)[1]=="TRUE",row2name,row1name)

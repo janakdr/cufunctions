@@ -1,19 +1,21 @@
+#' Analyzes multiple outcomes by specified function name
+#' @param funcname: "1way","2way","cov1way","cov2way","scatter","repmeasl","repmeasw"
+#' @param dsgiven ,dnamf,dnaml required: dataset, char-strings of names of first&last variable being analyzed
+#' @param fnom = string as prefix for output file cuomics.csv
+#' @param ... remaining arguments for chosen function
+#' @return nothing
+#' @examples
+#' \dontrun{
+#' cuomics("1way", NEJM, "tcstudy", "hcchange", "tchc1w", Diet)
+#' cuomics("2way", NEJM, "tcstudy", "hcchange", "tchc2w", Diet, sex)
+#' cuomics("cov1way", NEJM, "tcstudy", "hcchange", "tchccov1", tcpre, Diet)
+#' cuomics("cov2way", NEJM, "tcstudy", "hcchange", "tchccov2", tcpre, Diet, sex)
+#' cuomics("scatter", NEJM, "tcstudy", "hcchange", "tchcscat", tcpre)
+#' cuomics("repmeasw", delta, "TC", "like", "tclikerep", "Diet", "sex")
+#' }
+#' @export
 cuomics = function(funcname, dsgiven, dnamf, dnaml, fnom, ...)
 {
-  #' Analyzes multiple outcomes by specified function name
-  #' @param funcname: "1way","2way","cov1way","cov2way","scatter","repmeasl","repmeasw"
-  #' @param dsgiven ,dnamf,dnaml required: dataset, char-strings of names of first&last variable being analyzed
-  #' @param fnom = string as prefix for output file cuomics.csv
-  #' @param ... remaining arguments for chosen function
-  #' @return nothing
-  #' @examples
-  #' cuomics("1way", NEJM, "tcstudy", "hcchange", "tchc1w", Diet)
-  #' cuomics("2way", NEJM, "tcstudy", "hcchange", "tchc2w", Diet, sex)
-  #' cuomics("cov1way", NEJM, "tcstudy", "hcchange", "tchccov1", tcpre, Diet)
-  #' cuomics("cov2way", NEJM, "tcstudy", "hcchange", "tchccov2", tcpre, Diet, sex)
-  #' cuomics("scatter", NEJM, "tcstudy", "hcchange", "tchcscat", tcpre)
-  #' cuomics("repmeasw", delta, "TC", "like", "tclikerep", "Diet", "sex")
-  #' @export
   funcpos = c("1way", "2way","cov1way","cov2way","scatter","repmeasl","repmeasw")
   if (!is.character(funcname)) stop ("function name must be in quotes")
   if (substr(funcname,1,2)=="cu") funcname = substr(funcname,3,10)
@@ -100,4 +102,4 @@ cuomics = function(funcname, dsgiven, dnamf, dnaml, fnom, ...)
   }
   else write.csv(repmat, file=fnom, row.names=F)
 
-}
+}

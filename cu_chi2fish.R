@@ -1,6 +1,7 @@
+#' internal cufunction to calculate chi-squared and Fisher exact p-values
+#' returns 6-list with chi-squared and Fisher p-values, RR/OR, conf.limits, SE
+#' @keywords internal
 cu_chi2fish = function(contab, prelabel, casecontrol=F) {
-  #' internal cufunction to calculate chi-squared and Fisher exact p-values
-  #' returns 6-list with chi-squared and Fisher p-values, RR/OR, conf.limits, SE
   mtt = 0
   for (i in (1:nrow(contab))) {
     rowsum = sum(contab[i,]); mtt = mtt+rowsum

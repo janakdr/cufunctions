@@ -1,3 +1,17 @@
+#' Create a violin plot
+#'
+#' @param depvar Numeric dependent variable.
+#' @param groupvar Factor grouping variable.
+#' @param letbar Optional significance letters for bars.
+#' @param ebars Error bar type: 1=SD, 2=SE, 3=CL, 4=IQR (default 4).
+#' @param dots Show individual data points (default 1).
+#' @param fill Fill color: "colors" for group colors, or a single color.
+#' @param xlab X-axis label override.
+#' @param ylab Y-axis label override.
+#' @param boxwidth Width of the inner box (default 0.1).
+#' @param dotwidth Dot bin width (default 2).
+#' @return A ggplot object.
+#' @keywords internal
 cu_violin = function(depvar,groupvar, letbar=NULL, ebars=4, dots=1, fill="colors",
                      xlab=NULL, ylab=NULL, boxwidth=0.1, dotwidth=2) {
   df = data.frame(V1 = groupvar, V2=depvar) 

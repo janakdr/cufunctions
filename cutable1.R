@@ -1,3 +1,87 @@
+#' Table 1 with optional box or violin plots
+#'
+#' @param ds variable or data frame to be summarized (required)
+#' @param group1 optional categorical factor to summarize for each level.
+#' @param group2 optional second factor to summarize for each level.
+#' @param doAll =T (default) for "All" column; F for no; "I" in quotes for All first.
+#' @param brief =F (default) to get full summary; T to get just mean&SD or median&IQR.
+#' @param pnorm =value (default 0.05) to use median&IQR when brief=T if any norm? < value.
+#' @param sdsamerow =T (default) for SD/IQR on same row when brief=T; F for separate row.
+#' @param compare =F (default) not to compare levels of groupvar; T to compare.
+#' @param minimal = FALSE (default), T or TRUE to suppress all output (for cuomics)
+#' @param docorr =F (default) to not correlate all continuous vars; T to do it.
+#' @param plot ="box" (default) for boxplots; or "bar" "violin" "rod" "no"
+#' @param ebars =NULL (default)/1/2/3/4 (1-4 for SD/SE/CL/IQR; 4 for median)
+#' @param dots =1 (default), 0 to not display data on graph
+#' @param width numeric value between 0 and 1 specifying box width
+#' @param barcolor for outline color, barfill for fill color. Use fill="grey" ="black" etc for single color.
+#' @param barfill ="lancet" (default) for colors by group ("lancet" for 2 factors, other journal options "aaas", "jco", "uchicago", "npg"
+#' @param depname /g1name/g2name/title=NULL to override names of dependent/Factor1/Factor2/title
+#' @param g1order =NULL (default) to reorder bars (1st Factor)
+#' @param g2order =NULL (default) to reorder bars (2nd Factor)
+#' @param caption =NULL (default)/"yes"/"caption text" to get caption ("yes" to list n's)
+#' @param xlab ="label" for different x-axis label than name of second argument.
+#' @param ylab ="label" for different y-axis label than name of first argument.
+#' @param chariqr ="," (default) for IQR separator
+#' @param charamp ="&" (default)/x for character to separate group1&2 levels ("-" etc)
+#' @param nlevmax =9 (default) for maximum number of levels for char-variable
+#' @param pvpairs="std" (default)/"all"/i/c(ij,ik,...) to show std or all or vs.i or pval's of i/j, i/k ...
+#' @param pvypos=NULL (default)/position of pval lines
+#' @param pvsi=0.05 (default)/increment for pvypos from one pval line to next
+#' @param pvlab="p"/"*" to display numerical or asterisks
+#' @param pvprefix="p=" (default)/"" etc prefix to p-values
+#' @param pvsize=3.5 (default)/size of p-values
+#' @param chpvref="ref" (default) char above i-th group bar when pvpairs=i
+#' @param pvspill=F/T to not allow p-values to spill outside range or to allow
+#' @param pnosig =0.2 (default)/x for threshold to show p-values even if nonsigificant
+#' @param psignif =0.05 (default)/x for threshold to significance
+#' @param p2stars =0.01 (default)/x for threshold to two stars
+#' @param p3stars =0.001 (default)/x for threshold to three stars
+#' @param p4stars =0.0001 (default)/x for threshold to four stars
+#' @param pvnshide=T (default)/F to hide NS p-values or not
+#' @param pvtipl=0.01 (default)/length of p-value line tips
+#' @param linetype ="n" (default)/x for no connecting lines ("solid" "dashed" "dotted" "blank" "longdash" "dotdash" "twodash")
+#' @param linecolor ="black" (default)/x for black lines ("red" etc)
+#' @param linesize =1 (default)/x for line thickness
+#' @param theme ="bw" (default)/x for white background (or "gray" or "classic" (no grid lines))
+#' @param legend (default="top"), can be "bottom", "right", "left"
+#' @param size numeric value (e.g. size=1), to change size of points and outlines
+#' @param yscale (default="none"), can be "log2", "log10", "sqrt"
+#' @param xangle /yangle for axis value angles: 0 (default) horizontal, 90 vertical, or any value between
+#' @param orientation (default="vertical"), can be "horizontal" or "reverse"
+#' @param dotsize =NULL (default 1) set to fraction of binwidth for dot size
+#' @param dotshape =NULL (default)
+#' @param dotcolor =NULL (default "white") set to dot color
+#' @param posd =NULL (default) set to values around 0.9 to fine-tune group2 bar spacing
+#' @param binwfac =NULL (default) set to values around 30 to fine-tune horiz.space for dots
+#' @param fontfamily ="sans" (default), can be "serif" "mono" 
+#' @param ymin, ymax =NA (default) or value to start/end y-axis 
+#' @param fontmain =c(14,"bold","black") default, change for title, 0 for not title 
+#' @param fontxname .fontyname,fontxticks,fontyticks = c(12,"plain","black") default, 0 to suppress
+#' @param axiscolor ,tickcolor="black" (default)/x for axis/tick color
+#' @param axisthick ,tickthick=0.5 (default)/x for axis/tick thickness
+#' @param ticklength =1 (default)/x for tick length in mm
+#' @param xticks.by ,yticks.by =NULL (default)/s for x/y tick spacing by s
+#' @param titlejust ="center" (default) or "left" or "right"
+#' @param legheadsize =12 (default) for the font size of legend heading
+#' @param legtextsize =10 (default) for the font size of legend text
+#' @param ftype =NULL(default)/eps/pdf/jpg/jpeg/tiff/png/emf (for hires file or name.emf for Mac)
+#' @param fname =NULL(default) or set to prefix for "funcname.ftype"
+#' @param fscale ,fwidth,fheight =NULL(default) or set to numerical value
+#' @param dpi =300 (default) or set to desired resolution in dpi in file
+#' @param remove choose from =c("xlab","ylab","x.text","y.text","x.ticks","y.ticks","grid","x.grid","y.grid","axis","x.axis","y.axis")
+#' @return returns summary dataframe (if one variable, like table0)
+#' @examples
+#' \dontrun{
+#' cutable1(tgpre,Diet)
+#' cutable1(NEJM,plot="violin")  # single table all variables, violin plots
+#' cutable1(NEJM,Diet,plot="no")  # separate tables all variables, no plots
+#' cutable1(NEJM,Diet,brief=T)  # single table for all variables by Diet columns
+#' cutable1(NEJM,Diet,brief=T,sdsamerow=F)  # to put SD/IQR on separate line
+#' cutable1(NEJM,Diet,brief=T,pnorm=0)  # to get only mean&SD
+#' cutable1(NEJM,Diet,brief=T,pnorm=1)  # to get only median&IQR
+#' }
+#' @export
 cutable1 = function(ds, group1=NULL, group2=NULL, doAll=T, brief=F, 
               pnorm=.05, sdsamerow=T, compare=F, minimal=F, docorr=F,
               plot="box", ebars=NULL, dots=1, width=NULL, barcolor="black", barfill="colors",
@@ -21,88 +105,6 @@ cutable1 = function(ds, group1=NULL, group2=NULL, doAll=T, brief=F,
               ftype=NULL,fname=NULL,fscale=NULL,fwidth=NULL,
               fheight=NULL, dpi=300, remove=NULL) 
 {
-  #' Table 1 with optional box or violin plots
-  #'
-  #' @param ds variable or data frame to be summarized (required)
-  #' @param group1 optional categorical factor to summarize for each level.
-  #' @param group2 optional second factor to summarize for each level.
-  #' @param doAll =T (default) for "All" column; F for no; "I" in quotes for All first.
-  #' @param brief =F (default) to get full summary; T to get just mean&SD or median&IQR.
-  #' @param pnorm =value (default 0.05) to use median&IQR when brief=T if any norm? < value.
-  #' @param sdsamerow =T (default) for SD/IQR on same row when brief=T; F for separate row.
-  #' @param compare =F (default) not to compare levels of groupvar; T to compare.
-  #' @param minimal = FALSE (default), T or TRUE to suppress all output (for cuomics)
-  #' @param docorr =F (default) to not correlate all continuous vars; T to do it.
-  #' @param plot ="box" (default) for boxplots; or "bar" "violin" "rod" "no"
-  #' @param ebars =NULL (default)/1/2/3/4 (1-4 for SD/SE/CL/IQR; 4 for median)
-  #' @param dots =1 (default), 0 to not display data on graph
-  #' @param width numeric value between 0 and 1 specifying box width
-  #' @param barcolor for outline color, barfill for fill color. Use fill="grey" ="black" etc for single color.
-  #' @param barfill ="lancet" (default) for colors by group ("lancet" for 2 factors, other journal options "aaas", "jco", "uchicago", "npg"
-  #' @param depname /g1name/g2name/title=NULL to override names of dependent/Factor1/Factor2/title
-  #' @param g1order =NULL (default) to reorder bars (1st Factor)
-  #' @param g2order =NULL (default) to reorder bars (2nd Factor)
-  #' @param caption =NULL (default)/"yes"/"caption text" to get caption ("yes" to list n's)
-  #' @param xlab ="label" for different x-axis label than name of second argument.
-  #' @param ylab ="label" for different y-axis label than name of first argument.
-  #' @param chariqr ="," (default) for IQR separator
-  #' @param charamp ="&" (default)/x for character to separate group1&2 levels ("-" etc)
-  #' @param nlevmax =9 (default) for maximum number of levels for char-variable
-  #' @param pvpairs="std" (default)/"all"/i/c(ij,ik,...) to show std or all or vs.i or pval's of i/j, i/k ...
-  #' @param pvypos=NULL (default)/position of pval lines
-  #' @param pvsi=0.05 (default)/increment for pvypos from one pval line to next
-  #' @param pvlab="p"/"*" to display numerical or asterisks
-  #' @param pvprefix="p=" (default)/"" etc prefix to p-values
-  #' @param pvsize=3.5 (default)/size of p-values
-  #' @param chpvref="ref" (default) char above i-th group bar when pvpairs=i
-  #' @param pvspill=F/T to not allow p-values to spill outside range or to allow
-  #' @param pnosig =0.2 (default)/x for threshold to show p-values even if nonsigificant
-  #' @param psignif =0.05 (default)/x for threshold to significance
-  #' @param p2stars =0.01 (default)/x for threshold to two stars
-  #' @param p3stars =0.001 (default)/x for threshold to three stars
-  #' @param p4stars =0.0001 (default)/x for threshold to four stars
-  #' @param pvnshide=T (default)/F to hide NS p-values or not
-  #' @param pvtipl=0.01 (default)/length of p-value line tips
-  #' @param linetype ="n" (default)/x for no connecting lines ("solid" "dashed" "dotted" "blank" "longdash" "dotdash" "twodash")
-  #' @param linecolor ="black" (default)/x for black lines ("red" etc)
-  #' @param linesize =1 (default)/x for line thickness
-  #' @param theme ="bw" (default)/x for white background (or "gray" or "classic" (no grid lines))
-  #' @param legend (default="top"), can be "bottom", "right", "left"
-  #' @param size numeric value (e.g. size=1), to change size of points and outlines
-  #' @param yscale (default="none"), can be "log2", "log10", "sqrt"
-  #' @param xangle /yangle for axis value angles: 0 (default) horizontal, 90 vertical, or any value between
-  #' @param orientation (default="vertical"), can be "horizontal" or "reverse"
-  #' @param dotsize =NULL (default 1) set to fraction of binwidth for dot size
-  #' @param dotshape =NULL (default)
-  #' @param dotcolor =NULL (default "white") set to dot color
-  #' @param posd =NULL (default) set to values around 0.9 to fine-tune group2 bar spacing
-  #' @param binwfac =NULL (default) set to values around 30 to fine-tune horiz.space for dots
-  #' @param fontfamily ="sans" (default), can be "serif" "mono" 
-  #' @param ymin, ymax =NA (default) or value to start/end y-axis 
-  #' @param fontmain =c(14,"bold","black") default, change for title, 0 for not title 
-  #' @param fontxname .fontyname,fontxticks,fontyticks = c(12,"plain","black") default, 0 to suppress
-  #' @param axiscolor ,tickcolor="black" (default)/x for axis/tick color
-  #' @param axisthick ,tickthick=0.5 (default)/x for axis/tick thickness
-  #' @param ticklength =1 (default)/x for tick length in mm
-  #' @param xticks.by ,yticks.by =NULL (default)/s for x/y tick spacing by s
-  #' @param titlejust ="center" (default) or "left" or "right"
-  #' @param legheadsize =12 (default) for the font size of legend heading
-  #' @param legtextsize =10 (default) for the font size of legend text
-  #' @param ftype =NULL(default)/eps/pdf/jpg/jpeg/tiff/png/emf (for hires file or name.emf for Mac)
-  #' @param fname =NULL(default) or set to prefix for "funcname.ftype"
-  #' @param fscale ,fwidth,fheight =NULL(default) or set to numerical value
-  #' @param dpi =300 (default) or set to desired resolution in dpi in file
-  #' @param remove choose from =c("xlab","ylab","x.text","y.text","x.ticks","y.ticks","grid","x.grid","y.grid","axis","x.axis","y.axis")
-  #' @return returns summary dataframe (if one variable, like table0)
-  #' @examples
-  #' cutable1(tgpre,Diet)
-  #' cutable1(NEJM,plot="violin") single table all variables, violin plots
-  #' cutable1(NEJM,Diet,plot="no") separate tables all variables, no plots
-  #' cutable1(NEJM,Diet,brief=T) single table for all variables by Diet columns
-  #' cutable1(NEJM,Diet,brief=T,sdsamerow=F) to put SD/IQR on separate line
-  #' cutable1(NEJM,Diet,brief=T,pnorm=0) to get only mean&SD
-  #' cutable1(NEJM,Diet,brief=T,pnorm=1) to get only median&IQR
-  #' @export
   getcolnam = function() {
     if (is.null(groupvar)) return(c("All"))
     else return(c(levels(groupvar),chall,compnamv))
