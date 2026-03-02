@@ -1,0 +1,36 @@
+Package: cufunctions
+Title: Clinical Utility Functions for Statistical Analysis and Visualization
+Version: 0.1.0
+Authors@R: c(
+    person("Steve", "Holleran", email = "info@biomath.net", role = c("aut", "cre")),
+    person("Janak", "Ramakrishnan", role = "aut"))
+Description: A collection of functions for common biostatistical analyses
+    including ANOVA (one-way, two-way), ANCOVA, repeated measures, logistic
+    regression, Cox proportional hazards, Kaplan-Meier curves, ROC analysis,
+    scatter plots, and summary tables. Provides publication-ready plots via
+    ggplot2 and comprehensive console output with post-hoc tests, significance
+    letters, and model selection via dredge.
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.3
+Depends:
+    R (>= 3.5.0)
+Imports:
+    ggplot2,
+    survival,
+    MASS,
+    nlme,
+    Hmisc,
+    e1071,
+    gmodels,
+    ROCR,
+    dunn.test,
+    MuMIn,
+    MatchIt,
+    survminer
+Suggests:
+    devEMF,
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
