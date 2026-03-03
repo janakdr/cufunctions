@@ -2,7 +2,7 @@ Package: cufunctions
 Title: Facilitate Stats with One-line Invokes Instead of Many R Commands
 Version: 22.07.24.0418
 Authors@R: c(
-    person("Steve", "Holleran", email = "sfh2@columbia.edu"),
+    person("Steve", "Holleran", email = "sfh2@columbia.edu", role = "aut"),
     person("Rajasekhar", "Ramakrishnan", role = c("aut", "cre")))
 Description: Look at help for each function for functionality:
      cu1way, cu2way, cucov1way, cucov2way, cucox, cukm, culinreg, culogist, cuomics,
@@ -27,7 +27,9 @@ Imports:
     dunn.test,
     MuMIn,
     MatchIt,
-    survminer
+    survminer,
+    car,
+    ggpubr
 Suggests:
     devEMF,
     testthat (>= 3.0.0)
