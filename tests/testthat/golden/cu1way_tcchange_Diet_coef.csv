@@ -1,0 +1,4 @@
+term,Estimate,Std. Error,t value,Pr(>|t|)
+(Intercept),-1.908,3.577,-0.534,0.5972
+DietMono,-17.925,5.058,-3.544,0.0012
+DietStep1,-12.258,5.058,-2.423,0.0210
