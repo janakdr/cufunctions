@@ -53,6 +53,8 @@ parse_fixed_width_table <- function(header_line, data_lines, id_col = "stat",
     col_ends <- integer(length(col_names))
     for (k in seq_along(col_names)) {
       pos <- regexpr(col_names[k], header_line, fixed = TRUE)
+      if (pos[1] == -1)
+        stop("Column header '", col_names[k], "' not found in: ", header_line)
       col_ends[k] <- pos[1] + attr(pos, "match.length") - 1
     }
   }
@@ -70,6 +72,8 @@ parse_fixed_width_table <- function(header_line, data_lines, id_col = "stat",
       if (label_idx > length(row_labels)) break
       label <- row_labels[label_idx]
       label_pos <- regexpr(label, line, fixed = TRUE)
+      if (label_pos[1] == -1)
+        stop("Row label '", label, "' not found in line: ", line)
       label_end <- label_pos + attr(label_pos, "match.length") - 1
     } else {
       label <- strsplit(trimws(line), "\\s+")[[1]][1]

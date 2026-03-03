@@ -46,7 +46,7 @@ test_that("cu1way(tcchange, Diet) post-hoc comparisons match golden", {
 # --- cu1way(tcchange, Diet) — plot variants produce identical stats ---
 
 test_that("cu1way(tcchange, Diet, plot='box') produces same stats", {
-  out <- capture.output(cu1way(tcchange, Diet, plot = "no"))
+  out <- capture.output(cu1way(tcchange, Diet, plot = "box"))
   actual <- parse_anova_table(out)
   golden <- load_golden("cu1way_tcchange_Diet_anova")
   expect_table_match(actual, golden, id_col = "source",
@@ -54,7 +54,7 @@ test_that("cu1way(tcchange, Diet, plot='box') produces same stats", {
 })
 
 test_that("cu1way(tcchange, Diet, plot='violin', dots=1) produces same stats", {
-  out <- capture.output(cu1way(tcchange, Diet, plot = "no"))
+  out <- capture.output(cu1way(tcchange, Diet, plot = "violin", dots = 1))
   expect_posthoc_match(out, "cu1way_tcchange_Diet_posthoc")
 })
 
