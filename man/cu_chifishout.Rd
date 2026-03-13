@@ -4,16 +4,8 @@
 \alias{cu_chifishout}
 \title{internal cufunction to display chi-squared and Fisher exact tables}
 \usage{
-cu_chifishout(
-  casecont,
-  rrortab,
-  chitab,
-  fishtab,
-  nlev,
-  namegroup,
-  groupvar,
-  maxfor2
-)
+cu_chifishout(casecont, rrortab, chitab, fishtab, nlev, namegroup, groupvar,
+  maxfor2)
 }
 \description{
 internal cufunction to display chi-squared and Fisher exact tables

@@ -4,16 +4,8 @@
 \alias{cu_table0}
 \title{internal cufunction to calculate summary stats for variables}
 \usage{
-cu_table0(
-  depvar,
-  group1 = NULL,
-  brief = FALSE,
-  sdsamerow = FALSE,
-  doAll = FALSE,
-  pnorm = 0.05,
-  chariqr = ":",
-  nlevmax = 9
-)
+cu_table0(depvar, group1 = NULL, brief = FALSE, sdsamerow = FALSE,
+  doAll = FALSE, pnorm = 0.05, chariqr = ":", nlevmax = 9)
 }
 \description{
 internal cufunction to calculate summary stats for variables

@@ -4,7 +4,8 @@
 \alias{cusum.default}
 \title{Default method for cusum}
 \usage{
-\method{cusum}{default}(object, ..., digits = max(3L, getOption("digits") - 3L))
+\method{cusum}{default}(object, ..., digits = max(3L, getOption("digits") -
+  3L))
 }
 \arguments{
 \item{object}{Object to summarize.}

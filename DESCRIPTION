@@ -10,17 +10,19 @@ Description: Look at help for each function for functionality:
 Depends:
     R (>= 3.5.0)
 Imports:
-    ggplot2,
-    survival,
-    MASS,
-    nlme,
     Hmisc,
     e1071,
     ROCR,
     dunn.test,
+    ggplot2,
     MuMIn,
+    survminer,
+    dplyr,
+    nlme,
+    survival,
+    MASS,
     MatchIt,
-    survminer
+    ggpubr
 Suggests:
     devEMF,
     testthat (>= 3.0.0)

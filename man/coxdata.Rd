@@ -7,12 +7,12 @@
 \format{
 A data frame with 194 rows and 6 variables:
 \describe{
-\item{TimeToEvent}{Numeric: time to event}
-\item{Outcome}{Numeric: event indicator (1=event, 0=censored)}
-\item{C.Index}{Numeric: C-index grouping variable}
-\item{BNP}{Numeric: brain natriuretic peptide}
-\item{LVEF}{Numeric: left ventricular ejection fraction}
-\item{gender}{Factor: subject gender (F/M)}
+  \item{TimeToEvent}{Numeric: time to event}
+  \item{Outcome}{Numeric: event indicator (1=event, 0=censored)}
+  \item{C.Index}{Numeric: C-index grouping variable}
+  \item{BNP}{Numeric: brain natriuretic peptide}
+  \item{LVEF}{Numeric: left ventricular ejection fraction}
+  \item{gender}{Factor: subject gender (F/M)}
 }
 }
 \usage{

@@ -7,19 +7,19 @@
 \format{
 A data frame with 36 rows and 13 variables:
 \describe{
-\item{sex}{Factor: subject sex (F/M)}
-\item{tcpre}{Numeric: baseline total cholesterol}
-\item{tgpre}{Numeric: baseline triglycerides}
-\item{hcpre}{Numeric: baseline HDL cholesterol}
-\item{Diet}{Factor: diet group (AAD, Mono, Step1)}
-\item{tcstudy}{Numeric: study total cholesterol}
-\item{tgstudy}{Numeric: study triglycerides}
-\item{hcstudy}{Numeric: study HDL cholesterol}
-\item{tcchange}{Numeric: change in total cholesterol}
-\item{tgchange}{Numeric: change in triglycerides}
-\item{hcchange}{Numeric: change in HDL cholesterol}
-\item{badtcp}{Numeric: intentionally bad baseline TC values}
-\item{diffvar}{Numeric: variable for testing}
+  \item{sex}{Factor: subject sex (F/M)}
+  \item{tcpre}{Numeric: baseline total cholesterol}
+  \item{tgpre}{Numeric: baseline triglycerides}
+  \item{hcpre}{Numeric: baseline HDL cholesterol}
+  \item{Diet}{Factor: diet group (AAD, Mono, Step1)}
+  \item{tcstudy}{Numeric: study total cholesterol}
+  \item{tgstudy}{Numeric: study triglycerides}
+  \item{hcstudy}{Numeric: study HDL cholesterol}
+  \item{tcchange}{Numeric: change in total cholesterol}
+  \item{tgchange}{Numeric: change in triglycerides}
+  \item{hcchange}{Numeric: change in HDL cholesterol}
+  \item{badtcp}{Numeric: intentionally bad baseline TC values}
+  \item{diffvar}{Numeric: variable for testing}
 }
 }
 \usage{

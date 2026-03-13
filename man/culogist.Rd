@@ -5,32 +5,13 @@
 \title{Logistic regression, all possible models, summarize best (or specified) model,
 do ROC curve(s), AUC, and summary table with best accuracy}
 \usage{
-culogist(
-  dsgiven,
-  depnam,
-  formula,
-  xs = NULL,
-  ordinal = NULL,
-  logitlog = "logit",
-  start = NULL,
-  wtnam = NULL,
-  dosimpler = T,
-  nlevmax = 5,
-  printfit = F,
-  ndecfit = 1,
-  dodredge = T,
-  usemod = 1,
-  nmodshow = 16,
-  m.min = 1,
-  m.max = 99,
-  fixed = NULL,
-  subset = as.expression(1),
-  emf = F,
-  xlab = "1 - Specificity",
-  ylab = "Sensitivity",
-  color = "red",
-  veccolor = c("red", "blue", "green", "black")
-)
+culogist(dsgiven, depnam, formula, xs = NULL, ordinal = NULL,
+  logitlog = "logit", start = NULL, wtnam = NULL, dosimpler = T,
+  nlevmax = 5, printfit = F, ndecfit = 1, dodredge = T, usemod = 1,
+  nmodshow = 16, m.min = 1, m.max = 99, fixed = NULL,
+  subset = as.expression(1), emf = F, xlab = "1 - Specificity",
+  ylab = "Sensitivity", color = "red", veccolor = c("red", "blue",
+  "green", "black"))
 }
 \arguments{
 \item{dsgiven}{, depnam, formula required: dataset, char-strings of name of variable being analyzed, and model formula}

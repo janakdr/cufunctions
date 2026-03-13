@@ -4,21 +4,11 @@
 \alias{curoc}
 \title{For logistic-regression, does ROC curve(s), AUC, and summary table with best accuracy}
 \usage{
-curoc(
-  LRobj,
-  depvar,
-  twolev = TRUE,
-  xs = NULL,
-  namedep = NULL,
-  logitlog = "logit",
-  printfit = F,
-  emf = F,
-  xlabroc = "1 - Specificity",
-  ylabroc = "Sensitivity",
-  label.ordering = NULL,
-  color = "red",
-  veccolor = c("red", "blue", "green", "black")
-)
+curoc(LRobj, depvar, twolev = TRUE, xs = NULL, namedep = NULL,
+  logitlog = "logit", printfit = F, emf = F,
+  xlabroc = "1 - Specificity", ylabroc = "Sensitivity",
+  label.ordering = NULL, color = "red", veccolor = c("red", "blue",
+  "green", "black"))
 }
 \arguments{
 \item{LRobj}{logistic-regression object (glm or polr) (required)}

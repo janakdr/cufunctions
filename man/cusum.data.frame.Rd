@@ -4,7 +4,8 @@
 \alias{cusum.data.frame}
 \title{Data frame method for cusum}
 \usage{
-\method{cusum}{data.frame}(object, maxsum = 7L, digits = max(3L, getOption("digits") - 3L), ...)
+\method{cusum}{data.frame}(object, maxsum = 7L, digits = max(3L,
+  getOption("digits") - 3L), ...)
 }
 \arguments{
 \item{object}{Data frame to summarize.}

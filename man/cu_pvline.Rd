@@ -4,27 +4,9 @@
 \alias{cu_pvline}
 \title{internal cufunction to prepare for p-value horizontals}
 \usage{
-cu_pvline(
-  df,
-  pvpairs,
-  pvalues,
-  nlev1,
-  nlev2,
-  pvlab,
-  pnosig,
-  psignif,
-  p2stars,
-  p3stars,
-  p4stars,
-  letbar,
-  pvypos,
-  pvnshide,
-  pvspill,
-  chpvref,
-  ebars,
-  dots,
-  yscale
-)
+cu_pvline(df, pvpairs, pvalues, nlev1, nlev2, pvlab, pnosig, psignif, p2stars,
+  p3stars, p4stars, letbar, pvypos, pvnshide, pvspill, chpvref, ebars, dots,
+  yscale)
 }
 \description{
 internal cufunction to prepare for p-value horizontals

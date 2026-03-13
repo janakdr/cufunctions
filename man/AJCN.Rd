@@ -7,20 +7,20 @@
 \format{
 A data frame with 85 rows and 14 variables:
 \describe{
-\item{Sex}{Factor: subject sex (F/M)}
-\item{TC}{Numeric: total cholesterol}
-\item{TG}{Numeric: triglycerides}
-\item{HDL}{Numeric: HDL cholesterol}
-\item{LDL}{Numeric: LDL cholesterol}
-\item{LN_TG}{Numeric: log triglycerides}
-\item{BMI}{Numeric: body mass index}
-\item{GLUC}{Numeric: glucose}
-\item{INS}{Numeric: insulin}
-\item{Lpa}{Numeric: lipoprotein(a)}
-\item{FIBR}{Numeric: fibrinogen}
-\item{WTCAT}{Factor: weight category (lean, overwt, obese)}
-\item{feel}{Factor: how subject feels (bad, ok, good)}
-\item{MetSyn}{Factor: metabolic syndrome (Yes/No)}
+  \item{Sex}{Factor: subject sex (F/M)}
+  \item{TC}{Numeric: total cholesterol}
+  \item{TG}{Numeric: triglycerides}
+  \item{HDL}{Numeric: HDL cholesterol}
+  \item{LDL}{Numeric: LDL cholesterol}
+  \item{LN_TG}{Numeric: log triglycerides}
+  \item{BMI}{Numeric: body mass index}
+  \item{GLUC}{Numeric: glucose}
+  \item{INS}{Numeric: insulin}
+  \item{Lpa}{Numeric: lipoprotein(a)}
+  \item{FIBR}{Numeric: fibrinogen}
+  \item{WTCAT}{Factor: weight category (lean, overwt, obese)}
+  \item{feel}{Factor: how subject feels (bad, ok, good)}
+  \item{MetSyn}{Factor: metabolic syndrome (Yes/No)}
 }
 }
 \usage{

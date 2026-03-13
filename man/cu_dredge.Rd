@@ -4,15 +4,8 @@
 \alias{cu_dredge}
 \title{internal cufunction to do dredge work, called by culogist, cucox, culinreg}
 \usage{
-cu_dredge(
-  regobj,
-  forlag,
-  nmodshow = 16,
-  m.min = 1,
-  m.max = 99,
-  fixed = NULL,
-  subset = as.expression(1)
-)
+cu_dredge(regobj, forlag, nmodshow = 16, m.min = 1, m.max = 99,
+  fixed = NULL, subset = as.expression(1))
 }
 \description{
 internal cufunction to do dredge work, called by culogist, cucox, culinreg

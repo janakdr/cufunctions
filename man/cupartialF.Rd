@@ -16,7 +16,7 @@ cupartialF(rse1, ndf1, rse2, ndf2)
 \item{ndf2}{degrees of freedom of full (bigger) model (required)}
 }
 \value{
-returns p-value of partial F(np,ndf2) = ((rse1^2\emph{ndf1-rse2^2}ndf2)/np)/rse2^2
+returns p-value of partial F(np,ndf2) = ((rse1^2*ndf1-rse2^2*ndf2)/np)/rse2^2
 }
 \description{
 partial F test to test if model augmentation is significant

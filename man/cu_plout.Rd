@@ -4,21 +4,9 @@
 \alias{cu_plout}
 \title{internal function to display plot object, write hires .ftype or .emf file}
 \usage{
-cu_plout(
-  plotobj,
-  funcname,
-  ftype = NULL,
-  fname = NULL,
-  suff = NULL,
-  seq = 0,
-  scale = NULL,
-  width = NULL,
-  height = NULL,
-  units = "in",
-  dpi = 300,
-  avplots = F,
-  remove = NULL
-)
+cu_plout(plotobj, funcname, ftype = NULL, fname = NULL, suff = NULL,
+  seq = 0, scale = NULL, width = NULL, height = NULL, units = "in",
+  dpi = 300, avplots = F, remove = NULL)
 }
 \description{
 internal function to display plot object, write hires .ftype or .emf file

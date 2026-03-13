@@ -7,11 +7,11 @@
 \format{
 A data frame with 88 rows and 5 variables:
 \describe{
-\item{time}{Numeric: follow-up time}
-\item{status}{Numeric: event status (1=death, 0=censored)}
-\item{Treatment}{Factor: treatment group (Control/Prednisolone)}
-\item{dead}{Factor: death indicator (yes/0)}
-\item{Treat3}{Factor: 3-level treatment (Control/Drugtwo/Prednisolone)}
+  \item{time}{Numeric: follow-up time}
+  \item{status}{Numeric: event status (1=death, 0=censored)}
+  \item{Treatment}{Factor: treatment group (Control/Prednisolone)}
+  \item{dead}{Factor: death indicator (yes/0)}
+  \item{Treat3}{Factor: 3-level treatment (Control/Drugtwo/Prednisolone)}
 }
 }
 \usage{

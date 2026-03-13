@@ -7,12 +7,12 @@
 \format{
 A data frame with 103 rows and 14 variables:
 \describe{
-\item{sex}{Factor: subject sex (F/M)}
-\item{age}{Factor: age group (old/young)}
-\item{TC.AAD, TC.Step1, TC.LowSat}{Numeric: total cholesterol by diet}
-\item{HC.AAD, HC.Step1, HC.LowSat}{Numeric: HDL cholesterol by diet}
-\item{TG.AAD, TG.Step1, TG.LowSat}{Numeric: triglycerides by diet}
-\item{like.AAD, like.Step1, like.LowSat}{Factor: diet preference}
+  \item{sex}{Factor: subject sex (F/M)}
+  \item{age}{Factor: age group (old/young)}
+  \item{TC.AAD, TC.Step1, TC.LowSat}{Numeric: total cholesterol by diet}
+  \item{HC.AAD, HC.Step1, HC.LowSat}{Numeric: HDL cholesterol by diet}
+  \item{TG.AAD, TG.Step1, TG.LowSat}{Numeric: triglycerides by diet}
+  \item{like.AAD, like.Step1, like.LowSat}{Factor: diet preference}
 }
 }
 \usage{

@@ -5,29 +5,11 @@
 \title{Multiple linear regression, all possible models, summarize best (or specified) model,
 do added variable plots}
 \usage{
-culinreg(
-  dsgiven,
-  depnam,
-  formula,
-  weights = NULL,
-  printfit = F,
-  ndecfit = 2,
-  dodredge = T,
-  usemod = 1,
-  nmodshow = 16,
-  m.min = 1,
-  m.max = 99,
-  fixed = NULL,
-  subset = as.expression(1),
-  fitasx = T,
-  ftype = NULL,
-  fname = NULL,
-  fscale = NULL,
-  fwidth = NULL,
-  fheight = NULL,
-  dpi = 300,
-  remove = NULL
-)
+culinreg(dsgiven, depnam, formula, weights = NULL, printfit = F,
+  ndecfit = 2, dodredge = T, usemod = 1, nmodshow = 16, m.min = 1,
+  m.max = 99, fixed = NULL, subset = as.expression(1), fitasx = T,
+  ftype = NULL, fname = NULL, fscale = NULL, fwidth = NULL,
+  fheight = NULL, dpi = 300, remove = NULL)
 }
 \arguments{
 \item{dsgiven}{, depnam, formula required: dataset, char-string of name of variable being analyzed,}

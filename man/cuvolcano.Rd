@@ -4,26 +4,11 @@
 \alias{cuvolcano}
 \title{Volcano plot}
 \usage{
-cuvolcano(
-  dsomics,
-  gpairs,
-  xdash = 0.5,
-  psig = 0.05,
-  psigmin = 0.2,
-  pfactor = 1,
-  foldmin = NULL,
-  foldmax = NULL,
-  ylim = 5,
-  titlend = "Volcano Plot",
-  ftype = NULL,
-  fname = NULL,
-  fscale = NULL,
-  fwidth = NULL,
-  fheight = NULL,
-  dpi = 300,
-  remove = NULL,
-  suff = NULL
-)
+cuvolcano(dsomics, gpairs, xdash = 0.5, psig = 0.05, psigmin = 0.2,
+  pfactor = 1, foldmin = NULL, foldmax = NULL, ylim = 5,
+  titlend = "Volcano Plot", ftype = NULL, fname = NULL, fscale = NULL,
+  fwidth = NULL, fheight = NULL, dpi = 300, remove = NULL,
+  suff = NULL)
 }
 \arguments{
 \item{dsomics}{data frame from cuomics}

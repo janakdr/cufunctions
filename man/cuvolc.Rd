@@ -4,17 +4,8 @@
 \alias{cuvolc}
 \title{Volcano plot}
 \usage{
-cuvolc(
-  ds,
-  xdash = 0.5,
-  psig = 0.05,
-  psigmin = 0.2,
-  pfactor = 1,
-  foldmin = NULL,
-  foldmax = NULL,
-  ylim = 5,
-  title = "Volcano Plot"
-)
+cuvolc(ds, xdash = 0.5, psig = 0.05, psigmin = 0.2, pfactor = 1,
+  foldmin = NULL, foldmax = NULL, ylim = 5, title = "Volcano Plot")
 }
 \arguments{
 \item{ds}{data frame with column "varnam" column "fold" and column "pval"}

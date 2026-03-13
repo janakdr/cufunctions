@@ -5,57 +5,26 @@
 \title{Cox modeling, all possible models, summarize best (or specified) model,
 LR tests, ROCs, K-M of Cox score strata, predicted K-M for each factor}
 \usage{
-cucox(
-  dsgiven,
-  timnam,
-  depnam,
-  formula,
-  dopredkm = T,
-  doroc = T,
-  docoxkm = T,
-  wtnam = NULL,
-  printfit = F,
-  dodredge = T,
-  usemod = 1,
-  nmodshow = 16,
-  m.min = 1,
-  m.max = 99,
-  fixed = NULL,
-  subset = as.expression(1),
-  tmax = 0,
-  xlabpredkm = "Time",
-  ylabpredkm = "Survival",
-  titlepredkm = "Predicted Kaplan-Meier",
-  palette = "hue",
-  fun = "pct",
-  color = "red",
-  xlabroc = "1 - Specificity",
-  ylabroc = "Sensitivity",
-  allkmpairs = F,
-  xlabkm = NULL,
-  ylabkm = NULL,
-  titlekm = NULL,
-  nverkm = 2,
-  nhorkm = 2,
-  nverroc = 2,
-  nhorroc = 2,
-  ftype = NULL,
-  fname = NULL,
-  fscale = NULL,
-  fwidth = NULL,
-  fheight = NULL,
-  dpi = 300,
-  remove = NULL
-)
+cucox(dsgiven, timnam, depnam, formula, dopredkm = T, doroc = T,
+  docoxkm = T, wtnam = NULL, printfit = F, dodredge = T, usemod = 1,
+  nmodshow = 16, m.min = 1, m.max = 99, fixed = NULL,
+  subset = as.expression(1), tmax = 0, xlabpredkm = "Time",
+  ylabpredkm = "Survival", titlepredkm = "Predicted Kaplan-Meier",
+  palette = "hue", fun = "pct", color = "red",
+  xlabroc = "1 - Specificity", ylabroc = "Sensitivity", allkmpairs = F,
+  xlabkm = NULL, ylabkm = NULL, titlekm = NULL, nverkm = 2,
+  nhorkm = 2, nverroc = 2, nhorroc = 2, ftype = NULL, fname = NULL,
+  fscale = NULL, fwidth = NULL, fheight = NULL, dpi = 300,
+  remove = NULL)
 }
 \arguments{
 \item{dsgiven}{, timnam, depnam, formula  required: dataset, char-strings of names of time-var and variable being analyzed, and model formula}
 
 \item{dopredkm}{=T (default) to get (T) or not get (F) predicted Kaplan-Meier curves}
 
-\item{doroc}{=T (default, at 50,75,100\\% events) for ROC curves \link{c(,,) list to specify times}}
+\item{doroc}{=T (default, at 50,75,100\% events) for ROC curves [c(,,) list to specify times]}
 
-\item{docoxkm}{=T (default, quartiles) for K-M vs Cox risk score \link{c(,,) list to specify cut-pts}}
+\item{docoxkm}{=T (default, quartiles) for K-M vs Cox risk score [c(,,) list to specify cut-pts]}
 
 \item{wtnam}{=NULL (default) char-string pointing to variable with weights}
 

@@ -4,33 +4,12 @@
 \alias{cukm}
 \title{Kaplan-Meier curves with p-value, # at risk}
 \usage{
-cukm(
-  timevar,
-  statvar,
-  ttmtvar,
-  kmtype = "survival",
-  pvalue = T,
-  allkmpairs = T,
-  tmax = 0,
-  xlab = "Time",
-  ylab = NULL,
-  title = NULL,
-  rho = 0,
-  legend = "top",
-  legend.labs = NULL,
-  risk.table.y.text = F,
-  scale = "default",
-  linetype = 1,
-  censor = TRUE,
-  censor.shape = "+",
-  ftype = NULL,
-  fname = NULL,
-  fscale = NULL,
-  fwidth = NULL,
-  fheight = NULL,
-  dpi = 300,
-  remove = NULL
-)
+cukm(timevar, statvar, ttmtvar, kmtype = "survival", pvalue = T,
+  allkmpairs = T, tmax = 0, xlab = "Time", ylab = NULL, title = NULL,
+  rho = 0, legend = "top", legend.labs = NULL, risk.table.y.text = F,
+  scale = "default", linetype = 1, censor = TRUE, censor.shape = "+",
+  ftype = NULL, fname = NULL, fscale = NULL, fwidth = NULL,
+  fheight = NULL, dpi = 300, remove = NULL)
 }
 \arguments{
 \item{timevar}{, statvar, ttmtvar (3 required)}

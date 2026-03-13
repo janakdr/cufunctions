@@ -42,8 +42,8 @@ cusum.default = function (object, ..., digits = max(3L, getOption("digits") - 3L
       cv = ifelse(av!=0 && qtl[2]*qtl[4]>0, 100*stdev/abs(av), NA)
       se=sd(object)/sqrt(nomiss)
       if (DoNorm) {
-        sk=skewness(object, type=2)
-        kt=kurtosis(object, type=2)
+        sk=e1071::skewness(object, type=2)
+        kt=e1071::kurtosis(object, type=2)
         skp=2*(1-pt(abs(sk/(sqrt(6/nomiss))), nomiss-1))
         ktp=2*(1-pt(abs(kt/(sqrt(24/nomiss))), nomiss-1))
         sh=shapiro.test(object)

@@ -12,7 +12,7 @@ cu_mapvalst(pval, pvcuts)
 \item{pvcuts}{Numeric vector of significance cut points.}
 }
 \value{
-Character string: "ns", "\emph{", "\strong{", "}}", or "****".
+Character string: "ns", "*", "**", "***", or "****".
 }
 \description{
 Map p-value to asterisk notation

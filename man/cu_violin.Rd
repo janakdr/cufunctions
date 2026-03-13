@@ -4,18 +4,9 @@
 \alias{cu_violin}
 \title{Create a violin plot}
 \usage{
-cu_violin(
-  depvar,
-  groupvar,
-  letbar = NULL,
-  ebars = 4,
-  dots = 1,
-  fill = "colors",
-  xlab = NULL,
-  ylab = NULL,
-  boxwidth = 0.1,
-  dotwidth = 2
-)
+cu_violin(depvar, groupvar, letbar = NULL, ebars = 4, dots = 1,
+  fill = "colors", xlab = NULL, ylab = NULL, boxwidth = 0.1,
+  dotwidth = 2)
 }
 \arguments{
 \item{depvar}{Numeric dependent variable.}
