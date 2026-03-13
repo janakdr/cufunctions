@@ -8,6 +8,6 @@
 #' @importFrom MuMIn dredge
 #' @importFrom ROCR prediction performance
 #' @importFrom MASS polr
-#' @importFrom ggpubr ggpar stat_pvalue_manual stat_compare_means ggbarplot ggarrange mean_sd
+#' @importFrom ggpubr ggpar stat_pvalue_manual stat_compare_means ggbarplot ggarrange mean_sd median_q1q3
 #' @keywords internal
 "_PACKAGE"
