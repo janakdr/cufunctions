@@ -9,12 +9,6 @@ Description: Look at help for each function for functionality:
      cupairwise.t, cupartialF, curead, curepmeas, curoc, cuscatter, cutable1, cuvolcano
 Depends:
     R (>= 3.5.0)
-License: What license it uses
-Encoding: UTF-8
-LazyData: true
-RoxygenNote: 7.1.1
-Roxygen: list(old_usage = TRUE)
-RoxygenNote: 7.3.3
 Imports:
     ggplot2,
     survival,
@@ -26,10 +20,13 @@ Imports:
     dunn.test,
     MuMIn,
     MatchIt,
-    survminer,
-    car,
-    ggpubr
+    survminer
 Suggests:
     devEMF,
     testthat (>= 3.0.0)
+License: What license it uses
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(old_usage = TRUE)
+RoxygenNote: 7.3.3
 Config/testthat/edition: 3
