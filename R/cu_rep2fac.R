@@ -135,4 +135,4 @@ cu_rep2fac = function(depvar, group1, group2, Subject,
     if (dele==deluse) ie = ie-1
   }
   if (ifsomena) cat ("\np-value NA means n zero or same as one above")
-}
+}

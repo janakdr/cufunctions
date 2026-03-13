@@ -68,4 +68,4 @@ cuvolcano = function(dsomics, gpairs, xdash=0.5, psig = 0.05, psigmin = 0.2, pfa
     cu_plout(volc,"volcano", suff=suff, ftype=ftype, fname=fname, scale=fscale,
     width=fwidth, height=fheight, dpi=dpi, remove=remove)
   }
- }
+ }
