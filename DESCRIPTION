@@ -22,7 +22,6 @@ Imports:
     nlme,
     Hmisc,
     e1071,
-    gmodels,
     ROCR,
     dunn.test,
     MuMIn,
