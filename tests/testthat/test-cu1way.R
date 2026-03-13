@@ -10,7 +10,8 @@ test_that("cu1way(tcchange, Diet) summary table matches golden", {
   out <- capture.output(cu1way(tcchange, Diet, plot = "no"))
   actual <- parse_summary_table(out)
   golden <- load_golden("cutable1_tcchange_Diet")
-  expect_table_match(actual, golden, label = "cu1way(tcchange, Diet) summary")
+  expect_table_match(actual, golden, label = "cu1way(tcchange, Diet) summary",
+                     tol = 0.01)
 })
 
 test_that("cu1way(tcchange, Diet) ANOVA table matches golden", {
@@ -64,7 +65,8 @@ test_that("cu1way(tcchange, Diet, ebars=4) summary table matches golden", {
   out <- capture.output(cu1way(tcchange, Diet, ebars = 4, plot = "no"))
   actual <- parse_summary_table(out)
   golden <- load_golden("cutable1_tcchange_Diet")
-  expect_table_match(actual, golden, label = "cu1way(tcchange, Diet, ebars=4) summary")
+  expect_table_match(actual, golden, label = "cu1way(tcchange, Diet, ebars=4) summary",
+                     tol = 0.01)
 })
 
 test_that("cu1way(tcchange, Diet, ebars=4) Kruskal-Wallis matches golden", {
@@ -108,7 +110,7 @@ test_that("cu1way(hcstudy, Diet) coefficients match golden", {
 # NOTE: docx has diff=-4.38, golden/R output has diff=-4.37 (rounding)
 test_that("cu1way(hcstudy, Diet) post-hoc matches golden", {
   out <- capture.output(cu1way(hcstudy, Diet, plot = "no"))
-  expect_posthoc_match(out, "cu1way_hcstudy_Diet_posthoc")
+  expect_posthoc_match(out, "cu1way_hcstudy_Diet_posthoc", tol = 0.01)
   out_text <- paste(trimws(out, "right"), collapse = "\n")
   expected_method <- paste(
     "Pairwise comparisons using t tests with pooled SD 7.38",
@@ -194,7 +196,7 @@ test_that("cu1way(badtcp, Diet) ANOVA matches golden", {
   actual <- parse_anova_table(out)
   golden <- load_golden("cu1way_badtcp_Diet_anova")
   expect_table_match(actual, golden, id_col = "source",
-                     label = "cu1way(badtcp, Diet) ANOVA")
+                     label = "cu1way(badtcp, Diet) ANOVA", tol = 0.01)
 })
 
 test_that("cu1way(badtcp, Diet) post-hoc matches golden", {

@@ -22,7 +22,8 @@ detach_NEJM <- function() {
 #' @return A data.frame with column "stat" as row identifier
 load_golden <- function(name) {
   path <- file.path(test_path("golden"), paste0(name, ".csv"))
-  read.csv(path, stringsAsFactors = FALSE, check.names = FALSE)
+  read.csv(path, stringsAsFactors = FALSE, check.names = FALSE,
+           fileEncoding = "UTF-8")
 }
 
 #' Parse a fixed-width table given a header line and data lines.
@@ -71,7 +72,7 @@ parse_fixed_width_table <- function(header_line, data_lines, id_col = "stat",
       label_idx <- label_idx + 1
       if (label_idx > length(row_labels)) break
       label <- row_labels[label_idx]
-      label_pos <- regexpr(label, line, fixed = TRUE)
+      label_pos <- regexpr(enc2utf8(label), enc2utf8(line), fixed = TRUE)
       if (label_pos[1] == -1)
         stop("Row label '", label, "' not found in line: ", line)
       label_end <- label_pos + attr(label_pos, "match.length") - 1
@@ -210,26 +211,124 @@ parse_coef_table <- function(output, col_names = NULL) {
                       p_col = "Pr(>|t|)")
 }
 
+#' Parse output with multiple table chunks sharing the same row labels.
+#'
+#' Finds all header lines (lines starting with whitespace), parses each chunk
+#' using parse_fixed_width_table, and merges them by `stat` column.
+#'
+#' @param output Character vector of captured output lines
+#' @param row_labels Character vector of expected row labels
+#' @return A data.frame with all columns merged
+parse_multi_chunk_table <- function(output, row_labels) {
+  hdr_indices <- which(grepl("^\\s+\\S", output))
+  actual <- NULL
+  for (h in hdr_indices) {
+    end <- h + 1
+    while (end <= length(output) && trimws(output[end]) != "")
+      end <- end + 1
+    chunk <- parse_fixed_width_table(output[h], output[(h + 1):(end - 1)],
+                                     row_labels = row_labels)
+    if (is.null(actual)) actual <- chunk
+    else actual <- merge(actual, chunk, by = "stat", all = TRUE, sort = FALSE)
+  }
+  actual[match(row_labels, actual$stat), ]
+}
 
+#' Parse a single fixed-width table from output, located by header pattern.
+#'
+#' Finds the first line starting with whitespace (the header), then parses
+#' data lines below it until a blank line.
+#'
+#' @param output Character vector of captured output lines
+#' @param row_labels Character vector of expected row labels
+#' @return A data.frame
+parse_brief_table <- function(output, row_labels) {
+  hdr_idx <- which(grepl("^\\s+\\S", output))
+  end <- hdr_idx[1] + 1
+  while (end <= length(output) && trimws(output[end]) != "")
+    end <- end + 1
+  parse_fixed_width_table(output[hdr_idx[1]], output[(hdr_idx[1] + 1):(end - 1)],
+                           row_labels = row_labels)
+}
+
+#' Parse a named section's table from compare-style output.
+#'
+#' Finds a section by grep pattern, then parses the fixed-width table below it.
+#' The header is on the line after the section name, data starts 2 lines after.
+#'
+#' @param output Character vector of captured output lines
+#' @param section_pattern Regex pattern to find the section header
+#' @param col_names Column names for the table (excluding id column)
+#' @param row_labels Optional row labels (passed to parse_fixed_width_table)
+#' @return A data.frame
+parse_section_table <- function(output, section_pattern,
+                                col_names = NULL, row_labels = NULL) {
+  idx <- grep(section_pattern, output)
+  end <- idx[1] + 2
+  while (end <= length(output) && trimws(output[end]) != "") end <- end + 1
+  parse_fixed_width_table(output[idx[1] + 1], output[(idx[1] + 2):(end - 1)],
+                           col_names = col_names, row_labels = row_labels)
+}
 
 #' Check that post-hoc comparison lines from a golden CSV appear in the output.
 #'
-#' Formats each golden CSV row into the expected output string
-#' (e.g. "Mono minus AAD: -17.9 ± 5.06, p=0.0012, CL=[-28.2,-7.63]")
-#' and verifies it appears in the captured output.
+#' Uses a template regexp to extract numeric values from the output, then
+#' compares each field against the golden CSV with optional tolerance.
+#' Output format: "<comparison>: <diff> \u00b1 <se>, p=<p>, CL=[<cl_lo>,<cl_hi>]"
 #'
 #' @param output Character vector of captured output lines
 #' @param golden_name Basename of the golden CSV file (without .csv)
-expect_posthoc_match <- function(output, golden_name) {
+#' @param tol Relative tolerance for numeric comparisons (0 = exact match)
+expect_posthoc_match <- function(output, golden_name, tol = 0) {
   golden <- load_golden(golden_name)
   out_text <- paste(output, collapse = "\n")
+  col_names <- c("diff", "se", "p", "cl_lo", "cl_hi")
+  num_re <- "(-?[0-9]+[.]?[0-9]*(?:[eE][+-]?[0-9]+)?)"
+  mismatches <- character()
+
   for (i in seq_len(nrow(golden))) {
     row <- golden[i, ]
-    expected <- sprintf("%s: %s \u00b1 %s, p=%s, CL=[%s,%s]",
-                        row$comparison, row$diff, row$se, row$p,
-                        row$cl_lo, row$cl_hi)
-    expect_match(out_text, expected, fixed = TRUE,
-                 label = sprintf("post-hoc line '%s'", row$comparison))
+    # Escape comparison name for use in regexp
+    comp_re <- gsub("([+().])", "\\\\\\1", row$comparison)
+    # Template: <comparison>: <diff> ± <se>, p=<p>, CL=[<cl_lo>,<cl_hi>]
+    pattern <- sprintf("%s:\\s+%s\\s+\u00b1\\s+%s,\\s+p=%s,\\s+CL=\\[%s,%s\\]",
+                       comp_re, num_re, num_re, num_re, num_re, num_re)
+    m <- regmatches(out_text, regexec(pattern, out_text, perl = TRUE))
+    if (length(m[[1]]) == 0) {
+      mismatches <- c(mismatches,
+        sprintf("Row '%s': not found in output", row$comparison))
+      next
+    }
+    actual_vals <- m[[1]][2:6]  # captured groups
+    for (j in seq_along(col_names)) {
+      g_num <- as.numeric(as.character(row[[col_names[j]]]))
+      a_num <- suppressWarnings(as.numeric(actual_vals[j]))
+      if (is.na(a_num)) {
+        mismatches <- c(mismatches,
+          sprintf("Row '%s', col '%s': could not parse '%s'",
+                  row$comparison, col_names[j], actual_vals[j]))
+      } else if (tol == 0) {
+        if (g_num != a_num)
+          mismatches <- c(mismatches,
+            sprintf("Row '%s', col '%s': expected %s, got %s",
+                    row$comparison, col_names[j], g_num, a_num))
+      } else {
+        rel_diff <- abs(g_num - a_num) / max(abs(g_num), abs(a_num), 1e-10)
+        if (rel_diff > tol)
+          mismatches <- c(mismatches,
+            sprintf("Row '%s', col '%s': expected %s, got %s (rel diff %.2g > tol %.2g)",
+                    row$comparison, col_names[j], g_num, a_num, rel_diff, tol))
+      }
+    }
+  }
+
+  if (length(mismatches) > 0) {
+    msg <- sprintf("Post-hoc '%s' found %d mismatch(es):\n%s",
+                   golden_name, length(mismatches),
+                   paste("  -", mismatches, collapse = "\n"))
+    testthat::fail(msg)
+  } else {
+    testthat::succeed()
   }
 }
 
@@ -242,7 +341,7 @@ expect_posthoc_match <- function(output, golden_name) {
 #' @param golden A data.frame loaded from golden CSV
 #' @param id_col Name of the column used as row identifier (default "stat")
 #' @param label Descriptive label for the comparison (used in error message)
-expect_table_match <- function(actual, golden, id_col = "stat", label = "table") {
+expect_table_match <- function(actual, golden, id_col = "stat", label = "table", tol = 0) {
   mismatches <- character()
 
   # Match rows by id_col
@@ -285,10 +384,17 @@ expect_table_match <- function(actual, golden, id_col = "stat", label = "table")
       a_num <- suppressWarnings(as.numeric(a_val))
 
       if (!is.na(g_num) && !is.na(a_num)) {
-        if (g_num != a_num) {
-          mismatches <- c(mismatches,
-            sprintf("Row '%s', col '%s': expected %s, got %s",
-                    golden_id, col, g_val, a_val))
+        if (tol == 0) {
+          if (g_num != a_num)
+            mismatches <- c(mismatches,
+              sprintf("Row '%s', col '%s': expected %s, got %s",
+                      golden_id, col, g_val, a_val))
+        } else {
+          rel_diff <- abs(g_num - a_num) / max(abs(g_num), abs(a_num), 1e-10)
+          if (rel_diff > tol)
+            mismatches <- c(mismatches,
+              sprintf("Row '%s', col '%s': expected %s, got %s (rel diff %.2g > tol %.2g)",
+                      golden_id, col, g_val, a_val, rel_diff, tol))
         }
       } else {
         # String comparison for non-numeric values (like "<.001")
