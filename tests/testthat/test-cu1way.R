@@ -107,7 +107,6 @@ test_that("cu1way(hcstudy, Diet) coefficients match golden", {
                      label = "cu1way(hcstudy, Diet) coefficients")
 })
 
-# NOTE: docx has diff=-4.38, golden/R output has diff=-4.37 (rounding)
 test_that("cu1way(hcstudy, Diet) post-hoc matches golden", {
   out <- capture.output(cu1way(hcstudy, Diet, plot = "no"))
   expect_posthoc_match(out, "cu1way_hcstudy_Diet_posthoc", tol = 0.01)
@@ -151,8 +150,6 @@ test_that("cu1way(diffvar, Diet) ANOVA matches golden", {
                      label = "cu1way(diffvar, Diet) ANOVA")
 })
 
-# NOTE: docx has p=4.4e-12 and p=1.7e-05; golden/R output has p=4.40e-12
-# and p=1.70e-05 (trailing zero formatting)
 test_that("cu1way(diffvar, Diet) post-hoc matches golden", {
   out <- capture.output(cu1way(diffvar, Diet, plot = "no"))
   expect_posthoc_match(out, "cu1way_diffvar_Diet_posthoc")
@@ -188,9 +185,6 @@ test_that("cu1way(badtcp, Diet) summary table matches golden", {
   expect_table_match(actual, golden, label = "cu1way(badtcp, Diet) summary")
 })
 
-# NOTE: docx has Sum Sq=5649, Mean Sq=2825, p=0.0805, Resid SS=34237, MS=1038;
-# golden/R output has Sum Sq=5648, Mean Sq=2824, p=0.0804, Resid SS=34228, MS=1037.
-# Likely docx was generated with a slightly different data version.
 test_that("cu1way(badtcp, Diet) ANOVA matches golden", {
   out <- capture.output(cu1way(badtcp, Diet, plot = "no"))
   actual <- parse_anova_table(out)
