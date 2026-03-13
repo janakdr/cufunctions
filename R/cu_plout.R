@@ -22,7 +22,9 @@ cu_plout = function(plotobj,funcname,ftype=NULL,fname=NULL,suff=NULL,seq=0,
                   ifelse(seq==0,"",paste("-",seq,se2p="")),".",ftype,sep="")
     #cat("\nfname:",fname,">")
     if (ftype=="emf") { 
-      emf(fname, emfPlus=F)
+      if (!requireNamespace("devEMF", quietly = TRUE))
+        stop("Package 'devEMF' is required for EMF output but is not installed.")
+      devEMF::emf(fname, emfPlus=F)
       oldw <- getOption("warn")
       options(warn = -1)
       if (avplots) avPlots(plotobj) #avPlots returns coordinates, so can't print object

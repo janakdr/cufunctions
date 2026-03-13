@@ -115,7 +115,9 @@ curoc = function(LRobj, depvar, twolev=TRUE, xs=NULL, namedep=NULL, logitlog="lo
   if (is.character(emf) && nroc==1) {
     fname = paste(emf,".emf",sep="")
     #cat("\nfname:",fname,">")
-    emf(fname, emfPlus=F)
+    if (!requireNamespace("devEMF", quietly = TRUE))
+      stop("Package 'devEMF' is required for EMF output but is not installed.")
+    devEMF::emf(fname, emfPlus=F)
     oldw <- getOption("warn")
     options(warn = -1)
     perfPlot = performance(PredObj, "tpr", "fpr")
