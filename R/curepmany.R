@@ -124,4 +124,4 @@ curepmany = function(dsgiven, dnamf, dnaml, repnam, fac2=NULL, idnam=NULL, minim
     write.csv(rmwall,file=filenorm, row.names=F)
     cat ("\nTransformed data in",filenorm)
   }
-}
+}

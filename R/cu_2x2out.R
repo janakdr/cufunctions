@@ -12,4 +12,4 @@ cu_2x2out = function(mytab,row1name,row2name) {
         "%\nPositive Predictive Value ",signif(100*mytab[4]/(mytab[2]+mytab[4]),3),
         "%; Negative Predictive Value ",signif(100*mytab[1]/(mytab[1]+mytab[3]),3),
         "%\n",sep="")
-}  
+}
