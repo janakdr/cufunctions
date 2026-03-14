@@ -1,0 +1,3 @@
+source,Df,Sum Sq,Mean Sq,F value,Pr(>F)
+group1,2,2015,1007.4,6.562,0.00399
+Residuals,33,5066,153.5,NA,NA
