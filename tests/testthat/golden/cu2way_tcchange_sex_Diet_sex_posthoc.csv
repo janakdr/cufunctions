@@ -1,0 +1,4 @@
+group,comparison,diff,se,p,cl_lo,cl_hi
+AAD,M minus F,-20.1,4.37,6.91e-05,-29.1,-11.2
+Mono,M minus F,19.9,4.37,7.94e-05,11,28.9
+Step1,M minus F,17.7,4.37,0.00033,8.78,26.6
