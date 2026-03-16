@@ -1,0 +1,4 @@
+comparison,diff,se,p,cl_lo,cl_hi
+Mono minus AAD,-17.9,4.98,0.00106,-28.1,-7.78
+Step1 minus AAD,-12.3,4.98,0.0194,-22.4,-2.12
+Step1 minus Mono,5.67,4.98,0.264,-4.48,15.8
