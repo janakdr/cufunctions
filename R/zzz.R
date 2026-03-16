@@ -70,9 +70,9 @@ hint_option <- function(param_name, value, threshold = 3L) {
   # If the user already has this option set, no need to hint
   if (!is.null(getOption(option_name))) return(invisible())
 
+  # Skip non-scalar values (data vectors, factors, etc.) — only hint on scalars
+  if (length(value) > 1) return(invisible())
   val_str <- deparse1(value)
-  # Skip data-like values (vectors, factors, etc.) — only hint on scalars
-  if (nchar(val_str) > 60) return(invisible())
 
   key <- paste0(param_name, "=", val_str)
   counts <- .cuf_env$param_counts

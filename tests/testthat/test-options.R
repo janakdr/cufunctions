@@ -65,10 +65,12 @@ test_that("hint_option tracks different values separately", {
   expect_message(hint_option("ebars", 4, threshold = 2L), "Tip:")
 })
 
-test_that("hint_option skips long (non-scalar) values", {
+test_that("hint_option skips non-scalar values", {
   .cuf_env$param_counts <- list()
-  long_val <- paste(rep("x", 100), collapse = "")
-  expect_silent(hint_option("group1", long_val, threshold = 1L))
+  vec_val <- c(1, 2, 3, 4, 5)
+  expect_silent(hint_option("group1", vec_val, threshold = 1L))
+  fac_val <- factor(c("AAD", "Mono", "Step1"))
+  expect_silent(hint_option("group1", fac_val, threshold = 1L))
 })
 
 # --- cuf_apply_defaults (via test_fn) ---
