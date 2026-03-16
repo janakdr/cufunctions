@@ -28,6 +28,7 @@ culinreg = function(dsgiven, depnam, formula,
                   fitasx=T,ftype=NULL,fname=NULL,fscale=NULL,fwidth=NULL,
                   fheight=NULL, dpi=300, remove=NULL)
 {
+  cuf_apply_defaults(match.call(), environment())
   ds = dsgiven; idep = 0
   for (i in 1:length(ds)) {
     if (names(ds[i])==depnam) idep=i

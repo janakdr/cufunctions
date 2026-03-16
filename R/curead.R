@@ -14,7 +14,7 @@
 #' @export
 curead = function(skip=NULL, nrows=-1, maxfaclev=0, maxvarprint=20)
 {
-
+  cuf_apply_defaults(match.call(), environment())
   if (is.null(skip)) skip = 0
   if(Sys.info()[1]=="Windows") {
     obj = read.table('clipboard', h=T, skip=skip, nrows=nrows, sep="\t", quote="", 

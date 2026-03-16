@@ -35,6 +35,7 @@ culogist = function(dsgiven, depnam, formula, xs=NULL, ordinal=NULL,
                     emf=F, xlab="1 - Specificity", ylab="Sensitivity",
                     color="red", veccolor=c("red","blue","green","black"))
 {
+  cuf_apply_defaults(match.call(), environment())
   getstartRR = function() {
     if (is.null(start)) {
       if (twolev) LRobj = glm(forla, family=binomial(link=logit), data=dsnomiss, na.action="na.fail", weights=wts)

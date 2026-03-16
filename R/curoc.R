@@ -23,6 +23,7 @@ curoc = function(LRobj, depvar, twolev=TRUE, xs=NULL, namedep=NULL, logitlog="lo
                  printfit=F, emf=F, xlabroc="1 - Specificity", ylabroc="Sensitivity",
                  label.ordering = NULL, color="red", veccolor=c("red","blue","green","black"))
 {
+  cuf_apply_defaults(match.call(), environment())
   if (is.null(namedep)) namedep = deparse(substitute(depvar))
   depvar = as.factor(depvar)
   levnames = levels(depvar); nlev = nlevels(depvar); nsubj <- length(depvar)

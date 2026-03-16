@@ -16,6 +16,7 @@
 #' @export
 cuomics = function(funcname, dsgiven, dnamf, dnaml, fnom, ...)
 {
+  cuf_apply_defaults(match.call(), environment())
   funcpos = c("1way", "2way","cov1way","cov2way","scatter","repmeasl","repmeasw")
   if (!is.character(funcname)) stop ("function name must be in quotes")
   if (substr(funcname,1,2)=="cu") funcname = substr(funcname,3,10)

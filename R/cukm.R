@@ -36,6 +36,7 @@ cukm = function(timevar, statvar, ttmtvar, kmtype="survival", pvalue=T,
                 ftype=NULL,fname=NULL,fscale=NULL,fwidth=NULL,
                 fheight=NULL, dpi=300, remove=NULL)
 {
+  cuf_apply_defaults(match.call(), environment())
   TimeNam = deparse(substitute(timevar))
   TtmtNam = deparse(substitute(ttmtvar))
   StatNam = deparse(substitute(statvar))

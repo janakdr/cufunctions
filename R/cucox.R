@@ -48,6 +48,7 @@ cucox = function(dsgiven, timnam, depnam, formula, dopredkm=T, doroc=T, docoxkm=
                  ftype=NULL,fname=NULL,fscale=NULL,fwidth=NULL,
                  fheight=NULL, dpi=300, remove=NULL)
 {
+  cuf_apply_defaults(match.call(), environment())
   ds = dsgiven; itim=0; idep = 0
   for (i in 1:length(ds)) {
     if (names(ds[i])==timnam) itim = i
