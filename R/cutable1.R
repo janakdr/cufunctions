@@ -105,6 +105,7 @@ cutable1 = function(ds, group1=NULL, group2=NULL, doAll=T, brief=F,
               ftype=NULL,fname=NULL,fscale=NULL,fwidth=NULL,
               fheight=NULL, dpi=300, remove=NULL) 
 {
+  cuf_apply_defaults(match.call(), environment())
   getcolnam = function() {
     if (is.null(groupvar)) return(c("All"))
     else return(c(levels(groupvar),chall,compnamv))

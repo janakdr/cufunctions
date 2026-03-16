@@ -48,6 +48,7 @@ cu_rep1fac = function(depvar, groupvar, Subject, scale="frequency",
                       ftype=NULL,fname=NULL,fscale=NULL,fwidth=NULL,
                       fheight=NULL,dpi=300,remove=NULL) 
 {
+  cuf_apply_defaults(match.call(), environment())
   if(is.null(depname)) depname = deparse(substitute(depvar))
   if(is.null(g1name)) g1name = deparse(substitute(groupvar))
   if (is.character(groupvar)) groupvar = as.factor(groupvar)

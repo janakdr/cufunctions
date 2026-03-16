@@ -53,6 +53,7 @@ cu_rep2fac = function(depvar, group1, group2, Subject,
                       ftype=NULL,fname=NULL,fscale=NULL,fwidth=NULL,
                       fheight=NULL,dpi=300,remove=NULL) 
 {
+  cuf_apply_defaults(match.call(), environment())
   if(is.null(depname)) depname = deparse(substitute(depvar))
   if(is.null(g1name)) g1name = deparse(substitute(group1))
   if(is.null(g2name)) g2name = deparse(substitute(group2))
