@@ -70,22 +70,27 @@ hint_option <- function(param_name, value, threshold = 3L) {
   # If the user already has this option set, no need to hint
   if (!is.null(getOption(option_name))) return(invisible())
 
-  # Skip non-scalar values (data vectors, factors, etc.) — only hint on scalars
+  # Skip non-scalar values (data vectors, factors, etc.)
   if (length(value) > 1) return(invisible())
   val_str <- deparse1(value)
 
-  key <- paste0(param_name, "=", val_str)
-  counts <- .cuf_env$param_counts
-  counts[[key]] <- (counts[[key]] %||% 0L) + 1L
-  .cuf_env$param_counts <- counts
+  # Track consecutive uses of the same value per param.
+  # Switching to a different value resets the count.
+  tracker <- .cuf_env$param_counts[[param_name]]
+  if (is.null(tracker) || !identical(tracker$val, val_str)) {
+    tracker <- list(val = val_str, n = 1L)
+  } else {
+    tracker$n <- tracker$n + 1L
+  }
+  .cuf_env$param_counts[[param_name]] <- tracker
 
-  if (counts[[key]] %% threshold == 0L) {
+  if (tracker$n %% threshold == 0L) {
     message(sprintf(
       paste0("Tip: You've set %s=%s %d times. To make it the session default:\n",
              "  options(%s = %s)\n",
              "Add to ~/.Rprofile to persist across sessions.\n",
              "Suppress these hints: options(cufunctions.hints_defaults = FALSE)"),
-      param_name, val_str, counts[[key]],
+      param_name, val_str, tracker$n,
       option_name, val_str))
   }
 }

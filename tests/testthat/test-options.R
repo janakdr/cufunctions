@@ -55,14 +55,23 @@ test_that("hint_option is silent when the specific option is already set", {
   expect_silent(hint_option("ebars", 4, threshold = 1L))
 })
 
-test_that("hint_option tracks different values separately", {
+test_that("switching values resets count — alternating never hints", {
   .cuf_env$param_counts <- list()
-  expect_silent(hint_option("ebars", 1, threshold = 2L))
-  expect_silent(hint_option("ebars", 4, threshold = 2L))
-  # 2nd call with value=1 fires at threshold=2
-  expect_message(hint_option("ebars", 1, threshold = 2L), "Tip:")
-  # 2nd call with value=4 also fires at threshold=2
-  expect_message(hint_option("ebars", 4, threshold = 2L), "Tip:")
+  # Alternate between ebars=1 and ebars=4 — should never reach threshold
+  for (i in 1:20) {
+    expect_silent(hint_option("ebars", 1, threshold = 3L))
+    expect_silent(hint_option("ebars", 4, threshold = 3L))
+  }
+})
+
+test_that("switching value resets count for previous value", {
+  .cuf_env$param_counts <- list()
+  expect_silent(hint_option("ebars", 4, threshold = 3L))  # count=1
+  expect_silent(hint_option("ebars", 4, threshold = 3L))  # count=2
+  expect_silent(hint_option("ebars", 1, threshold = 3L))  # reset, count=1
+  expect_silent(hint_option("ebars", 4, threshold = 3L))  # reset, count=1 (not 3!)
+  expect_silent(hint_option("ebars", 4, threshold = 3L))  # count=2
+  expect_message(hint_option("ebars", 4, threshold = 3L), "Tip:")  # count=3, fires
 })
 
 test_that("hint_option skips non-scalar values", {
