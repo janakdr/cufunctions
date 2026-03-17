@@ -18,6 +18,7 @@ cuvolcano = function(dsomics, gpairs, xdash=0.5, psig = 0.05, psigmin = 0.2, pfa
                   foldmin=NULL, foldmax=NULL, ylim=5, titlend="Volcano Plot",
                   ftype=NULL,fname=NULL,fscale=NULL,fwidth=NULL,
                   fheight=NULL, dpi=300, remove=NULL, suff=NULL) {
+  cuf_apply_defaults(match.call(), environment())
   locategp = function(namegp) {
     teststr = paste(namegp,"_M",sep=""); lenv = nchar(teststr)
     for (jc in 2:ncolom) {

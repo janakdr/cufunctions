@@ -81,6 +81,7 @@ cu_rep1way = function(ddep,dgp,dsub,depvar, groupvar, Subject, itrans, minimal=F
                      ftype=NULL,fname=NULL,fscale=NULL,fwidth=NULL,
                      fheight=NULL,dpi=300,remove=NULL) 
 {
+  cuf_apply_defaults(match.call(), environment())
   if(is.null(depname)) depname = deparse(substitute(depvar))
   if(is.null(g1name)) g1name = deparse(substitute(groupvar))
   if (is.character(groupvar)) groupvar = as.factor(groupvar)

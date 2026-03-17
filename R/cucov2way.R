@@ -69,6 +69,7 @@ cucov2way = function(depvar, covar, group1, group2, xs=NULL,
                      titlejust="center", legheadsize=12, legtextsize = 10,
                      ftype=NULL,fname=NULL,fscale=NULL,fwidth=NULL,
                      fheight=NULL, dpi=300, remove=NULL) {
+  cuf_apply_defaults(match.call(), environment())
   macmap = function() {
     mapinto12 = c(rep(-1,nlevint)) #; map12toin = c(rep(-1,nlevboth12))
     for (i in 1:nlevboth12) {

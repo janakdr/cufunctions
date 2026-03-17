@@ -100,6 +100,7 @@ cu2way = function(depvar,group1,group2, interact=TRUE, dosimpler=F, partialF=TRU
                   ftype=NULL,fname=NULL,fscale=NULL,fwidth=NULL,
                   fheight=NULL, dpi=300, remove=NULL) 
 {
+  cuf_apply_defaults(match.call(), environment())
   macmap = function() {
     mapinto12 = c(rep(-1,nlevint)) #; map12toin = c(rep(-1,nlevboth12))
     for (i in 1:nlevboth12) {

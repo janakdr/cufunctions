@@ -38,6 +38,7 @@ curepmany = function(dsgiven, dnamf, dnaml, repnam, fac2=NULL, idnam=NULL, minim
                      ftype=NULL,fname=NULL,fscale=NULL,fwidth=NULL,
                      fheight=NULL,dpi=300,remove=NULL) 
 {
+  cuf_apply_defaults(match.call(), environment())
   if (dnamf == dnaml) stop("\nfirst and last variables same:",
     '"',dnamf,'"  "',dnaml,'"\nIf only one, just run curepmeas')
   ncols = length(dsgiven); namlist = c(); rmwall = NULL

@@ -8,6 +8,7 @@
 cusum.data.frame = function (object, maxsum = 7L, digits = max(3L, getOption("digits") -
                                                                  3L), ...)
 {
+  cuf_apply_defaults(match.call(), environment())
   ncw <- function(x) {
     z <- nchar(x, type = "w")
     if (any(na <- is.na(z))) {

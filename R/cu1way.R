@@ -101,6 +101,7 @@ cu1way = function(depvar, group1, ebars=1, ordinal=NULL, plot="bar", ytrans="non
                   ftype=NULL,fname=NULL,fscale=NULL,fwidth=NULL,
                   fheight=NULL, dpi=300, remove=NULL) 
 {
+  cuf_apply_defaults(match.call(), environment())
   notgroup = function(namegp) {stop(namegp,
      " cannot be a group variable as numeric with ",nlev," levels.",
      "\n    If it is the variable being analyzed, it should come first.",

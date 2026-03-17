@@ -6,6 +6,7 @@
 #' @export
 cusum.default = function (object, ..., digits = max(3L, getOption("digits") - 3L))
 {
+  cuf_apply_defaults(match.call(), environment())
   if (is.character(object)) object = as.factor(object)
   if (is.factor(object)) {
     sumfab = summary.factor(object, ...); ntot = sum(sumfab); lenb = length(sumfab)

@@ -57,6 +57,7 @@ cuscatter = function(yvar,xvar, doline=T, showr2eqn="both", minimal=F,
                     titlejust="center", legheadsize=12, legtextsize = 10,
                     ftype=NULL,fname=NULL,fscale=NULL,fwidth=NULL,
                     fheight=NULL, dpi=300, remove=NULL) {
+  cuf_apply_defaults(match.call(), environment())
   transz = function(zvar,zscale) {
     if (zscale=="log10") zv = log10(zvar)
     else if (zscale=="log2") zv = log2(zvar)

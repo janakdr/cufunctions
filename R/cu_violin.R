@@ -14,6 +14,7 @@
 #' @keywords internal
 cu_violin = function(depvar,groupvar, letbar=NULL, ebars=4, dots=1, fill="colors",
                      xlab=NULL, ylab=NULL, boxwidth=0.1, dotwidth=2) {
+  cuf_apply_defaults(match.call(), environment())
   df = data.frame(V1 = groupvar, V2=depvar) 
   if (is.null(xlab)) xlab = deparse(substitute(groupvar))
   if (is.null(ylab)) ylab = deparse(substitute(depvar))

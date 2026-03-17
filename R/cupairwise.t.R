@@ -6,6 +6,7 @@ cupairwise.t = function (x, g, p.adjust.method = p.adjust.methods, pool.sd = !pa
                 paired = FALSE, alternative = c("two.sided", "less", 
                                                 "greater"), ...) 
 {
+  cuf_apply_defaults(match.call(), environment())
   if (paired & pool.sd) 
     stop("pooling of SD is incompatible with paired tests")
   DNAME <- paste(deparse(substitute(x)), "and", deparse(substitute(g)))

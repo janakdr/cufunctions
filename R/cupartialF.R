@@ -12,6 +12,7 @@
 #' @export
 cupartialF = function (rse1, ndf1, rse2, ndf2) 
 {
+  cuf_apply_defaults(match.call(), environment())
   np = ndf1-ndf2
   # if (np<=0) stop ("simpler model must have more degrees of freedom")
   # if (rse2==0) stop ("bigger model cannot have zero error")

@@ -63,6 +63,7 @@ cucov1way = function(depvar, covar, group1, xs=NULL, breakpt=F,
                      titlejust="center", legheadsize=12, legtextsize = 10,
                      ftype=NULL,fname=NULL,fscale=NULL,fwidth=NULL,
                      fheight=NULL, dpi=300, remove=NULL) {
+  cuf_apply_defaults(match.call(), environment())
   toomanycov = function(namegp) {stop(namegp,
      " cannot be a group variable as numeric with ",nlev," levels.",
      "\nIf it is the continuous covariate, it should be the 2nd argument.",

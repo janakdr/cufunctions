@@ -114,6 +114,7 @@ curepmeas = function(dsgiven, dnam, repnam, fac2=NULL, idnam=NULL, minimal=F,
                      ftype=NULL,fname=NULL,fscale=NULL,fwidth=NULL,
                      fheight=NULL,dpi=300,remove=NULL) 
 {
+  cuf_apply_defaults(match.call(), environment())
   if (is.null(plot)) {plot = "no"}
   else if (plot %in% c("n","no","N","NO","No")) {plot="no"}
   else if (!(plot %in% c("bar","box","violin","rod"))) {

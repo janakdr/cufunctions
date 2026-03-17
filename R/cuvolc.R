@@ -16,7 +16,7 @@
 cuvolc = function(ds, xdash=0.5, psig = 0.05, psigmin = 0.2, pfactor=1, 
                   foldmin=NULL, foldmax=NULL, ylim=5, title="Volcano Plot")
 {
-  
+  cuf_apply_defaults(match.call(), environment())
   # https://biocorecrg.github.io/CRG_RIntroduction/volcano-plots.html
   # https://github.com/erikaduan/r_tips/blob/master/tutorials/dv-volcano_plots_with_ggplot/dv-volcano_plots_with_ggplot.md#import-a-test-dataset
   ds$log2fc = log2(ds$fold); psigadj = psig/pfactor
