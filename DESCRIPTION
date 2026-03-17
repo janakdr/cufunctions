@@ -3,7 +3,8 @@ Title: Facilitate Stats with One-line Invokes Instead of Many R Commands
 Version: 22.07.24.0418
 Authors@R: c(
     person("Steve", "Holleran", email = "sfh2@columbia.edu", role = "aut"),
-    person("Rajasekhar", "Ramakrishnan", role = c("aut", "cre")))
+    person("Rajasekhar", "Ramakrishnan", email = "rr6@caa.columbia.edu", role = c("aut", "cre")),
+    person("Janak", "Ramakrishnan", email = "janak@janak.org", role = "ctb", comment = "test infrastructure and CRAN readiness"))
 Description: Look at help for each function for functionality:
      cu1way, cu2way, cucov1way, cucov2way, cucox, cukm, culinreg, culogist, cuomics,
      cupairwise.t, cupartialF, curead, curepmeas, curoc, cuscatter, cutable1, cuvolcano
