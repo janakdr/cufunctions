@@ -45,7 +45,8 @@ cuf_apply_defaults <- function(mc, env) {
       # User explicitly passed this param -- track for hint
       hint_option(param, get(param, envir = env))
     } else {
-      # User relied on default -- check for global override
+      # User relied on default -- reset tracker and check for global override
+      .cuf_env$param_counts[[param]] <- NULL
       opt_val <- getOption(option_name)
       if (!is.null(opt_val)) {
         assign(param, opt_val, envir = env)

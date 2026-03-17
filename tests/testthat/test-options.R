@@ -122,3 +122,23 @@ test_that("cuf_apply_defaults triggers hint_option for explicit args", {
   expect_silent(test_fn(a = 1, b = 5))
   expect_message(test_fn(a = 1, b = 5), "Tip:")
 })
+
+test_that("omitting a param resets its consecutive count", {
+  .cuf_env$param_counts <- list()
+  withr::local_options(cufunctions.hints_defaults = TRUE)
+  
+  # Call with explicit b=5 twice
+  expect_silent(test_fn(a = 1, b = 5)) # count 1
+  expect_silent(test_fn(a = 1, b = 5)) # count 2
+  
+  # Omit b — this triggers the 'else' in cuf_apply_defaults, resetting b tracker
+  expect_silent(test_fn(a = 1))
+  
+  # Next call with b=5 should start at 1 again (not hit threshold 3)
+  expect_silent(test_fn(a = 1, b = 5)) # count 1
+  # One more
+  expect_silent(test_fn(a = 1, b = 5)) # count 2
+  # And the 3rd one should finally trigger the hint
+  expect_message(test_fn(a = 1, b = 5), "Tip:") # count 3
+})
+
