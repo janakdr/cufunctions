@@ -142,3 +142,30 @@ test_that("omitting a param resets its consecutive count", {
   expect_message(test_fn(a = 1, b = 5), "Tip:") # count 3
 })
 
+test_that("internal package calls do not trigger hints", {
+  .cuf_env$param_counts <- list()
+  withr::local_options(cufunctions.hints_defaults = TRUE)
+  
+  inner_fn <- function(a, b = 10) {
+    cuf_apply_defaults(match.call(), environment())
+    b
+  }
+  environment(inner_fn) <- environment(cuf_apply_defaults)
+  
+  outer_fn <- function(fn) {
+    fn(1, b = 5)
+  }
+  environment(outer_fn) <- environment(cuf_apply_defaults)
+  
+  # Direct calls (simulating user) trigger hint on 3rd call
+  expect_silent(inner_fn(1, b = 5))
+  expect_silent(inner_fn(1, b = 5))
+  expect_message(inner_fn(1, b = 5), "Tip:")
+  
+  .cuf_env$param_counts <- list()
+  # Internal calls (simulating package function calling another) NEVER trigger hint
+  expect_silent(outer_fn(inner_fn))
+  expect_silent(outer_fn(inner_fn))
+  expect_silent(outer_fn(inner_fn))
+})
+
