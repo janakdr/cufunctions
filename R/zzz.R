@@ -34,6 +34,12 @@ cuf_apply_defaults <- function(mc, env) {
   fmls <- formals(fn)
   explicit_args <- names(mc)[-1]  # drop the function name
 
+  # Count frames in the call stack belonging to this package's namespace.
+  # > 2 means there's a caller's caller (or higher) in the same package (an internal call).
+  current_top <- topenv(environment())
+  ns_frames <- sum(vapply(sys.frames(), function(e) identical(topenv(e), current_top), logical(1)))
+  is_internal_call <- ns_frames > 2
+
   for (param in names(fmls)) {
     if (param == "...") next
     # Skip required params (no default value)
@@ -43,10 +49,14 @@ cuf_apply_defaults <- function(mc, env) {
 
     if (param %in% explicit_args) {
       # User explicitly passed this param -- track for hint
-      hint_option(param, get(param, envir = env))
+      if (!is_internal_call) {
+        hint_option(param, get(param, envir = env))
+      }
     } else {
       # User relied on default -- reset tracker and check for global override
-      .cuf_env$param_counts[[param]] <- NULL
+      if (!is_internal_call) {
+        .cuf_env$param_counts[[param]] <- NULL
+      }
       opt_val <- getOption(option_name)
       if (!is.null(opt_val)) {
         assign(param, opt_val, envir = env)
