@@ -169,8 +169,8 @@ cu_plot2 = function(progname,depvar,group1,group2,nlev1,nlev2, g1order, g1name, 
       fun=max,vjust=vjus,aes(group=group2),hjust=0.25,position=position_dodge(posd))
     }
     if (plot!="box" && ebars>0) {
-      funname = ifelse(ebars==4,"median_q1q3",ifelse(ebars==3,"mean_cl_boot",
-                                                     ifelse(ebars==2,"mean_se","mean_sd")))
+      funname = switch(ebars, ggpubr::mean_sd, ggplot2::mean_se,
+                       ggplot2::mean_cl_boot, ggpubr::median_q1q3)
       legTF = ifelse(plot=="violin",TRUE,FALSE)
       p <- p + stat_summary(fun.data = funname, show.legend = legTF, 
                 position=position_dodge(width=posd), geom = "pointrange")
