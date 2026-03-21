@@ -227,7 +227,9 @@ cu_plot2 = function(progname,depvar,group1,group2,nlev1,nlev2, g1order, g1name, 
              font.xtickslab = fontxticks, font.ytickslab = fontyticks,
              xticks.by=xticks.by, yticks.by=yticks.by,
              x.text.angle=xangle, y.text.angle=yangle, 
-             legend.title=g2name, caption=caption) + geom_hline(yintercept=0)
+             caption=caption) + 
+       labs(colour = g2name, fill = g2name) +
+       geom_hline(yintercept=0)
   cu_plout(p,progname, suff=suff, ftype=ftype, fname=fname, scale=fscale,
            width=fwidth, height=fheight, dpi=dpi, remove=remove)
   p # print(p)

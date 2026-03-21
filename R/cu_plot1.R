@@ -181,7 +181,8 @@ cu_plot1 = function(progname, depvar,group1, g1order, g1name, depname, title,
              font.xtickslab = fontxticks, font.ytickslab = fontyticks,
              xticks.by=xticks.by, yticks.by=yticks.by,
              x.text.angle=xangle, y.text.angle=yangle, 
-             legend.title=g1name, caption=caption) + 
+             caption=caption) +
+       labs(colour = g1name, fill = g1name) +
        geom_hline(yintercept=0)
   #cat("\nbefore plout")
   cu_plout(p,progname, suff=suff, ftype=ftype, fname=fname, scale=fscale,
