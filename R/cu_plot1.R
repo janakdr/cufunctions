@@ -28,10 +28,10 @@ cu_plot1 = function(progname, depvar,group1, g1order, g1name, depname, title,
 #  cat("rang,binwfac,binwidth ",rang,binwfac,binwidth,"\n")
   if (plot=="box") title=paste(title,"\n Box Plots")
   else {
-    if (ebars==1) {addon="ggpubr::mean_sd"; title=paste(title,"\n Mean +/- S.D.")}
-    if (ebars==2) {addon="ggpubr::mean_se"; title=paste(title,"\n Mean +/- S.E.")}
-    if (ebars==3) {addon="ggpubr::mean_ci"; title=paste(title,"\n Mean and 95% CL")}
-    if (ebars==4) {addon="ggpubr::median_q1q3"; title=paste(title,"\n Median and IQR")}
+    if (ebars==1) {addon="mean_sd"; title=paste(title,"\n Mean +/- S.D.")}
+    if (ebars==2) {addon="mean_se"; title=paste(title,"\n Mean +/- S.E.")}
+    if (ebars==3) {addon="mean_ci"; title=paste(title,"\n Mean and 95% CL")}
+    if (ebars==4) {addon="median_q1q3"; title=paste(title,"\n Median and IQR")}
   }
   #if (is.null(dotsize)) dotsize = ifelse(is.null(yrange),1,0.03*yrange)
   if (is.null(dotsize)) dotsize = ifelse(plot=="rod",0.35,0.7) #yrange no good
@@ -150,7 +150,7 @@ cu_plot1 = function(progname, depvar,group1, g1order, g1name, depname, title,
     funname = ifelse(ebars==4 || plot=="box","median","mean")
       # line is different from point: requires group=2 unlike aes in plot2
     p <- p + stat_summary(fun=funname, geom="line", group=2, 
-                          position=position_dodge(width=posd), linetype=linetype, size=linesize) +
+                          position=position_dodge(width=posd), linetype=linetype, linewidth=linesize) +
       stat_summary(fun=funname, geom="point", position=position_dodge(width=posd))
   }
   pal = "lancet"
@@ -170,8 +170,8 @@ cu_plot1 = function(progname, depvar,group1, g1order, g1name, depname, title,
     p <- p + ggtitle(title) + theme(plot.title = element_text(hjust=jus))
   }
   p <- p + 
-    theme(axis.line = element_line(color=axiscolor,size=axisthick),
-          axis.ticks= element_line(color=tickcolor,size=tickthick), # color ignored
+    theme(axis.line = element_line(color=axiscolor,linewidth=axisthick),
+          axis.ticks= element_line(color=tickcolor,linewidth=tickthick), # color ignored
           axis.ticks.length=unit(ticklength,"mm"),
           legend.title = element_text(size=legheadsize),
           legend.text = element_text(size=legtextsize))
@@ -181,7 +181,8 @@ cu_plot1 = function(progname, depvar,group1, g1order, g1name, depname, title,
              font.xtickslab = fontxticks, font.ytickslab = fontyticks,
              xticks.by=xticks.by, yticks.by=yticks.by,
              x.text.angle=xangle, y.text.angle=yangle, 
-             legend.title=g1name, caption=caption) + 
+             caption=caption) +
+       labs(colour = g1name, fill = g1name) +
        geom_hline(yintercept=0)
   #cat("\nbefore plout")
   cu_plout(p,progname, suff=suff, ftype=ftype, fname=fname, scale=fscale,
