@@ -28,10 +28,10 @@ cu_plot1 = function(progname, depvar,group1, g1order, g1name, depname, title,
 #  cat("rang,binwfac,binwidth ",rang,binwfac,binwidth,"\n")
   if (plot=="box") title=paste(title,"\n Box Plots")
   else {
-    if (ebars==1) {addon="mean_sd"; title=paste(title,"\n Mean +/- S.D.")}
-    if (ebars==2) {addon="mean_se"; title=paste(title,"\n Mean +/- S.E.")}
-    if (ebars==3) {addon="mean_ci"; title=paste(title,"\n Mean and 95% CL")}
-    if (ebars==4) {addon="median_q1q3"; title=paste(title,"\n Median and IQR")}
+    if (ebars==1) {addon="ggpubr::mean_sd"; title=paste(title,"\n Mean +/- S.D.")}
+    if (ebars==2) {addon="ggpubr::mean_se"; title=paste(title,"\n Mean +/- S.E.")}
+    if (ebars==3) {addon="ggpubr::mean_ci"; title=paste(title,"\n Mean and 95% CL")}
+    if (ebars==4) {addon="ggpubr::median_q1q3"; title=paste(title,"\n Median and IQR")}
   }
   #if (is.null(dotsize)) dotsize = ifelse(is.null(yrange),1,0.03*yrange)
   if (is.null(dotsize)) dotsize = ifelse(plot=="rod",0.35,0.7) #yrange no good
