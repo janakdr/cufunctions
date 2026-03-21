@@ -150,7 +150,7 @@ cu_plot1 = function(progname, depvar,group1, g1order, g1name, depname, title,
     funname = ifelse(ebars==4 || plot=="box","median","mean")
       # line is different from point: requires group=2 unlike aes in plot2
     p <- p + stat_summary(fun=funname, geom="line", group=2, 
-                          position=position_dodge(width=posd), linetype=linetype, size=linesize) +
+                          position=position_dodge(width=posd), linetype=linetype, linewidth=linesize) +
       stat_summary(fun=funname, geom="point", position=position_dodge(width=posd))
   }
   pal = "lancet"
@@ -170,8 +170,8 @@ cu_plot1 = function(progname, depvar,group1, g1order, g1name, depname, title,
     p <- p + ggtitle(title) + theme(plot.title = element_text(hjust=jus))
   }
   p <- p + 
-    theme(axis.line = element_line(color=axiscolor,size=axisthick),
-          axis.ticks= element_line(color=tickcolor,size=tickthick), # color ignored
+    theme(axis.line = element_line(color=axiscolor,linewidth=axisthick),
+          axis.ticks= element_line(color=tickcolor,linewidth=tickthick), # color ignored
           axis.ticks.length=unit(ticklength,"mm"),
           legend.title = element_text(size=legheadsize),
           legend.text = element_text(size=legtextsize))

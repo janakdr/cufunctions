@@ -193,7 +193,7 @@ cu_plot2 = function(progname,depvar,group1,group2,nlev1,nlev2, g1order, g1name, 
   if (linetype !="n") {
     funname = ifelse(ebars==4 || plot=="box","median","mean")
     p <- p + stat_summary(fun=funname, geom="line", aes(group=group2,color=group2), 
-          position=position_dodge(width=posd), linetype=linetype, size=linesize) +
+          position=position_dodge(width=posd), linetype=linetype, linewidth=linesize) +
              stat_summary(fun=funname, geom="point", aes(group=group2),
                 position=position_dodge(width=posd))
   }
@@ -217,8 +217,8 @@ cu_plot2 = function(progname,depvar,group1,group2,nlev1,nlev2, g1order, g1name, 
     p <- p + ggtitle(title) + theme(plot.title = element_text(hjust=jus))
   }
   p <- p + 
-    theme(axis.line = element_line(color=axiscolor,size=axisthick),
-          axis.ticks= element_line(color=tickcolor,size=tickthick), # color ignored
+    theme(axis.line = element_line(color=axiscolor,linewidth=axisthick),
+          axis.ticks= element_line(color=tickcolor,linewidth=tickthick), # color ignored
           axis.ticks.length=unit(ticklength,"mm"),
           legend.title = element_text(size=legheadsize),
           legend.text = element_text(size=legtextsize))

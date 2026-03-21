@@ -432,7 +432,7 @@ cucov2way = function(depvar, covar, group1, group2, xs=NULL,
     if (is.logical(shape) && shape) shape=datf[,2]
     p <- ggplot(datf, aes(datf[,3],color=datf[,2])) + 
       geom_point(aes(y=datf[,1]),shape=shape,size=dotsize) + labs(colour=nameboth12) + 
-      geom_line(aes(y=datf[,4]),linetype=linetype,size=linesize)
+      geom_line(aes(y=datf[,4]),linetype=linetype,linewidth=linesize)
   } # what follows is same as in cov1way but for name in cu_plout
   if (is.null(theme)) theme = "bw"
   if (!(theme %in% c("grey","gray","bw","linedraw","light","dark","minimal","classic","void"))) {
@@ -450,8 +450,8 @@ cucov2way = function(depvar, covar, group1, group2, xs=NULL,
     p <- p + ggtitle(title) + theme(plot.title = element_text(hjust=jus))
   }
   p <- p + 
-    theme(axis.line = element_line(color=axiscolor,size=axisthick),
-          axis.ticks= element_line(color=tickcolor,size=tickthick), # color ignored
+    theme(axis.line = element_line(color=axiscolor,linewidth=axisthick),
+          axis.ticks= element_line(color=tickcolor,linewidth=tickthick), # color ignored
           axis.ticks.length=unit(ticklength,"mm"),
           legend.title = element_text(size=legheadsize),
           legend.text = element_text(size=legtextsize))
