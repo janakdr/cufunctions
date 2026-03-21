@@ -59,6 +59,16 @@ test_that("cu1way(tcchange, Diet, plot='violin', dots=1) produces same stats", {
   expect_posthoc_match(out, "cu1way_tcchange_Diet_posthoc")
 })
 
+# --- cu1way plot rendering (catches ggpubr function resolution issues) ---
+
+test_that("cu1way(tcchange, Diet) default bar plot renders without error", {
+  # Default plot="bar" uses ggbarplot(add="ggpubr::mean_sd") which requires
+  # the summary function to be resolvable. This test catches issues where
+  # ggpubr functions aren't findable because the package is only imported,
+  # not attached.
+  expect_no_error(capture.output(cu1way(tcchange, Diet)))
+})
+
 # --- cu1way(tcchange, Diet, ebars=4) — nonparametric Kruskal-Wallis/Dunn ---
 
 test_that("cu1way(tcchange, Diet, ebars=4) summary table matches golden", {
