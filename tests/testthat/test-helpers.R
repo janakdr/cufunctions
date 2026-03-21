@@ -123,6 +123,17 @@ test_that("expect_posthoc_match fails on value mismatch", {
   )
 })
 
+test_that("expect_posthoc_match accepts values within tolerance", {
+  # Output has diff=1.5 but golden says diff=1.0; tol=0.6 should pass
+  fake_output <- "A minus B: 1.5 \u00b1 0.5, p=0.05, CL=[-0.5,2.5]"
+  gn <- with_temp_golden(
+    data.frame(comparison = "A minus B", diff = 1.0, se = 0.5,
+               p = 0.05, cl_lo = -0.5, cl_hi = 2.5,
+               stringsAsFactors = FALSE),
+    "test_posthoc_tolerance_pass")
+  expect_posthoc_match(fake_output, gn, tol = 0.6)
+})
+
 test_that("grouped posthoc rejects partial group name match", {
   fake_output <- c("Monopoly",
                    "M minus F: 5.0 ± 1.0, p=0.01, CL=[3,7]")
