@@ -1,0 +1,3 @@
+"p_value","model"
+"0.00353","model with just sex - cu1way(tcchange,sex)"
+"0.161","model with just Diet - cu1way(tcchange,Diet)"
