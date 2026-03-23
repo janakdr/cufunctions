@@ -131,16 +131,27 @@ parse_summary_table <- function(output) {
   lines <- output
   if (length(lines) == 1) lines <- strsplit(lines, "\n")[[1]]
 
-  # Strip leading blank lines so title is always line 1, header line 2
+  # Strip leading blank lines
   while (length(lines) > 0 && trimws(lines[1]) == "") lines <- lines[-1]
 
-  # Find the end of data rows (first blank line after header)
+  # Find the N row to anchor the table (N(tot), Nhave, or just N)
+  # Limit search to the first 20 lines to avoid jumping to later sections
+  search_limit <- min(length(lines), 20)
+  n_idx <- grep("^N\\(tot\\)|^N |^Nhave", trimws(lines[1:search_limit]))
+  if (length(n_idx) == 0) testthat::fail("Summary table (N row) not found near start of output")
+  n_idx <- n_idx[1]
+
+  # Header is the line immediately above N
+  header_idx <- n_idx - 1
+  if (header_idx < 1) testthat::fail("Summary table header not found above N row")
+
+  # Find the end of data rows (first blank line after N row)
   end <- length(lines)
-  for (i in 3:length(lines)) {
+  for (i in (n_idx + 1):length(lines)) {
     if (trimws(lines[i]) == "") { end <- i - 1; break }
   }
 
-  parse_fixed_width_table(lines[2], lines[3:end])
+  parse_fixed_width_table(lines[header_idx], lines[n_idx:end])
 }
 
 #' Parse a table with significance stars from captured console output.
@@ -629,25 +640,7 @@ parse_dunn_table <- function(output) {
   header_idx <- dunn_idx + 2
   while (header_idx <= length(lines) && trimws(lines[header_idx]) == "") header_idx <- header_idx + 1
 
-  # Collect data lines until blank or "P value"
-  data_lines <- character()
-  for (i in (header_idx + 1):length(lines)) {
-    trimmed <- trimws(lines[i])
-    if (trimmed == "" || grepl("^P value", trimmed)) break
-    data_lines <- c(data_lines, lines[i])
-  }
-
-  # Parse the lower-triangular matrix with read.table (fills left-to-right)
-  col_names <- strsplit(trimws(lines[header_idx]), " +")[[1]]
-  block <- paste(c(lines[header_idx], data_lines), collapse = "\n")
-  df <- read.table(text = block, header = TRUE, fill = TRUE,
-                   stringsAsFactors = FALSE, check.names = FALSE)
-  # Add the row-label column
-  df <- cbind(stat = rownames(df), df, stringsAsFactors = FALSE)
-  rownames(df) <- NULL
-  # Replace NA with "" for consistency with golden CSV
-  df[is.na(df)] <- ""
-  df
+  parse_matrix_from_header(lines, header_idx)
 }
 
 #' Parse a pairwise comparison matrix from output (general, non-Dunn).
@@ -679,19 +672,105 @@ parse_pairwise_matrix <- function(output) {
          (trimws(lines[header_idx]) == "" || grepl("^data:", lines[header_idx])))
     header_idx <- header_idx + 1
 
-  # Collect data lines until blank or "P value"
+  parse_matrix_from_header(lines, header_idx)
+}
+
+#' Parse a lower-triangular matrix starting from a known header line.
+#'
+#' Collects data lines below the header until a blank line or a footer
+#' pattern ("P value", "Each p-value", "At tcpre"). Uses read.table to
+#' parse the block.
+#'
+#' @param lines Character vector of all output lines
+#' @param header_idx Index of the header line (group names)
+#' @return A data.frame with a "stat" column and one column per group
+#' @keywords internal
+parse_matrix_from_header <- function(lines, header_idx) {
+  # Collect data lines until blank or footer
   data_lines <- character()
   for (i in (header_idx + 1):length(lines)) {
     trimmed <- trimws(lines[i])
-    if (trimmed == "" || grepl("^P value", trimmed)) break
+    if (trimmed == "" || grepl("^P value", trimmed) ||
+        grepl("^Each p-value", trimmed) || grepl("^At tcpre", trimmed)) break
     data_lines <- c(data_lines, lines[i])
   }
 
+  # Parse the lower-triangular matrix with read.table (fills left-to-right)
   block <- paste(c(lines[header_idx], data_lines), collapse = "\n")
   df <- read.table(text = block, header = TRUE, fill = TRUE,
                    stringsAsFactors = FALSE, check.names = FALSE)
+  # Add the row-label column
   df <- cbind(stat = rownames(df), df, stringsAsFactors = FALSE)
   rownames(df) <- NULL
+  # Replace NA with "" for consistency with golden CSV
   df[is.na(df)] <- ""
   df
+}
+
+#' Parse a generic p-value matrix by searching for a header pattern.
+#'
+#' Finds the section by grep, then skips blanks to the matrix header
+#' and delegates to parse_matrix_from_header.
+#'
+#' @param output Character vector of captured output lines
+#' @param header_pattern Regex pattern to identify the section header
+#' @return A data.frame in matrix form
+parse_p_matrix <- function(output, header_pattern) {
+  lines <- output
+  if (length(lines) == 1) lines <- strsplit(lines, "\n")[[1]]
+
+  sec_idx <- grep(header_pattern, lines)
+  if (length(sec_idx) == 0) testthat::fail(sprintf("Matrix header '%s' not found", header_pattern))
+  sec_idx <- sec_idx[1]
+
+  header_idx <- sec_idx + 1
+  while (header_idx <= length(lines) && trimws(lines[header_idx]) == "")
+    header_idx <- header_idx + 1
+
+  parse_matrix_from_header(lines, header_idx)
+}
+
+#' Parse "Partial F-test vs simpler models" section.
+#'
+#' Example output:
+#'   "Partial F-test vs simpler models:"
+#'   "p=1.2e-09 vs model with just Diet - cu1way(tcstudy,Diet)"
+#'   ...
+#'
+#' @param output Character vector of captured output lines
+#' @return A data.frame with columns p_value and model
+parse_f_tests <- function(output) {
+  lines <- output
+  if (length(lines) == 1) lines <- strsplit(lines, "\n")[[1]]
+
+  sec_idx <- grep("Partial F-test vs simpler models:", lines, fixed = TRUE)
+  if (length(sec_idx) == 0) testthat::fail("F-tests header not found")
+
+  f_rows <- list()
+  for (i in (sec_idx[1] + 1):length(lines)) {
+    trimmed <- trimws(lines[i])
+    if (trimmed == "" || startsWith(trimmed, ">")) break
+
+    m <- regmatches(trimmed, regexec("^p=([^ ]+) vs (.+)$", trimmed))[[1]]
+    if (length(m) > 2) {
+      f_rows[[length(f_rows) + 1]] <- data.frame(p_value = m[2], model = m[3],
+                                                 stringsAsFactors = FALSE)
+    }
+  }
+
+  do.call(rbind, f_rows)
+}
+
+#' Check that Partial F-tests match a golden CSV.
+#'
+#' Golden CSV columns: p_value, model
+#'
+#' @param output Character vector of captured output lines
+#' @param golden_name Basename of the golden CSV file (without .csv)
+#' @param tol Relative tolerance for numeric comparisons (0 = exact match)
+expect_partial_f_match <- function(output, golden_name, tol = 0) {
+  actual <- parse_f_tests(output)
+  golden <- load_golden(golden_name)
+  expect_table_match(actual, golden, id_col = "model",
+                     label = paste("F-tests", golden_name), tol = tol)
 }
