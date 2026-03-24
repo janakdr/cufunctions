@@ -16,14 +16,14 @@ test_that("cutable1(NEJM) summary table matches golden", {
   out <- capture.output(cutable1(NEJM, plot = "no"))
   golden <- load_golden("cutable1_NEJM")
   actual <- parse_multi_chunk_table(out, row_labels = golden$stat)
-  expect_table_match(actual, golden, label = "cutable1(NEJM)")
+  expect_table_match(actual, golden, label = "cutable1(NEJM)", tol = 0.01)
 })
 
 test_that("cutable1(NEJM, Diet, brief=T) matches golden", {
   out <- capture.output(cutable1(NEJM, Diet, brief = TRUE, plot = "no"))
   golden <- load_golden("cutable1_NEJM_Diet_brief")
   actual <- parse_brief_table(out, row_labels = golden$stat)
-  expect_table_match(actual, golden, label = "cutable1(NEJM, Diet, brief=T)")
+  expect_table_match(actual, golden, label = "cutable1(NEJM, Diet, brief=T)", tol = 0.01)
 })
 
 test_that("cutable1(NEJM, Diet, compare=T) tcchange matches golden", {

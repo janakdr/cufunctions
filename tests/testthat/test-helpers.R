@@ -51,10 +51,16 @@ test_that("compare_values passes on equal non-numeric strings", {
   expect_null(compare_values("<.001", "<.001"))
 })
 
-test_that("compare_values ignores tolerance for non-numeric strings", {
-  # Tolerance only applies to numeric comparisons; strings use exact match
-  expect_equal(compare_values("<.001", "<.01", tol = 1.0),
-               "expected '<.001', got '<.01'")
+test_that("compare_values applies tolerance to numeric substrings in compound strings", {
+  # Compound strings like "37.4±6.91" have numeric parts extracted and compared
+  expect_null(compare_values("37.4\u00b16.91", "37.4\u00b16.92", tol = 0.02))
+  expect_null(compare_values("26.1(23.7:29.6)", "26(23.7:29.6)", tol = 0.01))
+  # Still fails if a component exceeds tolerance
+  expect_true(!is.null(compare_values("37.4\u00b16.91", "37.4\u00b17.50", tol = 0.02)))
+  # Strings with no numeric parts use exact match even with tolerance
+  expect_equal(compare_values("abc", "def", tol = 1.0),
+               "expected 'abc', got 'def'")
+  # Exact match always passes
   expect_null(compare_values("<.001", "<.001", tol = 1.0))
 })
 
@@ -169,7 +175,7 @@ test_that("grouped posthoc reports line that doesn't match expected comparison",
     "test_grouped_garbage")
   expect_error(
     expect_grouped_posthoc_match(fake_output, gn, tol = 0),
-    "Group 'GroupA', row 'A minus B': expected comparison not found on line: unexpected garbage line"
+    "comparison not found under group"
   )
 })
 

@@ -242,7 +242,7 @@ test_that("cu1way(WTCAT, MetSyn, ordinal) summary matches golden", {
   data(AJCN, envir = environment())
   out <- capture.output(with(AJCN, cu1way(WTCAT, MetSyn, ordinal=c("lean","overwt","obese"), plot="no")))
   
-  actual <- parse_summary_table(out, concat_tokens = TRUE)
+  actual <- parse_summary_table(out)
 
 
   golden <- load_golden("cu1way_ordinal_summary")

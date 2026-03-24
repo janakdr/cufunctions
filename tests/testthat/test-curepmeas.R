@@ -32,9 +32,9 @@ test_that("curepmeas Case 1: single factor", {
   expect_table_match(actual_updn, golden_updn, id_col = "term", label = "Case 1 updn")
   
   # 4. Sign Test Table
-  actual_sign <- parse_curepmeas_table(output, "^up:dn", skip_lines = 0)
   golden_sign <- load_golden("curepmeas_like_sign_test")
-  expect_table_match(actual_sign, golden_sign, id_col = "term", label = "Case 1 sign")
+  actual_sign <- parse_sign_test_table(output)
+  expect_table_match(actual_sign, golden_sign, id_col = "threshold", label = "Case 1 sign")
 })
 
 test_that("curepmeas Case 2: two factors", {
@@ -61,8 +61,8 @@ test_that("curepmeas Case 2: two factors", {
   expect_table_match(actual_updn, golden_updn, id_col = "term", label = "Case 2 updn")
   
   # 4. Sign Test Table
-  actual_sign <- parse_curepmeas_table(output, "^up:dn", skip_lines = 0)
   golden_sign <- load_golden("curepmeas_like_sex_sign_test")
-  expect_table_match(actual_sign, golden_sign, id_col = "term", label = "Case 2 sign")
+  actual_sign <- parse_sign_test_table(output)
+  expect_table_match(actual_sign, golden_sign, id_col = "threshold", label = "Case 2 sign")
 })
 

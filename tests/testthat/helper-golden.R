@@ -72,8 +72,7 @@ extract_section_lines <- function(output, header_regex, stop_regex_list = list("
 #'   first whitespace-delimited token.
 #' @return A data.frame with id_col and one column per header column
 parse_fixed_width_table <- function(header_line, data_lines, id_col = "stat",
-                                    col_names = NULL, row_labels = NULL,
-                                    concat_tokens = FALSE) {
+                                    col_names = NULL, row_labels = NULL) {
   if (is.null(col_names)) {
     # Single-word headers: split on whitespace
     hdr_matches <- gregexpr("[^ ]+", header_line)[[1]]
@@ -107,7 +106,7 @@ parse_fixed_width_table <- function(header_line, data_lines, id_col = "stat",
         stop("Row label '", label, "' not found in line: ", line)
       label_end <- label_pos + attr(label_pos, "match.length") - 1
     } else {
-      label <- strsplit(trimws(line), " {2,}")[[1]][1]
+      label <- strsplit(trimws(line), " +")[[1]][1]
       label_end <- regexpr(label, line, fixed = TRUE)
       label_end <- label_end + attr(label_end, "match.length") - 1
     }
@@ -129,14 +128,11 @@ parse_fixed_width_table <- function(header_line, data_lines, id_col = "stat",
             break
           }
         }
-        if (concat_tokens) {
-          if (values[best_col] == "") {
-            values[best_col] <- substr(line, token_start, token_end)
-          } else {
-            values[best_col] <- paste(values[best_col], substr(line, token_start, token_end))
-          }
-        } else {
+        if (values[best_col] == "") {
           values[best_col] <- substr(line, token_start, token_end)
+        } else {
+          # Concatenate when a cell value contains whitespace (e.g. ordinal "38.5%: 25")
+          values[best_col] <- paste(values[best_col], substr(line, token_start, token_end))
         }
       }
     }
@@ -161,7 +157,7 @@ parse_fixed_width_table <- function(header_line, data_lines, id_col = "stat",
 #'
 #' @param output Character vector of captured output lines
 #' @return A data.frame with a "stat" column and one column per group
-parse_summary_table <- function(output, ...) {
+parse_summary_table <- function(output) {
   lines <- output
   if (length(lines) == 1) lines <- strsplit(lines, "\n")[[1]]
 
@@ -185,7 +181,7 @@ parse_summary_table <- function(output, ...) {
     if (trimws(lines[i]) == "") { end <- i - 1; break }
   }
 
-  parse_fixed_width_table(lines[header_idx], lines[n_idx:end], ...)
+  parse_fixed_width_table(lines[header_idx], lines[n_idx:end])
 }
 
 
@@ -374,7 +370,8 @@ parse_section_table <- function(output, section_pattern,
 #'   Default 1 (assumes match is a Title line, next line is Header).
 #'   Use 0 if the match IS the header line (e.g., up:dn).
 #' @return A data.frame
-parse_curepmeas_table <- function(output, header_pattern, id_col = "term", skip_lines = 1) {
+parse_curepmeas_table <- function(output, header_pattern, id_col = "term",
+                                   skip_lines = 1, row_labels = NULL) {
   idx <- grep(header_pattern, output)
   if (length(idx) == 0) return(NULL)
   start_idx <- idx[1]
@@ -402,8 +399,9 @@ parse_curepmeas_table <- function(output, header_pattern, id_col = "term", skip_
   nhave_idxs <- grep("^ *Nhave", data_lines)
   
   if (length(nhave_idxs) <= 1) {
-    # Single table
-    return(parse_fixed_width_table(data_lines[1], data_lines[-1], id_col = id_col))
+    # Single table (e.g. sign test — no Nhave rows)
+    return(parse_fixed_width_table(data_lines[1], data_lines[-1], id_col = id_col,
+                                    row_labels = row_labels))
   }
   
   sub_tables <- list()
@@ -433,6 +431,79 @@ parse_curepmeas_table <- function(output, header_pattern, id_col = "term", skip_
   return(merged_df)
 }
 
+#' Parse a curepmeas sign test table from captured output.
+#'
+#' The sign test table has alternating count rows (e.g., |Δ| > 3  5:4  5:4)
+#' and p-value rows (e.g.,          p=1     p=1     p= NA).
+#' This parser finds the table, pairs each count row with its p-value row,
+#' and produces a data frame with count and p-value columns per comparison.
+#'
+#' @param output Character vector of captured output lines
+#' @return A data.frame with threshold as row label, and paired count/p columns
+parse_sign_test_table <- function(output) {
+  # Find "up:dn" header line
+  idx <- grep("^up:dn", output)
+  if (length(idx) == 0) return(NULL)
+  header_idx <- idx[1]
+
+  # Parse header for column names
+  header_line <- output[header_idx]
+  col_names <- strsplit(trimws(header_line), " +")[[1]]
+  # First token is "up:dn" (the row-label column header), rest are comparison names
+  comp_names <- col_names[-1]
+
+  # Collect data lines until blank/end
+  data_lines <- character()
+  for (i in (header_idx + 1):length(output)) {
+    if (trimws(output[i]) == "" || grepl("^p-value NA", output[i])) break
+    data_lines <- c(data_lines, output[i])
+  }
+
+  # Parse count and p-value lines using the header for column positions
+  # Count lines start with |Δ|, p-value lines start with whitespace
+  thresholds <- character()
+  count_rows <- list()
+  p_rows <- list()
+  row_idx <- 0
+
+  for (line in data_lines) {
+    tokens <- strsplit(trimws(line), " +")[[1]]
+    if (grepl("^\\|", trimws(line))) {
+      # Count row: |Δ| > N  values...
+      row_idx <- row_idx + 1
+      # Label is first 3 tokens: |Δ| > N
+      threshold <- paste(tokens[1:3], collapse = " ")
+      thresholds <- c(thresholds, threshold)
+      count_rows[[row_idx]] <- tokens[4:length(tokens)]
+    } else {
+      # P-value row: p=val values...
+      # Recombine split "p= NA" — strsplit splits it into "p=" and "NA"
+      merged <- character()
+      i <- 1
+      while (i <= length(tokens)) {
+        if (grepl("=$", tokens[i]) && i < length(tokens)) {
+          merged <- c(merged, paste(tokens[i], tokens[i + 1]))
+          i <- i + 2
+        } else {
+          merged <- c(merged, tokens[i])
+          i <- i + 1
+        }
+      }
+      p_rows[[row_idx]] <- merged
+    }
+  }
+
+  # Build data frame
+  result <- data.frame(threshold = thresholds, stringsAsFactors = FALSE)
+  for (j in seq_along(comp_names)) {
+    count_vals <- sapply(count_rows, function(r) if (j <= length(r)) r[j] else "")
+    p_vals <- sapply(p_rows, function(r) if (j <= length(r)) r[j] else "")
+    result[[comp_names[j]]] <- count_vals
+    result[[paste0(comp_names[j], "_p")]] <- p_vals
+  }
+  result
+}
+
 # --- Shared comparison internals ---
 
 #' Compare two scalar values, returning NULL on match or an error string.
@@ -453,6 +524,7 @@ compare_values <- function(expected, actual, tol = 0) {
     return(sprintf("expected '%s', got '%s'",
                    if (g_empty) "<empty>" else expected,
                    if (a_empty) "<empty>" else actual))
+  # Pure numeric comparison
   g_num <- suppressWarnings(as.numeric(expected))
   a_num <- suppressWarnings(as.numeric(actual))
   if (!is.na(g_num) && !is.na(a_num)) {
@@ -466,6 +538,24 @@ compare_values <- function(expected, actual, tol = 0) {
                        expected, actual, rel_diff, tol))
     }
     return(NULL)
+  }
+  # Compound string comparison: when tol > 0, extract all numeric substrings
+  # and compare pairwise (e.g. "37.4±6.91" vs "37.4±6.92", or
+  # "26.1(23.7:29.6)" vs "26(23.7:29.6)")
+  if (tol > 0 && expected != actual) {
+    num_re <- "-?[0-9]+\\.?[0-9]*(?:[eE][+-]?[0-9]+)?"
+    g_nums <- as.numeric(regmatches(expected, gregexpr(num_re, expected, perl = TRUE))[[1]])
+    a_nums <- as.numeric(regmatches(actual, gregexpr(num_re, actual, perl = TRUE))[[1]])
+    if (length(g_nums) > 0 && length(g_nums) == length(a_nums)) {
+      for (k in seq_along(g_nums)) {
+        rel_diff <- abs(g_nums[k] - a_nums[k]) /
+                    max(abs(g_nums[k]), abs(a_nums[k]), 1e-10)
+        if (rel_diff > tol)
+          return(sprintf("expected '%s', got '%s' (component %d: %.4g vs %.4g, rel diff %.2g > tol %.2g)",
+                         expected, actual, k, g_nums[k], a_nums[k], rel_diff, tol))
+      }
+      return(NULL)  # All numeric components within tolerance
+    }
   }
   if (expected != actual)
     return(sprintf("expected '%s', got '%s'", expected, actual))
