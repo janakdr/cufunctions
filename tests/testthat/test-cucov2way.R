@@ -1,13 +1,11 @@
 # Tests for cucov2way based on cufuncs-tests.docx.txt
 # Golden values are in tests/testthat/golden/*.csv
 
-attach_NEJM()
-withr::defer(detach_NEJM(), teardown_env())
 
 # --- Case 1: default interact=T ---
 
 test_that("cucov2way(tcstudy, tcpre, Diet, sex) matches golden", {
-  out <- capture.output(cucov2way(tcstudy, tcpre, Diet, sex))
+  out <- capture.output(with(NEJM, cucov2way(tcstudy, tcpre, Diet, sex)))
 
   # Coefficients
   actual_coef <- parse_coef_table(out)
@@ -24,7 +22,7 @@ test_that("cucov2way(tcstudy, tcpre, Diet, sex) matches golden", {
 # --- Case 2: with covariate values ---
 
 test_that("cucov2way(tcstudy, tcpre, Diet, sex, c(160,180,200)) matches golden", {
-  out <- capture.output(cucov2way(tcstudy, tcpre, Diet, sex, c(160, 180, 200)))
+  out <- capture.output(with(NEJM, cucov2way(tcstudy, tcpre, Diet, sex, c(160, 180, 200))))
 
   # Coefficients
   actual_coef <- parse_coef_table(out)
@@ -41,7 +39,7 @@ test_that("cucov2way(tcstudy, tcpre, Diet, sex, c(160,180,200)) matches golden",
 # --- Case 3: interact=F ---
 
 test_that("cucov2way(interact=F) matches golden", {
-  out <- capture.output(cucov2way(tcstudy, tcpre, Diet, sex, interact = FALSE))
+  out <- capture.output(with(NEJM, cucov2way(tcstudy, tcpre, Diet, sex, interact = FALSE)))
 
   # Coefficients
   actual_coef <- parse_coef_table(out)
@@ -58,7 +56,7 @@ test_that("cucov2way(interact=F) matches golden", {
 # --- Case 4: interact=F with covariate values ---
 
 test_that("cucov2way(interact=F, c(160,180,200)) matches golden", {
-  out <- capture.output(cucov2way(tcstudy, tcpre, Diet, sex, interact = FALSE, c(160, 180, 200)))
+  out <- capture.output(with(NEJM, cucov2way(tcstudy, tcpre, Diet, sex, interact = FALSE, c(160, 180, 200))))
 
   # Coefficients
   actual_coef <- parse_coef_table(out)

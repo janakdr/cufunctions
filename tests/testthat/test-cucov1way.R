@@ -1,13 +1,11 @@
 # Tests for cucov1way based on cufunctions-tests-with-output.txt
 # Golden values are in tests/testthat/golden/*.csv
 
-attach_NEJM()
-withr::defer(detach_NEJM(), teardown_env())
 
 # --- cucov1way(tcstudy, tcpre, Diet) — default ---
 
 test_that("cucov1way(tcstudy, tcpre, Diet) summary, coef, posthoc, p-matrix, and F-tests match golden", {
-  out <- capture.output(cucov1way(tcstudy, tcpre, Diet))
+  out <- capture.output(with(NEJM, cucov1way(tcstudy, tcpre, Diet)))
 
   # Summary table
   actual_summary <- parse_summary_table(out)
@@ -37,8 +35,8 @@ test_that("cucov1way(tcstudy, tcpre, Diet) summary, coef, posthoc, p-matrix, and
 # --- cucov1way(tcstudy, tcpre, Diet, g1order=...) — reordered groups ---
 
 test_that("cucov1way with g1order reorders summary and coefficients", {
-  out <- capture.output(cucov1way(tcstudy, tcpre, Diet,
-                                  g1order = c("Step1", "Mono", "AAD")))
+  out <- capture.output(with(NEJM, cucov1way(tcstudy, tcpre, Diet,
+                                  g1order = c("Step1", "Mono", "AAD"))))
 
   # Summary table (columns reordered)
   actual_summary <- parse_summary_table(out)

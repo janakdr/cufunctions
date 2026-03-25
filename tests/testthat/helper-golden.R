@@ -1,20 +1,6 @@
 # Helper functions for golden-value testing
 # This file is auto-loaded by testthat (files matching helper-*.R)
 
-#' Attach the NEJM dataset for the current test file.
-#' Use in test files as:
-#'   local_NEJM <- function(env = parent.frame()) {
-#'     attach_NEJM()
-#'     withr::defer(detach_NEJM(), envir = env)
-#'   }
-attach_NEJM <- function() {
-  data(NEJM, envir = parent.frame())
-  attach(NEJM, warn.conflicts = FALSE)
-}
-
-detach_NEJM <- function() {
-  detach(NEJM)
-}
 
 #' Load a golden CSV from the golden/ directory
 #'
