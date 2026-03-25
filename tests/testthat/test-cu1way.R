@@ -244,7 +244,6 @@ test_that("cu1way(WTCAT, MetSyn, ordinal) summary matches golden", {
   
   actual <- parse_summary_table(out)
 
-
   golden <- load_golden("cu1way_ordinal_summary")
   expect_table_match(actual, golden, label = "cu1way ordinal summary", tol = 0.02)
 })

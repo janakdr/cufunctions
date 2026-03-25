@@ -17,7 +17,7 @@ test_that("culogist standard run matches golden", {
   })
   
   # 1. Predictors Table
-  pred_lines <- extract_section_lines(output, "Predictor summary vs MetSyn and p-values", stop_regex_list = list("^Shapiro-Wilk"))
+  pred_lines <- extract_section_lines(output, "Predictor summary vs MetSyn and p-values", stop_prefix_list = list("Shapiro-Wilk"))
   expect_true(!is.null(pred_lines))
   pred_labels <- c("N from HDL on:", "HDL-Mean\u00b1SD", "LN_TG-Mean\u00b1SD",
                     "BMI-Median(IQR)", "GLUC-Median(IQR)", "INS-Median(IQR)")
@@ -37,7 +37,7 @@ test_that("culogist standard run matches golden", {
   expect_table_match(actual_coef1, golden_coef1, id_col = "term", label = "Coef 1", tol = 0.03)
   
   # 3. Model Selection Table
-  modsel_lines <- extract_section_lines(output, "^Model selection table", stop_regex_list = list("^Models ranked by"))
+  modsel_lines <- extract_section_lines(output, "Model selection table", stop_prefix_list = list("Models ranked by"))
   expect_true(!is.null(modsel_lines))
   
   ids_modsel <- sapply(modsel_lines[3:length(modsel_lines)], function(l) {
@@ -59,7 +59,7 @@ test_that("culogist standard run matches golden", {
   expect_table_match(actual_coef2, golden_coef2, id_col = "term", label = "Coef 2", tol = 0.03)
   
   # 5. Odds Ratio Stats — header has multi-word columns
-  or_lines <- extract_section_lines(output, "^Odds Ratio stats")
+  or_lines <- extract_section_lines(output, "Odds Ratio stats")
   expect_true(!is.null(or_lines))
   or_col_names <- c("coeff", "Std Err", "Odds Ratio", "lower .95", "upper .95")
   actual_or <- parse_fixed_width_table(or_lines[2], or_lines[3:length(or_lines)],

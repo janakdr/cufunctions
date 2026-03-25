@@ -76,7 +76,7 @@ test_that("cu2way(feel, WTCAT, Sex, ordinal) counts match golden", {
   data(AJCN, envir = environment())
   out <- capture.output(with(AJCN, cu2way(feel, WTCAT, Sex, g1order=c("lean","overwt","obese"), ordinal=c("bad","ok","good"))))
   
-  counts_lines <- extract_section_lines(out, "^     lean&F")
+  counts_lines <- extract_section_lines(out, "     lean&F")
   expect_true(!is.null(counts_lines))
   
   data_lines <- counts_lines[2:length(counts_lines)]

@@ -28,21 +28,24 @@ load_golden <- function(name) {
 
 #' Extract lines belonging to a section from captured output.
 #'
+#' Example usage:
+#'   extract_section_lines(output, "Predictor summary", list("Shapiro-Wilk", "Models ranked"))
+#'
 #' @param output Character vector of captured output lines
-#' @param header_regex Regex to identify the start of the section
-#' @param stop_regex_list List of regexes that mark the end of the section
+#' @param header_prefix Initial substring to identify the start of the section
+#' @param stop_prefix_list List of strings that mark the end of the section (checked via startsWith). Default is an empty line.
 #' @return Character vector of section lines, or NULL if not found
-extract_section_lines <- function(output, header_regex, stop_regex_list = list("^$")) {
-  idx <- grep(header_regex, output)
+extract_section_lines <- function(output, header_prefix, stop_prefix_list = list("")) {
+  idx <- which(startsWith(output, header_prefix))
   if (length(idx) == 0) return(NULL)
   start <- idx[1]
   end <- start + 1
   while (end <= length(output)) {
     line <- output[end]
-    if (line == "" || grepl("^>", line)) break
+    if (line == "" || startsWith(line, ">")) break
     matched_stop <- FALSE
-    for (stop_regex in stop_regex_list) {
-      if (grepl(stop_regex, line)) { matched_stop <- TRUE; break }
+    for (stop_prefix in stop_prefix_list) {
+      if (nzchar(stop_prefix) && startsWith(line, stop_prefix)) { matched_stop <- TRUE; break }
     }
     if (matched_stop) break
     end <- end + 1
@@ -131,7 +134,6 @@ parse_fixed_width_table <- function(header_line, data_lines, id_col = "stat",
         if (values[best_col] == "") {
           values[best_col] <- substr(line, token_start, token_end)
         } else {
-          # Concatenate when a cell value contains whitespace (e.g. ordinal "38.5%: 25")
           values[best_col] <- paste(values[best_col], substr(line, token_start, token_end))
         }
       }
@@ -224,7 +226,7 @@ parse_starred_table <- function(output, id_col, col_names, p_col = NULL) {
   for (i in (header_idx + 1):length(lines)) {
     line <- lines[i]
     trimmed <- trimws(line)
-    if (trimmed == "" || grepl("^---", trimmed) || grepl("^Signif", trimmed)) break
+    if (trimmed == "" || startsWith(trimmed, "---") || startsWith(trimmed, "Signif")) break
     raw_lines <- c(raw_lines, line)
     data_lines <- c(data_lines, sub(" +[*\\.]+ *$", "", line))
   }
@@ -300,7 +302,7 @@ parse_coef_table <- function(output, col_names = NULL) {
 #' @param row_labels Character vector of expected row labels
 #' @return A data.frame with all columns merged
 parse_multi_chunk_table <- function(output, row_labels) {
-  hdr_indices <- which(grepl("^ +[^ ]", output))
+  hdr_indices <- which(startsWith(output, " ") & nzchar(trimws(output)))
   actual <- NULL
   for (h in hdr_indices) {
     end <- h + 1
@@ -328,7 +330,7 @@ parse_multi_chunk_table <- function(output, row_labels) {
 #' @param row_labels Character vector of expected row labels
 #' @return A data.frame
 parse_brief_table <- function(output, row_labels) {
-  hdr_idx <- which(grepl("^ +[^ ]", output))
+  hdr_idx <- which(startsWith(output, " ") & nzchar(trimws(output)))
   end <- hdr_idx[1] + 1
   while (end <= length(output) && trimws(output[end]) != "")
     end <- end + 1
@@ -363,6 +365,12 @@ parse_section_table <- function(output, section_pattern,
 
 #' Parse a curepmeas table from output lines, handling wrapping.
 #'
+#' Example input:
+#'   output contains:
+#'     "like        AAD     LowSat  Step1   All"
+#'     "worst       17.5%: 18       11.7%: 12       11.7%: 12       13.6%: 42"
+#'     ...
+#'
 #' @param output Character vector of output lines
 #' @param header_pattern Regex pattern to find the table section or header
 #' @param id_col Name for the first column, default "term"
@@ -396,14 +404,17 @@ parse_curepmeas_table <- function(output, header_pattern, id_col = "term",
   # --- Wrapped Table Parsing Logic ---
   # Nhave is the marker for data start in sub-tables
   data_lines <- table_lines[(skip_lines + 1):length(table_lines)]
-  nhave_idxs <- grep("^ *Nhave", data_lines)
+  # Find the indices of lines that start with "Nhave" (ignoring leading spaces)
+  nhave_idxs <- which(grepl("^ *Nhave", data_lines))
   
   if (length(nhave_idxs) <= 1) {
-    # Single table (e.g. sign test — no Nhave rows)
+    # Single table case (or no Nhave rows at all, like in the sign test)
+    # We parse it as a single fixed-width table block.
     return(parse_fixed_width_table(data_lines[1], data_lines[-1], id_col = id_col,
                                     row_labels = row_labels))
   }
   
+  # Multi-table wrapped case
   sub_tables <- list()
   for (k in seq_along(nhave_idxs)) {
     nhave_idx <- nhave_idxs[k]
@@ -438,7 +449,14 @@ parse_curepmeas_table <- function(output, header_pattern, id_col = "term",
 #' This parser finds the table, pairs each count row with its p-value row,
 #' and produces a data frame with count and p-value columns per comparison.
 #'
-#' @param output Character vector of captured output lines
+#' Example input:
+#'   output contains:
+#'     "        Step1   All"
+#'     "up:dn   47%: 28 45.4%: 83"
+#'     "|Δ| > 0 18      47"
+#'     "p=val   N/A     0.462"
+#'
+#' @param output Character vector of lines in the table block
 #' @return A data.frame with threshold as row label, and paired count/p columns
 parse_sign_test_table <- function(output) {
   # Find "up:dn" header line
@@ -455,7 +473,7 @@ parse_sign_test_table <- function(output) {
   # Collect data lines until blank/end
   data_lines <- character()
   for (i in (header_idx + 1):length(output)) {
-    if (trimws(output[i]) == "" || grepl("^p-value NA", output[i])) break
+    if (trimws(output[i]) == "" || startsWith(output[i], "p-value NA")) break
     data_lines <- c(data_lines, output[i])
   }
 
@@ -468,7 +486,7 @@ parse_sign_test_table <- function(output) {
 
   for (line in data_lines) {
     tokens <- strsplit(trimws(line), " +")[[1]]
-    if (grepl("^\\|", trimws(line))) {
+    if (startsWith(trimws(line), "|")) {
       # Count row: |Δ| > N  values...
       row_idx <- row_idx + 1
       # Label is first 3 tokens: |Δ| > N
@@ -967,7 +985,7 @@ parse_pairwise_matrix <- function(output) {
   # Skip blanks + "data:" line + blanks to find the matrix header
   header_idx <- pw_idx + 1
   while (header_idx <= length(lines) &&
-         (trimws(lines[header_idx]) == "" || grepl("^data:", lines[header_idx])))
+         (trimws(lines[header_idx]) == "" || startsWith(lines[header_idx], "data:")))
     header_idx <- header_idx + 1
 
   parse_matrix_from_header(lines, header_idx)
@@ -988,8 +1006,8 @@ parse_matrix_from_header <- function(lines, header_idx) {
   data_lines <- character()
   for (i in (header_idx + 1):length(lines)) {
     trimmed <- trimws(lines[i])
-    if (trimmed == "" || grepl("^P value", trimmed) ||
-        grepl("^Each p-value", trimmed) || grepl("^At tcpre", trimmed)) break
+    if (trimmed == "" || startsWith(trimmed, "P value") ||
+        startsWith(trimmed, "Each p-value") || startsWith(trimmed, "At tcpre")) break
     data_lines <- c(data_lines, lines[i])
   }
 
