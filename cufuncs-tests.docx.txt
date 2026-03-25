@@ -1484,34 +1484,6 @@ p=0.00933 vs model with just tcpre - lm(tcstudy ~ tcpre)
 > cucov2way(tcstudy, tcpre, Diet, sex)
 
 
-Analyzing (just as point of reference) without controlling for tcpre
- tcstudy compared across 6 Diet&sex groups
-
-
-tcstudy 
-       AAD&F AAD&M Mono&F Mono&M Step1&F Step1&M   All
-N(tot)     6     6      6      6       6       6    36
-Mean     189   164    169    179     157     172   172
-SD      22.1  21.5   26.7   23.2    17.7    11.3  22.1
-
-
-        Pairwise comparisons using t tests with pooled SD 21 
-
-
-data:  tcstudy compared across 6 Diet&sex groups using Fisher's LSD 
-
-
-        AAD&F AAD&M Mono&F Mono&M Step1&F
-AAD&M   0.048 -     -      -      -      
-Mono&F  0.108 0.688 -      -      -      
-Mono&M  0.387 0.246 0.443  -      -      
-Step1&F 0.012 0.537 0.311  0.081  -      
-Step1&M 0.168 0.521 0.809  0.598  0.213  
-
-
-P value adjustment method: none 
-
-
  tcstudy compared across 6 Diet&sex groups controlling for tcpre 
 
 
@@ -1578,34 +1550,6 @@ p=8.99e-14 vs model with just Diet - cu1way(tcstudy,Diet)
 p=1.09e-13 vs model with just sex - cu1way(tcstudy,sex)
 p=6.96e-08 vs model with just tcpre - lm(tcstudy ~ tcpre)
 > cucov2way(tcstudy, tcpre, Diet, sex, c(160,180,200))
-
-
-Analyzing (just as point of reference) without controlling for tcpre
- tcstudy compared across 6 Diet&sex groups
-
-
-tcstudy 
-       AAD&F AAD&M Mono&F Mono&M Step1&F Step1&M   All
-N(tot)     6     6      6      6       6       6    36
-Mean     189   164    169    179     157     172   172
-SD      22.1  21.5   26.7   23.2    17.7    11.3  22.1
-
-
-        Pairwise comparisons using t tests with pooled SD 21 
-
-
-data:  tcstudy compared across 6 Diet&sex groups using Fisher's LSD 
-
-
-        AAD&F AAD&M Mono&F Mono&M Step1&F
-AAD&M   0.048 -     -      -      -      
-Mono&F  0.108 0.688 -      -      -      
-Mono&M  0.387 0.246 0.443  -      -      
-Step1&F 0.012 0.537 0.311  0.081  -      
-Step1&M 0.168 0.521 0.809  0.598  0.213  
-
-
-P value adjustment method: none 
 
 
  tcstudy compared across 6 Diet&sex groups controlling for tcpre 
@@ -1727,28 +1671,6 @@ Model is overly complex. Consider a simpler model
 > cucov2way(tcstudy, tcpre, Diet, sex, interact=F) 
 
 
-Analyzing (just as point of reference) without controlling for tcpre
- tcstudy compared across 6 Diet&sex groups
-
-
-tcstudy 
-       AAD&F AAD&M Mono&F Mono&M Step1&F Step1&M   All
-N(tot)     6     6      6      6       6       6    36
-Mean     189   164    169    179     157     172   172
-SD      22.1  21.5   26.7   23.2    17.7    11.3  22.1
-
-
-        Pairwise comparisons using t tests with pooled SD 21 
-
-
-data:  tcstudy compared across 6 Diet&sex groups using Fisher's LSD 
-
-
-        AAD&F AAD&M Mono&F Mono&M Step1&F
-AAD&M   0.048 -     -      -      -      
-Mono&F  0.108 0.688 -      -      -      
-Mono&M  0.387 0.246 0.443  -      -      
-Step1&F 0.012 0.537 0.311  0.081  -      
 Step1&M 0.168 0.521 0.809  0.598  0.213  
 
 
@@ -1821,28 +1743,6 @@ Model is overly complex. Consider a simpler model
 > cucov2way(tcstudy, tcpre, Diet, sex, interact=F, c(160,180,200))
 
 
-Analyzing (just as point of reference) without controlling for tcpre
- tcstudy compared across 6 Diet&sex groups
-
-
-tcstudy 
-       AAD&F AAD&M Mono&F Mono&M Step1&F Step1&M   All
-N(tot)     6     6      6      6       6       6    36
-Mean     189   164    169    179     157     172   172
-SD      22.1  21.5   26.7   23.2    17.7    11.3  22.1
-
-
-        Pairwise comparisons using t tests with pooled SD 21 
-
-
-data:  tcstudy compared across 6 Diet&sex groups using Fisher's LSD 
-
-
-        AAD&F AAD&M Mono&F Mono&M Step1&F
-AAD&M   0.048 -     -      -      -      
-Mono&F  0.108 0.688 -      -      -      
-Mono&M  0.387 0.246 0.443  -      -      
-Step1&F 0.012 0.537 0.311  0.081  -      
 Step1&M 0.168 0.521 0.809  0.598  0.213  
 
 

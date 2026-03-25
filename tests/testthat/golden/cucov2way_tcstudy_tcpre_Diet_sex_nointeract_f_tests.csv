@@ -1,7 +1,7 @@
-p_value,model
-0.197,"model with no sex - cucov1way(tcstudy,tcpre,Diet)"
-0.00774,"model with no Diet - cucov1way(tcstudy,tcpre,sex)"
-9.32e-10,"model with no tcpre - cu2way(tcstudy,Diet,sex,interact=FALSE)"
-5.58e-09,"model with just Diet - cu1way(tcstudy,Diet)"
-8.56e-09,"model with just sex - cu1way(tcstudy,sex)"
-0.0122,model with just tcpre - lm(tcstudy ~ tcpre)
+"p_value","model"
+"0.197","model with no sex - cucov1way(tcstudy,tcpre,Diet)"
+"0.00774","model with no Diet - cucov1way(tcstudy,tcpre,sex)"
+"9.32e-10","model with no tcpre - cu2way(tcstudy,Diet,sex,interact=FALSE)"
+"5.58e-09","model with just Diet - cu1way(tcstudy,Diet)"
+"8.56e-09","model with just sex - cu1way(tcstudy,sex)"
+"0.0122","model with just tcpre - lm(tcstudy ~ tcpre)"

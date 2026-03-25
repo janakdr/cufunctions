@@ -24,8 +24,8 @@ test_that("compare_values passes on exact numeric match", {
 
 test_that("compare_values detects mismatch outside tolerance", {
   # 10% off on value of 100
-  msg <- compare_values("100", "111", tol = 0.01)
-  expect_match(msg, "rel diff")
+  msg <- compare_values("100", "111", tol = 0.10)
+  expect_match(msg, "Mean relative difference")
 })
 
 test_that("compare_values passes within tolerance", {

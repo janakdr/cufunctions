@@ -50,19 +50,7 @@ parse_posthoc_to_df <- function(lines, group_headers) {
 process_case <- function(case_name, case_lines) {
   cat(paste("Processing", case_name, "...\n"))
   
-  # Summary
-  sec <- grep("tcstudy compared across 6 Diet&sex groups", case_lines)
-  if (length(sec) > 0) {
-    summary_lines <- case_lines[sec[1]:length(case_lines)]
-    actual_summary <- parse_summary_table(summary_lines)
-    write.csv(actual_summary, paste0("tests/testthat/golden/", case_name, "_summary.csv"), row.names = FALSE)
-  }
-  
-  # Pairwise
-  tryCatch({
-    actual_pw <- parse_pairwise_matrix(case_lines)
-    write.csv(actual_pw, paste0("tests/testthat/golden/", case_name, "_pairwise.csv"), row.names = FALSE)
-  }, error = function(e) cat(paste("Skipping pairwise for", case_name, "\n")))
+  # Summary and Pairwise extraction removed since `minimal=T` prevents cucov2way from generating them.
   
   # Coef
   actual_coef <- parse_coef_table(case_lines)

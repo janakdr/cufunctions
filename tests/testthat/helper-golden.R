@@ -539,10 +539,9 @@ compare_values <- function(expected, actual, tol = 0) {
       if (g_num != a_num)
         return(sprintf("expected %s, got %s", expected, actual))
     } else {
-      rel_diff <- abs(g_num - a_num) / max(abs(g_num), abs(a_num), 1e-10)
-      if (rel_diff > tol)
-        return(sprintf("expected %s, got %s (rel diff %.2g > tol %.2g)",
-                       expected, actual, rel_diff, tol))
+      res <- all.equal.numeric(g_num, a_num, tolerance = tol, scale = NULL)
+      if (!isTRUE(res))
+        return(sprintf("expected %s, got %s (%s)", expected, actual, res[1]))
     }
     return(NULL)
   }
@@ -567,12 +566,13 @@ compare_values <- function(expected, actual, tol = 0) {
       g_nums <- as.numeric(regmatches(expected, gregexpr(num_re, expected, perl = TRUE))[[1]])
       a_nums <- as.numeric(regmatches(actual, gregexpr(num_re, actual, perl = TRUE))[[1]])
       if (length(g_nums) > 0 && length(g_nums) == length(a_nums)) {
+        # Iterate and compare each component numeric value
         for (k in seq_along(g_nums)) {
-          rel_diff <- abs(g_nums[k] - a_nums[k]) /
-                      max(abs(g_nums[k]), abs(a_nums[k]), 1e-10)
-          if (rel_diff > tol)
-            return(sprintf("expected '%s', got '%s' (component %d: %.4g vs %.4g, rel diff %.2g > tol %.2g)",
-                           expected, actual, k, g_nums[k], a_nums[k], rel_diff, tol))
+          res <- all.equal.numeric(g_nums[k], a_nums[k], tolerance = tol, scale = NULL)
+          if (!isTRUE(res)) {
+            return(sprintf("expected '%s', got '%s' (component %d: %s)",
+                           expected, actual, k, res[1]))
+          }
         }
         return(NULL)  # All numeric components within tolerance
       }

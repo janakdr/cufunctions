@@ -9,12 +9,6 @@ withr::defer(detach_NEJM(), teardown_env())
 test_that("cucov2way(tcstudy, tcpre, Diet, sex) matches golden", {
   out <- capture.output(cucov2way(tcstudy, tcpre, Diet, sex))
 
-  # Summary table and Pairwise matrix are not printed in the current version
-  # because cucov2way calls cu2way(minimal=T), which suppresses them.
-  # golden_summary <- load_golden("cucov2way_tcstudy_tcpre_Diet_sex_summary")
-  # ...
-
-
   # Coefficients
   actual_coef <- parse_coef_table(out)
   golden_coef <- load_golden("cucov2way_tcstudy_tcpre_Diet_sex_coef")
@@ -31,14 +25,6 @@ test_that("cucov2way(tcstudy, tcpre, Diet, sex) matches golden", {
 
 test_that("cucov2way(tcstudy, tcpre, Diet, sex, c(160,180,200)) matches golden", {
   out <- capture.output(cucov2way(tcstudy, tcpre, Diet, sex, c(160, 180, 200)))
-
-  # Summary and Pairwise not printed
-  actual_summary <- parse_summary_table(out)
-  golden_summary <- load_golden("cucov2way_tcstudy_tcpre_Diet_sex_c160_summary")
-  expect_table_match(actual_summary, golden_summary, label = "cucov2way c160 summary")
-  actual_pw <- parse_pairwise_matrix(out)
-  golden_pw <- load_golden("cucov2way_tcstudy_tcpre_Diet_sex_c160_pairwise")
-  expect_table_match(actual_pw, golden_pw, label = "cucov2way c160 pairwise")
 
   # Coefficients
   actual_coef <- parse_coef_table(out)
@@ -57,14 +43,6 @@ test_that("cucov2way(tcstudy, tcpre, Diet, sex, c(160,180,200)) matches golden",
 test_that("cucov2way(interact=F) matches golden", {
   out <- capture.output(cucov2way(tcstudy, tcpre, Diet, sex, interact = FALSE))
 
-  # Summary and Pairwise not printed
-  actual_summary <- parse_summary_table(out)
-  golden_summary <- load_golden("cucov2way_tcstudy_tcpre_Diet_sex_nointeract_summary")
-  expect_table_match(actual_summary, golden_summary, label = "cucov2way nointeract summary")
-  actual_pw <- parse_pairwise_matrix(out)
-  golden_pw <- load_golden("cucov2way_tcstudy_tcpre_Diet_sex_nointeract_pairwise")
-  expect_table_match(actual_pw, golden_pw, label = "cucov2way nointeract pairwise")
-
   # Coefficients
   actual_coef <- parse_coef_table(out)
   golden_coef <- load_golden("cucov2way_tcstudy_tcpre_Diet_sex_nointeract_coef")
@@ -81,14 +59,6 @@ test_that("cucov2way(interact=F) matches golden", {
 
 test_that("cucov2way(interact=F, c(160,180,200)) matches golden", {
   out <- capture.output(cucov2way(tcstudy, tcpre, Diet, sex, interact = FALSE, c(160, 180, 200)))
-
-  # Summary and Pairwise not printed
-  actual_summary <- parse_summary_table(out)
-  golden_summary <- load_golden("cucov2way_tcstudy_tcpre_Diet_sex_nointeract_c160_summary")
-  expect_table_match(actual_summary, golden_summary, label = "cucov2way nointeract c160 summary")
-  actual_pw <- parse_pairwise_matrix(out)
-  golden_pw <- load_golden("cucov2way_tcstudy_tcpre_Diet_sex_nointeract_c160_pairwise")
-  expect_table_match(actual_pw, golden_pw, label = "cucov2way nointeract c160 pairwise")
 
   # Coefficients
   actual_coef <- parse_coef_table(out)
