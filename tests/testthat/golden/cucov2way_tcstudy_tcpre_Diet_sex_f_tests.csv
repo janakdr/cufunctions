@@ -1,8 +1,8 @@
-"p_value","model"
-"3.38e-07","model with same slope, no interaction - cucov2way(tcstudy,tcpre,Diet,sex,interact=F)"
-"5.59e-07","model with no sex - cucov1way(tcstudy,tcpre,Diet)"
-"4.19e-08","model with no Diet - cucov1way(tcstudy,tcpre,sex)"
-"1.71e-14","model with no tcpre - cu2way(tcstudy,Diet,sex,interact=TRUE)"
-"8.99e-14","model with just Diet - cu1way(tcstudy,Diet)"
-"1.09e-13","model with just sex - cu1way(tcstudy,sex)"
-"6.96e-08","model with just tcpre - lm(tcstudy ~ tcpre)"
+p_value,model
+3.38e-07,"model with same slope, no interaction - cucov2way(tcstudy,tcpre,Diet,sex,interact=F)"
+5.59e-07,"model with no sex - cucov1way(tcstudy,tcpre,Diet)"
+4.19e-08,"model with no Diet - cucov1way(tcstudy,tcpre,sex)"
+1.71e-14,"model with no tcpre - cu2way(tcstudy,Diet,sex,interact=TRUE)"
+8.99e-14,"model with just Diet - cu1way(tcstudy,Diet)"
+1.09e-13,"model with just sex - cu1way(tcstudy,sex)"
+6.96e-08,model with just tcpre - lm(tcstudy ~ tcpre)

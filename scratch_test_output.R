@@ -1,0 +1,7 @@
+library(cufunctions)
+data(delta)
+output <- capture.output(curepmeas(delta, "like", "Diet", ordinal = c("worst", "bad", "ok", "good", "best"), plot = "no"))
+cat("====\n")
+cat(grep("^like", output, value=TRUE)[1], "\n")
+cat(grep("^worst", output, value=TRUE)[1], "\n")
+cat("====\n")

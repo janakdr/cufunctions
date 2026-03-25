@@ -33,9 +33,9 @@ load_golden <- function(name) {
 #'
 #' @param output Character vector of captured output lines
 #' @param header_prefix Initial substring to identify the start of the section
-#' @param stop_prefix_list List of strings that mark the end of the section (checked via startsWith). Default is an empty line.
+#' @param stop_prefix_list List of strings that mark the end of the section (checked via startsWith). Default is an empty list.
 #' @return Character vector of section lines, or NULL if not found
-extract_section_lines <- function(output, header_prefix, stop_prefix_list = list("")) {
+extract_section_lines <- function(output, header_prefix, stop_prefix_list = list()) {
   idx <- which(startsWith(output, header_prefix))
   if (length(idx) == 0) return(NULL)
   start <- idx[1]
@@ -45,7 +45,7 @@ extract_section_lines <- function(output, header_prefix, stop_prefix_list = list
     if (line == "" || startsWith(line, ">")) break
     matched_stop <- FALSE
     for (stop_prefix in stop_prefix_list) {
-      if (nzchar(stop_prefix) && startsWith(line, stop_prefix)) { matched_stop <- TRUE; break }
+      if (startsWith(line, stop_prefix)) { matched_stop <- TRUE; break }
     }
     if (matched_stop) break
     end <- end + 1
@@ -186,7 +186,6 @@ parse_summary_table <- function(output) {
   parse_fixed_width_table(lines[header_idx], lines[n_idx:end])
 }
 
-
 #' Parse a table with significance stars from captured console output.
 #'
 #' Finds the header line by searching for col_names, strips significance
@@ -302,7 +301,7 @@ parse_coef_table <- function(output, col_names = NULL) {
 #' @param row_labels Character vector of expected row labels
 #' @return A data.frame with all columns merged
 parse_multi_chunk_table <- function(output, row_labels) {
-  hdr_indices <- which(startsWith(output, " ") & nzchar(trimws(output)))
+  hdr_indices <- which(grepl("^ +[^ ]", output))
   actual <- NULL
   for (h in hdr_indices) {
     end <- h + 1
@@ -330,7 +329,7 @@ parse_multi_chunk_table <- function(output, row_labels) {
 #' @param row_labels Character vector of expected row labels
 #' @return A data.frame
 parse_brief_table <- function(output, row_labels) {
-  hdr_idx <- which(startsWith(output, " ") & nzchar(trimws(output)))
+  hdr_idx <- which(grepl("^ +[^ ]", output))
   end <- hdr_idx[1] + 1
   while (end <= length(output) && trimws(output[end]) != "")
     end <- end + 1
@@ -366,10 +365,10 @@ parse_section_table <- function(output, section_pattern,
 #' Parse a curepmeas table from output lines, handling wrapping.
 #'
 #' Example input:
-#'   output contains:
-#'     "like        AAD     LowSat  Step1   All"
-#'     "worst       17.5%: 18       11.7%: 12       11.7%: 12       13.6%: 42"
-#'     ...
+#'   "like "
+#'   "            AAD    LowSat     Step1"
+#'   "Nhave       103       103       103"
+#'   "worst 17.5%: 18 11.7%: 12 11.7%: 12"
 #'
 #' @param output Character vector of output lines
 #' @param header_pattern Regex pattern to find the table section or header
@@ -407,14 +406,6 @@ parse_curepmeas_table <- function(output, header_pattern, id_col = "term",
   # Find the indices of lines that start with "Nhave" (ignoring leading spaces)
   nhave_idxs <- which(grepl("^ *Nhave", data_lines))
   
-  if (length(nhave_idxs) <= 1) {
-    # Single table case (or no Nhave rows at all, like in the sign test)
-    # We parse it as a single fixed-width table block.
-    return(parse_fixed_width_table(data_lines[1], data_lines[-1], id_col = id_col,
-                                    row_labels = row_labels))
-  }
-  
-  # Multi-table wrapped case
   sub_tables <- list()
   for (k in seq_along(nhave_idxs)) {
     nhave_idx <- nhave_idxs[k]
@@ -448,13 +439,11 @@ parse_curepmeas_table <- function(output, header_pattern, id_col = "term",
 #' and p-value rows (e.g.,          p=1     p=1     p= NA).
 #' This parser finds the table, pairs each count row with its p-value row,
 #' and produces a data frame with count and p-value columns per comparison.
-#'
 #' Example input:
-#'   output contains:
-#'     "        Step1   All"
-#'     "up:dn   47%: 28 45.4%: 83"
-#'     "|Δ| > 0 18      47"
-#'     "p=val   N/A     0.462"
+#'   "        Step1   All"
+#'   "up:dn   47%: 28 45.4%: 83"
+#'   "|Δ| > 0 18      47"
+#'   "p=val   N/A     0.462"
 #'
 #' @param output Character vector of lines in the table block
 #' @return A data.frame with threshold as row label, and paired count/p columns
@@ -561,18 +550,32 @@ compare_values <- function(expected, actual, tol = 0) {
   # and compare pairwise (e.g. "37.4±6.91" vs "37.4±6.92", or
   # "26.1(23.7:29.6)" vs "26(23.7:29.6)")
   if (tol > 0 && expected != actual) {
+    # Regular expression breakdown for numeric extraction:
+    # -?                     : Optional leading negative sign
+    # [0-9]+                 : One or more integer digits
+    # \\.?                   : Optional decimal point
+    # [0-9]*                 : Zero or more fractional digits
+    # (?:[eE][+-]?[0-9]+)?   : Optional exponent (e.g., e-4, E+10) in a non-capturing group
     num_re <- "-?[0-9]+\\.?[0-9]*(?:[eE][+-]?[0-9]+)?"
-    g_nums <- as.numeric(regmatches(expected, gregexpr(num_re, expected, perl = TRUE))[[1]])
-    a_nums <- as.numeric(regmatches(actual, gregexpr(num_re, actual, perl = TRUE))[[1]])
-    if (length(g_nums) > 0 && length(g_nums) == length(a_nums)) {
-      for (k in seq_along(g_nums)) {
-        rel_diff <- abs(g_nums[k] - a_nums[k]) /
-                    max(abs(g_nums[k]), abs(a_nums[k]), 1e-10)
-        if (rel_diff > tol)
-          return(sprintf("expected '%s', got '%s' (component %d: %.4g vs %.4g, rel diff %.2g > tol %.2g)",
-                         expected, actual, k, g_nums[k], a_nums[k], rel_diff, tol))
+    
+    fmt_plus_minus <- paste0("^", num_re, " *\u00b1 *", num_re, "$")
+    fmt_range <- paste0("^", num_re, " *\\( *", num_re, " *: *", num_re, " *\\)$")
+    
+    if ((grepl(fmt_plus_minus, expected) && grepl(fmt_plus_minus, actual)) ||
+        (grepl(fmt_range, expected) && grepl(fmt_range, actual))) {
+      
+      g_nums <- as.numeric(regmatches(expected, gregexpr(num_re, expected, perl = TRUE))[[1]])
+      a_nums <- as.numeric(regmatches(actual, gregexpr(num_re, actual, perl = TRUE))[[1]])
+      if (length(g_nums) > 0 && length(g_nums) == length(a_nums)) {
+        for (k in seq_along(g_nums)) {
+          rel_diff <- abs(g_nums[k] - a_nums[k]) /
+                      max(abs(g_nums[k]), abs(a_nums[k]), 1e-10)
+          if (rel_diff > tol)
+            return(sprintf("expected '%s', got '%s' (component %d: %.4g vs %.4g, rel diff %.2g > tol %.2g)",
+                           expected, actual, k, g_nums[k], a_nums[k], rel_diff, tol))
+        }
+        return(NULL)  # All numeric components within tolerance
       }
-      return(NULL)  # All numeric components within tolerance
     }
   }
   if (expected != actual)
@@ -735,25 +738,8 @@ expect_grouped_posthoc_match <- function(output, golden_name, tol = 0) {
         found_comp <- TRUE
         break
       } else {
-        # If it doesn't match, it might be a blank line or just text
-        # But we should not skip past independent comparison results without matching them
-        # Previous logic assumed strict contiguous list which broke on blank lines
-        # We just break here if we don't match? No, previous did for current header
-        # Wait, previous code:
-        # walking next consecutive lines. It broke on blank line.
-        # If we break on any mismatch, we'll never skip noise.
-        # But if comparison is next, we should try.
-        # Wait, previous code:
-        # for (j in (group_idx+1):length) { ... if blanks break; if match golden++ else next }
-        # Basically, it matched ANY lines in order.
-        # Let's just try matching the current line. If it fails, maybe we should check next?
-        # But row is row.
-        # Let's try to match and if not:
-        # - maybe we missed it?
-        # Previous code reported failure IMMEDIATELY if golden row didn't match.
-        # Let's just report failure if we don't match the NEXT row or if cursor breaks.
-        # To be safe, let's search lines below the header sequentially but don't break too early
-        # Wait, for now, let's match successive lines.
+        # If the current line does not match the target comparison, advance the
+        # cursor to skip over irrelevant output or text until it is found.
         cursor <- cursor + 1
       }
     }

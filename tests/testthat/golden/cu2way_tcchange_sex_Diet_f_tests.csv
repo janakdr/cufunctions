@@ -1,4 +1,4 @@
-"p_value","model"
-"2.26e-07","model with no interaction - cu2way(tcchange,sex,Diet,interact=F)"
-"1.38e-08","model with just sex - cu1way(tcchange,sex)"
-"3.28e-07","model with just Diet - cu1way(tcchange,Diet)"
+p_value,model
+2.26e-07,"model with no interaction - cu2way(tcchange,sex,Diet,interact=F)"
+1.38e-08,"model with just sex - cu1way(tcchange,sex)"
+3.28e-07,"model with just Diet - cu1way(tcchange,Diet)"

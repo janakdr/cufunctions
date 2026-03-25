@@ -1,0 +1,102 @@
+.Rprofile v. Apr.22 2023  Steve Holleran   info@biomath.net
+
+Predicting MetSyn = Yes
+Predictor summary vs MetSyn and p-values
+Entire dataset dsnodep across dsnomiss[, 1] levels
+                             No             Yes    1 vs 2
+N from HDL on:               65              20          
+HDL-Mean±SD            42.6±9.1       37.4±6.92 0.0216   
+LN_TG-Mean±SD        4.73±0.376        5.3±0.55 9.53e-07 
+BMI-Median(IQR)   26(23.7:29.6) 29.6(27.7:33.3) 3.80e-04 
+GLUC-Median(IQR)    90(85:96.3) 94.3 (89.2:104) 0.0259   
+INS-Median(IQR)  10.6(7.9:13.5) 13.8(9.98:18.2) 0.0378   
+Shapiro-Wilk Normality testing not done if SD=0 or n<6 or n>4000.
+Mean±SD if normal, Median(25th %ile, 75th %ile) if not
+Comparisons by Fisher LSD if normal, by Dunn if not
+
+
+Predicting MetSyn = Yes
+Call:
+"glm(formula = MetSyn ~ HDL+LN_TG+BMI+GLUC+INS, family=binomial(link='logit'),na.action='na.fail')"
+
+Coefficients:
+             Estimate Std. Error z value Pr(>|z|)    
+(Intercept) -28.34871    8.42175  -3.366 0.000762 ***
+HDL          -0.03062    0.04299  -0.712 0.476204    
+LN_TG         3.24806    1.07287   3.027 0.002466 ** 
+BMI           0.30838    0.10138   3.042 0.002352 ** 
+GLUC          0.04946    0.04506   1.098 0.272376    
+INS          -0.10130    0.07429  -1.364 0.172706    
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 92.751  on 84  degrees of freedom
+Residual deviance: 55.345  on 79  degrees of freedom
+AIC: 67.345
+
+Number of Fisher Scoring iterations: 6
+
+Global model call: glm(formula = forla, family = binomial(link = logitlog), data = dsnomiss, 
+    weights = wts, na.action = "na.fail", start = start)
+---
+Model selection table 
+    (Int)    BMI     GLU      HDL        INS LN_TG df  logLik AICc delta weight
+18 -23.21 0.2637                             2.896  3 -29.264 64.8  0.00  0.278
+26 -26.04 0.3026                  -0.0740800 3.433  4 -28.650 65.8  0.98  0.170
+20 -25.17 0.2531 0.03328                     2.723  4 -28.849 66.2  1.37  0.140
+22 -21.26 0.2698         -0.02838            2.696  4 -29.032 66.6  1.74  0.116
+28 -30.52 0.3006 0.05036          -0.0965000 3.453  5 -27.935 66.6  1.81  0.113
+30 -24.01 0.3155         -0.03278 -0.0813700 3.235  5 -28.325 67.4  2.59  0.076
+24 -23.28 0.2569 0.03245 -0.02641            2.549  5 -28.661 68.1  3.26  0.054
+32 -28.35 0.3084 0.04946 -0.03062 -0.1013000 3.248  6 -27.672 68.4  3.60  0.046
+17 -15.11                                    2.792  2 -35.377 74.9 10.08  0.002
+19 -18.64        0.04832                     2.593  3 -34.467 75.2 10.41  0.002
+21 -13.34                -0.02383            2.630  3 -35.196 76.7 11.86  0.001
+23 -16.86        0.05089 -0.02796            2.412  4 -34.236 77.0 12.15  0.001
+25 -14.83                          0.0139800 2.699  3 -35.346 77.0 12.17  0.001
+8  -10.56 0.2386 0.05834 -0.07433                   4 -34.430 77.4 12.54  0.001
+27 -18.62        0.04821           0.0007094 2.588  4 -34.467 77.4 12.61  0.001
+29 -13.16                -0.02329  0.0114800 2.560  4 -35.175 78.9 14.03  0.000
+Models ranked by AICc(x) 
+
+
+Likelihood ratio (LR) tests of chosen top model #18 (assuming nesting of smaller models)
+vs 17: LR, degf, χ² p-value 12.2, 1, 4.71e-04 
+Predicting MetSyn = Yes
+Call:
+"glm(formula = MetSyn ~ MetSyn ~ BMI+LN_TG, family=binomial(link='logit'),na.action='na.fail')"
+
+Coefficients:
+             Estimate Std. Error z value Pr(>|z|)    
+(Intercept) -23.21217    5.15910  -4.499 6.82e-06 ***
+BMI           0.26371    0.08662   3.044 0.002332 ** 
+LN_TG         2.89553    0.76859   3.767 0.000165 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 92.751  on 84  degrees of freedom
+Residual deviance: 58.527  on 82  degrees of freedom
+AIC: 64.527
+
+Number of Fisher Scoring iterations: 5
+
+Odds Ratio stats derived from Coefficients above 
+       coeff  Std Err Odds Ratio  lower .95 upper .95
+BMI   0.2637  0.08662      1.302      1.098     1.543
+LN_TG 2.8960  0.76860     18.090      4.011    81.610
+
+Predicting MetSyn = Yes
+
+2x2 for logistic fn cut-pt 0 (prob 0.5) Table of maximum accuracy
+        MetSyn
+logistic No Yes
+     <=0 62   8
+      >0  3  12
+Accuracy 87.1%; Sensitivity 60%; Specificity 95.4%
+Positive Predictive Value 80%; Negative Predictive Value 88.6%
+Area Under the Curve (AUC), aka Concordance, Harrell's C, C-statistic: 
+AUC =  0.876 

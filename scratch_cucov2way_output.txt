@@ -1,0 +1,57 @@
+
+Analyzing (just as point of reference) without controlling for tcpre
+ tcstudy compared across 6 Diet&sex groups controlling for tcpre 
+
+
+Call:
+"lm(tcstudy ~ tcpre+Diet+sex+Diet*sex)"
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-19.658  -4.102  -1.770   4.768  12.778 
+
+Coefficients:
+                Estimate Std. Error t value Pr(>|t|)    
+(Intercept)     16.67348   12.65098   1.318    0.198    
+tcpre            0.95303    0.06771  14.076 1.71e-14 ***
+DietMono       -37.12585    4.56873  -8.126 5.83e-09 ***
+DietStep1      -31.24753    4.40603  -7.092 8.39e-08 ***
+sexM           -20.37704    4.41719  -4.613 7.42e-05 ***
+DietMono:sexM   39.81637    6.24156   6.379 5.66e-07 ***
+DietStep1:sexM  37.97056    6.23211   6.093 1.24e-06 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 7.63 on 29 degrees of freedom
+Multiple R-squared:  0.9011,	Adjusted R-squared:  0.8807 
+F-statistic: 44.06 on 6 and 29 DF,  p-value: 2.82e-13
+
+Diet comparisons within each sex group
+F 
+Mono minus AAD: -37.1 ± 4.57, p=5.83e-09, CL=[-46.5,-27.8]
+Step1 minus AAD: -31.2 ± 4.41, p=8.39e-08, CL=[-40.3,-22.2]
+Step1 minus Mono: 5.88 ± 4.59, p=0.211, CL=[-3.52,15.3]
+
+M 
+Mono minus AAD: 2.69 ± 4.48, p=0.553, CL=[-6.48,11.9]
+Step1 minus AAD: 6.72 ± 4.41, p=0.138, CL=[-2.29,15.7]
+Step1 minus Mono: 4.03 ± 4.47, p=0.374, CL=[-5.11,13.2]
+
+sex comparisons within and between Diet groups
+
+M minus F 
+AAD: -20.4 ± 4.42, p=7.42e-05, CL=[-29.4,-11.3]
+Mono: 19.4 ± 4.46, p=0.000151, CL=[10.3,28.6]
+Step1: 17.6 ± 4.41, p=0.000409, CL=[8.58,26.6]
+Mono minus AAD: 39.8 ± 6.24, p=5.66e-07, CL=[27.1,52.6]
+Step1 minus AAD: 38 ± 6.23, p=1.24e-06, CL=[25.2,50.7]
+Step1 minus Mono: -1.85 ± 6.25, p=0.77, CL=[-14.6,10.9]
+
+Partial F-test vs simpler models:
+p=3.38e-07 vs model with same slope, no interaction - cucov2way(tcstudy,tcpre,Diet,sex,interact=F)
+p=5.59e-07 vs model with no sex - cucov1way(tcstudy,tcpre,Diet)
+p=4.19e-08 vs model with no Diet - cucov1way(tcstudy,tcpre,sex)
+p=1.71e-14 vs model with no tcpre - cu2way(tcstudy,Diet,sex,interact=TRUE)
+p=8.99e-14 vs model with just Diet - cu1way(tcstudy,Diet)
+p=1.09e-13 vs model with just sex - cu1way(tcstudy,sex)
+p=6.96e-08 vs model with just tcpre - lm(tcstudy ~ tcpre)

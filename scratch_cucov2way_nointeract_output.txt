@@ -1,0 +1,54 @@
+
+Analyzing (just as point of reference) without controlling for tcpre
+ tcstudy compared across 6 Diet&sex groups controlling for tcpre 
+
+
+Call:
+"lm(tcstudy ~ tcpre+Diet+sex)"
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-32.698  -8.211   1.918   7.492  24.968 
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept)   5.7521    20.2200   0.284  0.77794    
+tcpre         0.9418     0.1090   8.640 9.32e-10 ***
+DietMono    -17.0483     5.2967  -3.219  0.00301 ** 
+DietStep1   -12.2632     5.0359  -2.435  0.02084 *  
+sexM          5.4859     4.1614   1.318  0.19706    
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 12.34 on 31 degrees of freedom
+Multiple R-squared:  0.7238,	Adjusted R-squared:  0.6881 
+F-statistic: 20.31 on 4 and 31 DF,  p-value: 2.671e-08
+
+Diet comparisons
+
+Mono minus AAD: -17 ± 5.3, p=0.00301, CL=[-27.9,-6.25]
+Step1 minus AAD: -12.3 ± 5.04, p=0.0208, CL=[-22.5,-1.99]
+Step1 minus Mono: 4.79 ± 5.3, p=0.374, CL=[-6.02,15.6]
+
+sex comparisons
+
+M minus F: 5.49 ± 4.16, p=0.197, CL=[-3,14]
+
+Summary of p-values by ancova and post-hoc t
+
+ Diet comparisons
+         AAD      Mono     
+Mono     0.00301  
+Step1    0.0208   0.374    
+ sex comparisons
+         F        
+M        0.197    
+Each p-value compares group above vs to left (adjustment method: none)
+Partial F-test vs simpler models:
+p=0.197 vs model with no sex - cucov1way(tcstudy,tcpre,Diet)
+p=0.00774 vs model with no Diet - cucov1way(tcstudy,tcpre,sex)
+p=9.32e-10 vs model with no tcpre - cu2way(tcstudy,Diet,sex,interact=FALSE)
+p=5.58e-09 vs model with just Diet - cu1way(tcstudy,Diet)
+p=8.56e-09 vs model with just sex - cu1way(tcstudy,sex)
+p=0.0122 vs model with just tcpre - lm(tcstudy ~ tcpre)
+Model is overly complex. Consider a simpler model
