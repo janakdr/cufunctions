@@ -23,7 +23,8 @@ Imports:
     survival,
     MASS,
     MatchIt,
-    ggpubr
+    ggpubr,
+    car
 Suggests:
     devEMF,
     testthat (>= 3.0.0)

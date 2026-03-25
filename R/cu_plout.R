@@ -1,4 +1,5 @@
 #' internal function to display plot object, write hires .ftype or .emf file
+#' @importFrom car avPlots
 #' @keywords internal
 cu_plout = function(plotobj,funcname,ftype=NULL,fname=NULL,suff=NULL,seq=0,
                     scale=NULL,width=NULL,height=NULL,units="in",dpi=300,
