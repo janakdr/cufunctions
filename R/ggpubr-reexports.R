@@ -1,4 +1,4 @@
-#' @importFrom ggpubr mean_sd mean_ci median_q1q3
+#' @importFrom ggpubr mean_sd mean_ci median_q1q3 mean_se_
 #' @importFrom ggplot2 mean_se
 #' @keywords internal
 #' @name ggpubr-reexports
@@ -12,4 +12,5 @@
 #' @export mean_se
 #' @export mean_ci
 #' @export median_q1q3
+#' @export mean_se_
 NULL
