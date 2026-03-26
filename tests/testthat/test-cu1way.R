@@ -60,11 +60,23 @@ test_that("cu1way(tcchange, Diet, plot='violin', dots=1) produces same stats", {
 # --- cu1way plot rendering (catches ggpubr function resolution issues) ---
 
 test_that("cu1way(tcchange, Diet) default bar plot renders without error", {
-  # Default plot="bar" uses ggbarplot(add="ggpubr::mean_sd") which requires
+  # Default plot="bar" uses ggbarplot(add="mean_sd") which requires
   # the summary function to be resolvable. This test catches issues where
   # ggpubr functions aren't findable because the package is only imported,
   # not attached.
   expect_no_error(capture.output(with(NEJM, cu1way(tcchange, Diet))))
+})
+
+test_that("cu1way with ebars=2 (mean_se) renders without error", {
+  # ebars=2 triggers ggpubr's add_summary to look up "mean_se_" (with
+  # trailing underscore). Because get() searches the cufunctions namespace
+  # environment for it during plot rendering, we must explicitly import and
+  # re-export mean_se_ from ggpubr.
+  expect_no_error(capture.output(with(NEJM, cu1way(tcchange, Diet, ebars = 2))))
+})
+
+test_that("cu1way with ebars=3 (mean_ci) renders without error", {
+  expect_no_error(capture.output(with(NEJM, cu1way(tcchange, Diet, ebars = 3))))
 })
 
 # --- cu1way(tcchange, Diet, ebars=4) — nonparametric Kruskal-Wallis/Dunn ---
