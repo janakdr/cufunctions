@@ -1,6 +1,19 @@
 # Helper functions for golden-value testing
 # This file is auto-loaded by testthat (files matching helper-*.R)
 
+#' Capture output with a very wide terminal to prevent table wrapping.
+#'
+#' testthat's local_reproducible_output() forces width=80 inside each test,
+#' so we must set width=10000 inside the capture.output() call itself.
+#'
+#' @param expr Expression to evaluate while capturing output
+#' @return Character vector of output lines
+wide_capture <- function(expr) {
+  old_width <- getOption("width")
+  options(width = 10000)
+  on.exit(options(width = old_width))
+  capture.output(expr)
+}
 
 #' Load a golden CSV from the golden/ directory
 #'
@@ -350,58 +363,6 @@ parse_section_table <- function(output, section_pattern,
                            col_names = col_names, row_labels = row_labels)
 }
 
-#' Parse a curepmeas table from output lines, handling wrapping.
-#'
-#' Finds the section by regex, skips the title line, then parses
-#' one or more sub-tables (each starting with an "Nhave" row) and
-#' merges them by the "term" column.
-#'
-#' Example input:
-#'   "like "
-#'   "            AAD    LowSat     Step1"
-#'   "Nhave       103       103       103"
-#'   "worst 17.5%: 18 11.7%: 12 11.7%: 12"
-#'
-#' @param output Character vector of output lines
-#' @param header_pattern Regex pattern to find the table section title
-#' @return A data.frame with a "term" column and one column per group
-parse_curepmeas_table <- function(output, header_pattern) {
-  table_lines <- extract_section_lines(output, header_pattern,
-                                        stop_prefix_list = list("[1]", "p-value NA"))
-  if (is.null(table_lines) || length(table_lines) < 2) return(NULL)
-  
-  # Skip the title line; remainder contains header(s) and data
-  data_lines <- table_lines[2:length(table_lines)]
-  nhave_idxs <- which(grepl("^ *Nhave", data_lines))
-  
-  sub_tables <- list()
-  for (k in seq_along(nhave_idxs)) {
-    nhave_idx <- nhave_idxs[k]
-    header_idx <- nhave_idx - 1
-    if (k < length(nhave_idxs)) {
-      e_idx <- nhave_idxs[k+1] - 2
-    } else {
-      e_idx <- length(data_lines)
-    }
-    sub_lines <- data_lines[header_idx:e_idx]
-    sub_df <- parse_fixed_width_table(sub_lines[1], sub_lines[-1], id_col = "term")
-    if (!is.null(sub_df)) {
-      sub_tables[[k]] <- sub_df
-    }
-  }
-  
-  if (length(sub_tables) == 0) return(NULL)
-  
-  merged_df <- sub_tables[[1]]
-  if (length(sub_tables) > 1) {
-    original_order <- merged_df$term
-    for (k in 2:length(sub_tables)) {
-      merged_df <- merge(merged_df, sub_tables[[k]], by = "term", all = TRUE)
-    }
-    merged_df <- merged_df[match(original_order, merged_df$term), ]
-  }
-  return(merged_df)
-}
 
 
 # --- Shared comparison internals ---
@@ -906,13 +867,22 @@ parse_matrix_from_header <- function(lines, header_idx) {
     data_lines <- c(data_lines, lines[i])
   }
 
-  # Parse the lower-triangular matrix with read.table (fills left-to-right)
-  block <- paste(c(lines[header_idx], data_lines), collapse = "\n")
-  df <- read.table(text = block, header = TRUE, fill = TRUE,
-                   stringsAsFactors = FALSE, check.names = FALSE)
-  # Add the row-label column
-  df <- cbind(stat = rownames(df), df, stringsAsFactors = FALSE)
-  rownames(df) <- NULL
+  # Parse the header to get column names
+  col_names <- strsplit(trimws(lines[header_idx]), "\\s+")[[1]]
+
+  # Parse each data line: first token is row name, rest are values (left-to-right)
+  rows <- list()
+  for (dl in data_lines) {
+    tokens <- strsplit(trimws(dl), "\\s+")[[1]]
+    row_name <- tokens[1]
+    vals <- tokens[-1]
+    # Pad with NA to fill remaining columns
+    padded <- c(vals, rep(NA, length(col_names) - length(vals)))
+    rows[[length(rows) + 1]] <- c(row_name, padded)
+  }
+
+  df <- as.data.frame(do.call(rbind, rows), stringsAsFactors = FALSE)
+  names(df) <- c("stat", col_names)
   # Replace NA with "" for consistency with golden CSV
   df[is.na(df)] <- ""
   df

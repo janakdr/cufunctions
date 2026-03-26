@@ -1,0 +1,4 @@
+p_value,model
+0.742,"model with same slope - cucov1way(tcstudy,tcpre,Diet)"
+6.55e-08,"model with just Diet - cu1way(tcstudy,Diet)"
+0.0465,model with just tcpre - lm(tcstudy ~ tcpre)

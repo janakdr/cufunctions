@@ -1,0 +1,7 @@
+group,comparison,diff,se,p,cl_lo,cl_hi
+F,LowSat minus AAD,7.71,2.82,0.00687,2.14,13.3
+F,Step1 minus AAD,7.73,2.82,0.00672,2.16,13.3
+F,Step1 minus LowSat,0.0211,2.82,0.994,-5.54,5.59
+M,LowSat minus AAD,12.9,3.14,5.9e-05,6.7,19.1
+M,Step1 minus AAD,9.97,3.14,0.00174,3.78,16.2
+M,Step1 minus LowSat,-2.92,3.14,0.354,-9.11,3.28

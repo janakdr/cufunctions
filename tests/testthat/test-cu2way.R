@@ -94,5 +94,15 @@ test_that("cu2way(feel, WTCAT, Sex, ordinal) posthoc matches golden", {
   expect_ordinal_posthoc_match(out, "cu2way_ordinal_posthoc", tol = 0.02)
 })
 
+test_that("cu2way(feel, WTCAT, Sex, ordinal, scale='percent') produces same results", {
+  data(AJCN, envir = environment())
+  out <- capture.output(with(AJCN, cu2way(feel, WTCAT, Sex,
+      g1order=c("lean","overwt","obese"),
+      ordinal=c("bad","ok","good"), scale="percent")))
+
+  # The statistical output is identical to the non-percent variant;
+  # scale="percent" only affects the plot. Verify posthoc matches same golden.
+  expect_ordinal_posthoc_match(out, "cu2way_ordinal_posthoc", tol = 0.02)
+})
 
 
