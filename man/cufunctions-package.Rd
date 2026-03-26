@@ -9,11 +9,16 @@
 Look at help for each function for functionality: cu1way, cu2way, cucov1way, cucov2way, cucox, cukm, culinreg, culogist, cuomics, cupairwise.t, cupartialF, curead, curepmeas, curoc, cuscatter, cutable1, cuvolcano
 }
 \author{
-\strong{Maintainer}: Rajasekhar Ramakrishnan
+\strong{Maintainer}: Rajasekhar Ramakrishnan \email{rr6@caa.columbia.edu}
 
 Authors:
 \itemize{
   \item Steve Holleran \email{sfh2@columbia.edu}
+}
+
+Other contributors:
+\itemize{
+  \item Janak Ramakrishnan \email{janak@janak.org} (test infrastructure and CRAN readiness) [contributor]
 }
 
 }

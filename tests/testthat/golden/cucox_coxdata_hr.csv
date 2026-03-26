@@ -1,0 +1,4 @@
+term,Hazard Ratio,HR for non-event,lower .95,upper .95
+C.Index,0.3437,2.9092,0.1655,0.7140
+scale(BNP),1.4374,0.6957,1.1858,1.7425
+scale(LVEF),0.3260,3.0673,0.1775,0.5987

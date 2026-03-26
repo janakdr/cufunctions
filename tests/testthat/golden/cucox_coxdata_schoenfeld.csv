@@ -1,0 +1,5 @@
+term,chisq,df,p
+C.Index,0.000279,1,0.99
+scale(BNP),0.029427,1,0.86
+scale(LVEF),0.059976,1,0.81
+GLOBAL,0.087894,3,0.99

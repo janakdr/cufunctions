@@ -1,0 +1,7 @@
+Variable,AAD_M,AAD_sd/iqr,Mono_M,Mono_sd/iqr,Step1_M,Step1_sd/iqr,AADvsMono,AADvsStep1,MonovsStep1,pnormin
+tcstudy,177, 24.6,174, 24.3,164, 16.3,,0.18     ,, 
+tgstudy, 89.9, 36.9, 94.1, 30.5, 84.4, 29.5,,,, 
+hcstudy,48,(40.9:51.6),42,(36.8:46.1),43.2,(41.9:48),0.0973   ,,, 
+tcchange, -1.91, 14,-19.8, 12.6,-14.2, 10.3,0.0012   ,0.021    ,, 
+tgchange, -7.57, 16.5,-15.7, 20.4,-10.7, 18.8,,,, 
+hcchange,-0.467, 4.35,-0.65, 3.51,-2.91, 2.52,,0.1      ,0.127    , 

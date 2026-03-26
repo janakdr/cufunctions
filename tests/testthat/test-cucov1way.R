@@ -1,17 +1,17 @@
 # Tests for cucov1way based on cufunctions-tests-with-output.txt
 # Golden values are in tests/testthat/golden/*.csv
 
-attach_NEJM()
-withr::defer(detach_NEJM(), teardown_env())
 
 # --- cucov1way(tcstudy, tcpre, Diet) — default ---
 
 test_that("cucov1way(tcstudy, tcpre, Diet) summary, coef, posthoc, p-matrix, and F-tests match golden", {
-  out <- capture.output(cucov1way(tcstudy, tcpre, Diet))
+  out <- capture.output(with(NEJM, cucov1way(tcstudy, tcpre, Diet)))
 
   # Summary table
-  actual_summary <- parse_summary_table(out)
   golden_summary <- load_golden("cucov1way_tcstudy_tcpre_Diet_summary")
+  actual_summary <- parse_summary_table(out, col_names = colnames(golden_summary)[-1])
+  
+  expect_contains(colnames(actual_summary), c("1 vs 2", "1 vs 3", "2 vs 3"))
   expect_table_match(actual_summary, golden_summary,
                      label = "cucov1way summary")
 
@@ -25,7 +25,8 @@ test_that("cucov1way(tcstudy, tcpre, Diet) summary, coef, posthoc, p-matrix, and
   expect_posthoc_match(out, "cucov1way_tcstudy_tcpre_Diet_posthoc")
 
   # P-value matrix
-  actual_pmat <- parse_p_matrix(out, "Summary of p-values")
+  pmat_section <- extract_section_lines(out, "Summary of p-values")
+  actual_pmat <- parse_matrix_from_header(pmat_section, 2)
   golden_pmat <- load_golden("cucov1way_tcstudy_tcpre_Diet_p_matrix")
   expect_table_match(actual_pmat, golden_pmat,
                      label = "cucov1way p-matrix")
@@ -37,12 +38,16 @@ test_that("cucov1way(tcstudy, tcpre, Diet) summary, coef, posthoc, p-matrix, and
 # --- cucov1way(tcstudy, tcpre, Diet, g1order=...) — reordered groups ---
 
 test_that("cucov1way with g1order reorders summary and coefficients", {
-  out <- capture.output(cucov1way(tcstudy, tcpre, Diet,
-                                  g1order = c("Step1", "Mono", "AAD")))
+  out <- capture.output(with(NEJM, cucov1way(tcstudy, tcpre, Diet,
+                                  g1order = c("Step1", "Mono", "AAD"))))
 
   # Summary table (columns reordered)
-  actual_summary <- parse_summary_table(out)
   golden_summary <- load_golden("cucov1way_tcstudy_tcpre_Diet_g1order_summary")
+  actual_summary <- parse_summary_table(out, col_names = colnames(golden_summary)[-1])
+  
+  # Explicitly verify multi-word group comparisons are preserved as single columns
+  expect_contains(colnames(actual_summary), c("1 vs 2", "1 vs 3", "2 vs 3"))
+  
   expect_table_match(actual_summary, golden_summary,
                      label = "cucov1way g1order summary")
 
@@ -53,7 +58,8 @@ test_that("cucov1way with g1order reorders summary and coefficients", {
                      label = "cucov1way g1order coefficients")
 
   # P-value matrix (reordered)
-  actual_pmat <- parse_p_matrix(out, "Summary of p-values")
+  pmat_section <- extract_section_lines(out, "Summary of p-values")
+  actual_pmat <- parse_matrix_from_header(pmat_section, 2)
   golden_pmat <- load_golden("cucov1way_tcstudy_tcpre_Diet_g1order_p_matrix")
   expect_table_match(actual_pmat, golden_pmat,
                      label = "cucov1way g1order p-matrix")

@@ -36,6 +36,8 @@
 #' \dontrun{
 #' cucox(coxdata, "TimeToEvent", "Outcome", "C.Index + scale(LVEF) + scale(BNP)")
 #' }
+#' @importFrom ggpubr ggarrange
+#' @importFrom survminer ggadjustedcurves
 #' @export
 cucox = function(dsgiven, timnam, depnam, formula, dopredkm=T, doroc=T, docoxkm=T,
                  wtnam=NULL, printfit=F, dodredge=T, usemod=1,
@@ -179,10 +181,12 @@ cucox = function(dsgiven, timnam, depnam, formula, dopredkm=T, doroc=T, docoxkm=
         else plist[[nscat]] = p
       }
     }
-    if (nscat==1) {nverkm=1; nhorkm=1}
-    pout = ggarrange(plotlist=plist,nrow=nverkm,ncol=nhorkm)
-    cu_plout(pout,"curepmeas-scat", ftype=ftype, fname=fname,
-      scale=fscale, width=fwidth, height=fheight, dpi=dpi,remove=remove)
+    if (nscat > 0) {
+      if (nscat==1) {nverkm=1; nhorkm=1}
+      pout = ggarrange(plotlist=plist,nrow=nverkm,ncol=nhorkm)
+      cu_plout(pout,"curepmeas-scat", ftype=ftype, fname=fname,
+        scale=fscale, width=fwidth, height=fheight, dpi=dpi,remove=remove)
+    }
   }
   #cat("\n") # crashes if later better to process $table[,3]?
   if (is.logical(doroc) && !doroc) doroc = NULL

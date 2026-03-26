@@ -1,0 +1,9 @@
+p_value,model
+0.718,"model with same slope, no interaction - cucov2way(tcstudy,tcpre,Diet,sex,interact=F)"
+0.2,"model with no sex - cucov1way(tcstudy,tcpre,Diet,c(...))"
+0.516,"model with no sex - cucov1way(tcstudy,tcpre,Diet)"
+0.0391,"model with no Diet - cucov1way(tcstudy,tcpre,sex)"
+5.14e-08,"model with no tcpre - cu2way(tcstudy,Diet,sex,interact=FALSE)"
+1.55e-07,"model with just Diet - cu1way(tcstudy,Diet)"
+1.73e-07,"model with just sex - cu1way(tcstudy,sex)"
+0.0467,model with just tcpre - lm(tcstudy ~ tcpre)

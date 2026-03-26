@@ -24,8 +24,8 @@ test_that("compare_values passes on exact numeric match", {
 
 test_that("compare_values detects mismatch outside tolerance", {
   # 10% off on value of 100
-  msg <- compare_values("100", "111", tol = 0.01)
-  expect_match(msg, "rel diff")
+  msg <- compare_values("100", "111", tol = 0.10)
+  expect_match(msg, "Mean relative difference")
 })
 
 test_that("compare_values passes within tolerance", {
@@ -51,11 +51,21 @@ test_that("compare_values passes on equal non-numeric strings", {
   expect_null(compare_values("<.001", "<.001"))
 })
 
-test_that("compare_values ignores tolerance for non-numeric strings", {
-  # Tolerance only applies to numeric comparisons; strings use exact match
-  expect_equal(compare_values("<.001", "<.01", tol = 1.0),
-               "expected '<.001', got '<.01'")
+test_that("compare_values applies tolerance to numeric substrings in compound strings", {
+  # Compound strings like "37.4±6.91" have numeric parts extracted and compared
+  expect_null(compare_values("37.4\u00b16.91", "37.4\u00b16.92", tol = 0.02))
+  expect_null(compare_values("26.1(23.7:29.6)", "26(23.7:29.6)", tol = 0.01))
+  # Still fails if a component exceeds tolerance
+  expect_true(!is.null(compare_values("37.4\u00b16.91", "37.4\u00b17.50", tol = 0.02)))
+  # Strings with no numeric parts use exact match even with tolerance
+  expect_equal(compare_values("abc", "def", tol = 1.0),
+               "expected 'abc', got 'def'")
+  # Exact match always passes
   expect_null(compare_values("<.001", "<.001", tol = 1.0))
+})
+
+test_that("compare_values detects string mismatch when numeric parts match", {
+  expect_match(compare_values("A01", "B01", tol = 0.1), "expected 'A01', got 'B01'")
 })
 
 # --- parse_fixed_width_table ---
@@ -169,8 +179,74 @@ test_that("grouped posthoc reports line that doesn't match expected comparison",
     "test_grouped_garbage")
   expect_error(
     expect_grouped_posthoc_match(fake_output, gn, tol = 0),
-    "Group 'GroupA', row 'A minus B': expected comparison not found on line: unexpected garbage line"
+    "comparison not found under group"
   )
+})
+
+test_that("grouped posthoc skips unexpected lines to find successful match", {
+  fake_output <- c("GroupA",
+                   "random console warning",
+                   "A minus B: 1.0 \u00b1 0.5, p=0.05, CL=[-0.5,2.5]")
+  gn <- with_temp_golden(
+    data.frame(group = "GroupA", comparison = "A minus B",
+               diff = 1.0, se = 0.5, p = 0.05, cl_lo = -0.5, cl_hi = 2.5,
+               stringsAsFactors = FALSE),
+    "test_grouped_skip_garbage")
+  
+  expect_error(expect_grouped_posthoc_match(fake_output, gn, tol = 0), NA)
+})
+
+test_that("grouped posthoc sequentially matches duplicate repeating group headers correctly", {
+  fake_output <- c("GroupA",
+                   "A minus B: 1.0 \u00b1 0.5, p=0.05, CL=[-0.5,2.5]",
+                   "GroupB",
+                   "C minus D: 5.0 \u00b1 0.1, p=0.99, CL=[-0.1,0.1]",
+                   "GroupA", # Identical header repeated later!
+                   "E minus F: 9.9 \u00b1 0.9, p=0.50, CL=[1.0,2.0]")
+  
+  gn <- with_temp_golden(
+    data.frame(group = c("GroupA", "GroupB", "GroupA"), 
+               comparison = c("A minus B", "C minus D", "E minus F"),
+               diff = c(1.0, 5.0, 9.9), se = c(0.5, 0.1, 0.9), p = c(0.05, 0.99, 0.50), 
+               cl_lo = c(-0.5, -0.1, 1.0), cl_hi = c(2.5, 0.1, 2.0),
+               stringsAsFactors = FALSE),
+    "test_grouped_duplicate_headers")
+  
+  # The new cursor-based search explicitly forces it to find the SECOND "GroupA" chunk!
+  expect_error(expect_grouped_posthoc_match(fake_output, gn, tol = 0), NA)
+})
+
+# --- expect_ordinal_posthoc_match ---
+
+test_that("ordinal posthoc skips unexpected lines to find successful match", {
+  fake_output <- c("GroupA",
+                   "random console warning",
+                   "A minus B: (2/3) RR=1.5, CL=[0.5,2.5] ... p=0.05")
+  gn <- with_temp_golden(
+    data.frame(group = "GroupA", comparison = "A minus B",
+               RR = 1.5, lower = 0.5, upper = 2.5, p = 0.05,
+               stringsAsFactors = FALSE),
+    "test_ordinal_skip_garbage")
+  
+  expect_error(expect_ordinal_posthoc_match(fake_output, gn, tol = 1e-5), NA)
+})
+
+test_that("ordinal posthoc sequentially matches duplicate repeating group headers correctly", {
+  fake_output <- c("GroupA",
+                   "A minus B: (2/3) RR=1.5, CL=[0.5,2.5] ... p=0.05",
+                   "GroupB",
+                   "C minus D: (4/5) RR=5.0, CL=[-0.1,0.1] ... p=0.99",
+                   "GroupA", # Identical header repeated later!
+                   "E minus F: (9/10) RR=9.9, CL=[1.0,2.0] ... p=0.50")
+  
+  gn <- with_temp_golden(
+    data.frame(group = c("GroupA", "GroupB", "GroupA"), 
+               comparison = c("A minus B", "C minus D", "E minus F"),
+               RR = c(1.5, 5.0, 9.9), lower = c(0.5, -0.1, 1.0), upper = c(2.5, 0.1, 2.0), p = c(0.05, 0.99, 0.50),
+               stringsAsFactors = FALSE),
+    "test_ordinal_duplicate_headers")
+  
+  expect_error(expect_ordinal_posthoc_match(fake_output, gn, tol = 1e-5), NA)
 })
 
 # --- expect_table_match failure cases ---
@@ -200,7 +276,7 @@ test_that("expect_table_match fails on extra rows", {
   golden <- data.frame(stat = "A", x = "1", stringsAsFactors = FALSE)
   expect_error(
     expect_table_match(actual, golden, label = "test"),
-    "Extra rows"
+    "Extra row"
   )
 })
 
