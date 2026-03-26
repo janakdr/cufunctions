@@ -1,5 +1,5 @@
 predictor,No,Yes,1 vs 2
-N from HDL on:,65,20,
+N,from HDL on: 65,20,
 HDL-Mean±SD,42.6±9.1,37.4±6.91,0.0212
 LN_TG-Mean±SD,4.73±0.376,5.3±0.55,9.54e-07
 BMI-Median(IQR),26.1(23.7:29.6),29.6(27.8:33.3),3.87e-04

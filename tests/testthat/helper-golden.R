@@ -18,11 +18,12 @@ load_golden <- function(name) {
 #'   extract_section_lines(output, "Predictor summary", list("Shapiro-Wilk", "Models ranked"))
 #'
 #' @param output Character vector of captured output lines
-#' @param header_prefix Initial substring to identify the start of the section
+#' @param header_pattern Pattern to identify the start of the section
+#'   (matched via grepl, so regex is supported).
 #' @param stop_prefix_list List of strings that mark the end of the section (checked via startsWith). Default is an empty list.
 #' @return Character vector of section lines, or NULL if not found
-extract_section_lines <- function(output, header_prefix, stop_prefix_list = list()) {
-  idx <- which(startsWith(output, header_prefix))
+extract_section_lines <- function(output, header_pattern, stop_prefix_list = list()) {
+  idx <- which(grepl(header_pattern, output))
   if (length(idx) == 0) return(NULL)
   start <- idx[1]
   end <- start + 1
@@ -120,6 +121,7 @@ parse_fixed_width_table <- function(header_line, data_lines, id_col = "stat",
         if (values[best_col] == "") {
           values[best_col] <- substr(line, token_start, token_end)
         } else {
+          # For column entries with spaces, append the token to the existing value.
           values[best_col] <- paste(values[best_col], substr(line, token_start, token_end))
         }
       }
@@ -145,7 +147,7 @@ parse_fixed_width_table <- function(header_line, data_lines, id_col = "stat",
 #'
 #' @param output Character vector of captured output lines
 #' @return A data.frame with a "stat" column and one column per group
-parse_summary_table <- function(output) {
+parse_summary_table <- function(output, col_names = NULL) {
   lines <- output
   if (length(lines) == 1) lines <- strsplit(lines, "\n")[[1]]
 
@@ -169,7 +171,7 @@ parse_summary_table <- function(output) {
     if (trimws(lines[i]) == "") { end <- i - 1; break }
   }
 
-  parse_fixed_width_table(lines[header_idx], lines[n_idx:end])
+  parse_fixed_width_table(lines[header_idx], lines[n_idx:end], col_names = col_names)
 }
 
 #' Parse a table with significance stars from captured console output.
@@ -341,14 +343,17 @@ parse_brief_table <- function(output, row_labels) {
 #' @return A data.frame
 parse_section_table <- function(output, section_pattern,
                                 col_names = NULL, row_labels = NULL) {
-  idx <- grep(section_pattern, output)
-  end <- idx[1] + 2
-  while (end <= length(output) && trimws(output[end]) != "") end <- end + 1
-  parse_fixed_width_table(output[idx[1] + 1], output[(idx[1] + 2):(end - 1)],
+  section <- extract_section_lines(output, section_pattern)
+  if (is.null(section) || length(section) < 3) return(NULL)
+  parse_fixed_width_table(section[2], section[3:length(section)],
                            col_names = col_names, row_labels = row_labels)
 }
 
 #' Parse a curepmeas table from output lines, handling wrapping.
+#'
+#' Finds the section by regex, skips the title line, then parses
+#' one or more sub-tables (each starting with an "Nhave" row) and
+#' merges them by the "term" column.
 #'
 #' Example input:
 #'   "like "
@@ -357,39 +362,15 @@ parse_section_table <- function(output, section_pattern,
 #'   "worst 17.5%: 18 11.7%: 12 11.7%: 12"
 #'
 #' @param output Character vector of output lines
-#' @param header_pattern Regex pattern to find the table section or header
-#' @param id_col Name for the first column, default "term"
-#' @param skip_lines Number of lines to skip after the match to find the header line.
-#'   Default 1 (assumes match is a Title line, next line is Header).
-#'   Use 0 if the match IS the header line (e.g., up:dn).
-#' @return A data.frame
-parse_curepmeas_table <- function(output, header_pattern, id_col = "term",
-                                   skip_lines = 1, row_labels = NULL) {
-  idx <- grep(header_pattern, output)
-  if (length(idx) == 0) return(NULL)
-  start_idx <- idx[1]
+#' @param header_pattern Regex pattern to find the table section title
+#' @return A data.frame with a "term" column and one column per group
+parse_curepmeas_table <- function(output, header_pattern) {
+  table_lines <- extract_section_lines(output, header_pattern,
+                                        stop_prefix_list = list("[1]", "p-value NA"))
+  if (is.null(table_lines) || length(table_lines) < 2) return(NULL)
   
-  # Find end of table (blank line or prompt or [1] or p-value note)
-  end_idx <- start_idx + 1
-  while (end_idx <= length(output) && output[end_idx] != "" && 
-         !grepl("^>", output[end_idx]) && 
-         !grepl("^\\[1\\]", output[end_idx]) &&
-         !grepl("^p-value NA", output[end_idx])) {
-    end_idx <- end_idx + 1
-  }
-  table_lines <- output[start_idx:(end_idx-1)]
-  
-  if (length(table_lines) < (skip_lines + 1)) return(NULL)
-  
-  # Adjust for skip_lines
-  # Everything before skip_lines is ignored
-  # table_lines[skip_lines + 1] is the header
-  # table_lines[(skip_lines + 2):end] is data
-  
-  # --- Wrapped Table Parsing Logic ---
-  # Nhave is the marker for data start in sub-tables
-  data_lines <- table_lines[(skip_lines + 1):length(table_lines)]
-  # Find the indices of lines that start with "Nhave" (ignoring leading spaces)
+  # Skip the title line; remainder contains header(s) and data
+  data_lines <- table_lines[2:length(table_lines)]
   nhave_idxs <- which(grepl("^ *Nhave", data_lines))
   
   sub_tables <- list()
@@ -402,7 +383,7 @@ parse_curepmeas_table <- function(output, header_pattern, id_col = "term",
       e_idx <- length(data_lines)
     }
     sub_lines <- data_lines[header_idx:e_idx]
-    sub_df <- parse_fixed_width_table(sub_lines[1], sub_lines[-1], id_col = id_col)
+    sub_df <- parse_fixed_width_table(sub_lines[1], sub_lines[-1], id_col = "term")
     if (!is.null(sub_df)) {
       sub_tables[[k]] <- sub_df
     }
@@ -412,90 +393,15 @@ parse_curepmeas_table <- function(output, header_pattern, id_col = "term",
   
   merged_df <- sub_tables[[1]]
   if (length(sub_tables) > 1) {
+    original_order <- merged_df$term
     for (k in 2:length(sub_tables)) {
-      merged_df <- merge(merged_df, sub_tables[[k]], by = id_col, all = TRUE)
+      merged_df <- merge(merged_df, sub_tables[[k]], by = "term", all = TRUE)
     }
+    merged_df <- merged_df[match(original_order, merged_df$term), ]
   }
   return(merged_df)
 }
 
-#' Parse a curepmeas sign test table from captured output.
-#'
-#' The sign test table has alternating count rows (e.g., |Δ| > 3  5:4  5:4)
-#' and p-value rows (e.g.,          p=1     p=1     p= NA).
-#' This parser finds the table, pairs each count row with its p-value row,
-#' and produces a data frame with count and p-value columns per comparison.
-#' Example input:
-#'   "        Step1   All"
-#'   "up:dn   47%: 28 45.4%: 83"
-#'   "|Δ| > 0 18      47"
-#'   "p=val   N/A     0.462"
-#'
-#' @param output Character vector of lines in the table block
-#' @return A data.frame with threshold as row label, and paired count/p columns
-parse_sign_test_table <- function(output) {
-  # Find "up:dn" header line
-  idx <- grep("^up:dn", output)
-  if (length(idx) == 0) return(NULL)
-  header_idx <- idx[1]
-
-  # Parse header for column names
-  header_line <- output[header_idx]
-  col_names <- strsplit(trimws(header_line), " +")[[1]]
-  # First token is "up:dn" (the row-label column header), rest are comparison names
-  comp_names <- col_names[-1]
-
-  # Collect data lines until blank/end
-  data_lines <- character()
-  for (i in (header_idx + 1):length(output)) {
-    if (trimws(output[i]) == "" || startsWith(output[i], "p-value NA")) break
-    data_lines <- c(data_lines, output[i])
-  }
-
-  # Parse count and p-value lines using the header for column positions
-  # Count lines start with |Δ|, p-value lines start with whitespace
-  thresholds <- character()
-  count_rows <- list()
-  p_rows <- list()
-  row_idx <- 0
-
-  for (line in data_lines) {
-    tokens <- strsplit(trimws(line), " +")[[1]]
-    if (startsWith(trimws(line), "|")) {
-      # Count row: |Δ| > N  values...
-      row_idx <- row_idx + 1
-      # Label is first 3 tokens: |Δ| > N
-      threshold <- paste(tokens[1:3], collapse = " ")
-      thresholds <- c(thresholds, threshold)
-      count_rows[[row_idx]] <- tokens[4:length(tokens)]
-    } else {
-      # P-value row: p=val values...
-      # Recombine split "p= NA" — strsplit splits it into "p=" and "NA"
-      merged <- character()
-      i <- 1
-      while (i <= length(tokens)) {
-        if (grepl("=$", tokens[i]) && i < length(tokens)) {
-          merged <- c(merged, paste(tokens[i], tokens[i + 1]))
-          i <- i + 2
-        } else {
-          merged <- c(merged, tokens[i])
-          i <- i + 1
-        }
-      }
-      p_rows[[row_idx]] <- merged
-    }
-  }
-
-  # Build data frame
-  result <- data.frame(threshold = thresholds, stringsAsFactors = FALSE)
-  for (j in seq_along(comp_names)) {
-    count_vals <- sapply(count_rows, function(r) if (j <= length(r)) r[j] else "")
-    p_vals <- sapply(p_rows, function(r) if (j <= length(r)) r[j] else "")
-    result[[comp_names[j]]] <- count_vals
-    result[[paste0(comp_names[j], "_p")]] <- p_vals
-  }
-  result
-}
 
 # --- Shared comparison internals ---
 
@@ -549,15 +455,15 @@ compare_values <- function(expected, actual, tol = 0) {
     if ((grepl(fmt_plus_minus, expected) && grepl(fmt_plus_minus, actual)) ||
         (grepl(fmt_range, expected) && grepl(fmt_range, actual))) {
       
-      g_nums <- as.numeric(regmatches(expected, gregexpr(num_re, expected, perl = TRUE))[[1]])
-      a_nums <- as.numeric(regmatches(actual, gregexpr(num_re, actual, perl = TRUE))[[1]])
-      if (length(g_nums) > 0 && length(g_nums) == length(a_nums)) {
-        # Iterate and compare each component numeric value
-        for (k in seq_along(g_nums)) {
-          res <- all.equal.numeric(g_nums[k], a_nums[k], tolerance = tol, scale = NULL)
-          if (!isTRUE(res)) {
+      g_matches <- regmatches(expected, gregexpr(num_re, expected, perl = TRUE))[[1]]
+      a_matches <- regmatches(actual, gregexpr(num_re, actual, perl = TRUE))[[1]]
+      if (length(g_matches) > 0 && length(g_matches) == length(a_matches)) {
+        # Iterate and compare each component numeric value recursively
+        for (k in seq_along(g_matches)) {
+          msg <- compare_values(g_matches[k], a_matches[k], tol)
+          if (!is.null(msg)) {
             return(sprintf("expected '%s', got '%s' (component %d: %s)",
-                           expected, actual, k, res[1]))
+                           expected, actual, k, msg))
           }
         }
         return(NULL)  # All numeric components within tolerance
@@ -746,8 +652,15 @@ expect_grouped_posthoc_match <- function(output, golden_name, tol = 0) {
     testthat::succeed()
   }
 }
-
 #' Check that ordinal relative risk posthoc output matches golden CSV values.
+#'
+#' Example input:
+#'   "AAD"
+#'   "M vs F: 38.5% RR=0.821, CL=[0.452,1.49], p=0.517"
+#'
+#' @param output Character vector of captured output lines
+#' @param golden_name Basename of the golden CSV file (without .csv)
+#' @param tol Relative tolerance for numeric comparisons (0 = exact match)
 expect_ordinal_posthoc_match <- function(output, golden_name, tol = 0) {
   golden <- load_golden(golden_name)
   lines <- output
@@ -781,7 +694,7 @@ expect_ordinal_posthoc_match <- function(output, golden_name, tol = 0) {
     }
 
     found_comp <- FALSE
-    comp_re <- sprintf("%s:.*RR=%s, CL=\\[%s,%s\\].*p=%s", 
+    comp_re <- sprintf("%s:\\s*(.*?)\\s*RR=%s, CL=\\[%s,%s\\].*p=%s", 
                        re_escape(row$comparison), num_re, num_re, num_re, num_re)
     
     while (cursor <= length(lines)) {
@@ -791,9 +704,16 @@ expect_ordinal_posthoc_match <- function(output, golden_name, tol = 0) {
       
       match_groups <- regmatches(lines[cursor], regexec(comp_re, lines[cursor], perl = TRUE))[[1]]
       if (length(match_groups) > 0) {
-        actual_vals <- match_groups[2:5] # RR, lower, upper, p
+        actual_pct <- trimws(match_groups[2])
+        actual_vals <- match_groups[3:6] # RR, lower, upper, p
         golden_vals <- c(row$RR, row$lower, row$upper, row$p)
         
+        # Compare PCT as string
+        if (!is.null(row$pct) && as.character(row$pct) != actual_pct) {
+          mismatches <- c(mismatches, sprintf("Group '%s', row '%s' pct: expected '%s', got '%s'", 
+                                               row$group, row$comparison, row$pct, actual_pct))
+        }
+
         for (c_idx in 1:4) {
           rel_diff <- abs(as.numeric(golden_vals[c_idx]) - as.numeric(actual_vals[c_idx])) / 
                       max(abs(as.numeric(golden_vals[c_idx])), abs(as.numeric(actual_vals[c_idx])), 1e-10)
@@ -838,16 +758,24 @@ expect_ordinal_posthoc_match <- function(output, golden_name, tol = 0) {
 expect_table_match <- function(actual, golden, id_col = "stat", label = "table", tol = 0) {
   mismatches <- character()
 
-  # Match rows by id_col
-  for (i in seq_len(nrow(golden))) {
-    golden_id <- golden[[id_col]][i]
-    actual_row <- which(actual[[id_col]] == golden_id)
-
-    if (length(actual_row) == 0) {
-      mismatches <- c(mismatches, sprintf("Row '%s': missing from actual output", golden_id))
+  # Compare rows positionally — row order is expected to match
+  n_rows <- max(nrow(golden), nrow(actual))
+  for (i in seq_len(n_rows)) {
+    if (i > nrow(golden)) {
+      mismatches <- c(mismatches, sprintf("Extra row %d in actual: '%s'", i, actual[[id_col]][i]))
       next
     }
-    actual_row <- actual_row[1]
+    if (i > nrow(actual)) {
+      mismatches <- c(mismatches, sprintf("Row '%s': missing from actual output", golden[[id_col]][i]))
+      next
+    }
+
+    golden_id <- golden[[id_col]][i]
+    actual_id <- actual[[id_col]][i]
+    if (golden_id != actual_id) {
+      mismatches <- c(mismatches, sprintf("Row %d: expected id '%s', got '%s'", i, golden_id, actual_id))
+      next
+    }
 
     # Compare each non-id column
     data_cols <- setdiff(names(golden), id_col)
@@ -857,18 +785,11 @@ expect_table_match <- function(actual, golden, id_col = "stat", label = "table",
         next
       }
       g_val <- as.character(golden[i, col])
-      a_val <- as.character(actual[actual_row, col])
+      a_val <- as.character(actual[i, col])
       msg <- compare_values(g_val, a_val, tol)
       if (!is.null(msg))
         mismatches <- c(mismatches, sprintf("Row '%s', col '%s': %s", golden_id, col, msg))
     }
-  }
-
-  # Check for extra rows in actual not in golden
-  extra_ids <- setdiff(actual[[id_col]], golden[[id_col]])
-  if (length(extra_ids) > 0) {
-    mismatches <- c(mismatches,
-      sprintf("Extra rows in actual not in golden: %s", paste(extra_ids, collapse = ", ")))
   }
 
   if (length(mismatches) > 0) {

@@ -36,6 +36,7 @@ test_that("culinreg standard run matches golden", {
   # 3. First Coefficients Table
   golden_coef1 <- load_golden("culinreg_Met_coef1")
   actual_coef1 <- parse_coef_table(output, col_names = colnames(golden_coef1)[-1])
+  expect_contains(colnames(actual_coef1), c("Std. Error", "t value"))
   expect_table_match(actual_coef1, golden_coef1, id_col = "term", label = "Coef 1", tol = 0.01)
   
   # 4. Model Selection Table (Block 1)

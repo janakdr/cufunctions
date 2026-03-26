@@ -26,12 +26,14 @@ test_that("culogist standard run matches golden", {
                                           id_col = "predictor", row_labels = pred_labels,
                                           col_names = pred_col_names)
 
+  expect_contains(colnames(actual_pred), "1 vs 2")
   expect_table_match(actual_pred, golden_pred, id_col = "predictor", label = "Predictors", tol = 0.02)
   
   # 2. Coefficients 1 — use parse_coef_table which handles col_names and star-stripping
   golden_coef1 <- load_golden("culogist_Met_coef1")
   z_col_names <- colnames(golden_coef1)[-1]
   actual_coef1 <- parse_coef_table(output, col_names = z_col_names)
+  expect_contains(colnames(actual_coef1), c("Std. Error", "z value"))
   # Tolerance 0.03: glm() estimates vary slightly across R versions/BLAS
   expect_table_match(actual_coef1, golden_coef1, id_col = "term", label = "Coef 1", tol = 0.03)
   

@@ -1,19 +1,19 @@
-group,comparison,RR,lower,upper,p
-bad vs > bad in:,lean vs overwt,0.667,0.486,0.958,0.0275
-bad vs > bad in:,lean vs obese,0.636,0.413,1.02,0.0311
-bad vs > bad in:,overwt vs obese,0.955,0.549,1.66,1
-bad vs > bad in:,lean vs overwt,0.667,0.486,0.958,0.0275
-bad vs > bad in:,lean vs obese,0.333,0.169,0.763,0.000458
-bad vs > bad in:,overwt vs obese,0.5,0.211,1.19,0.135
-bad vs > bad in:,lean,1,0.867,1.15,1
-bad vs > bad in:,overwt,1,0.63,1.59,1
-bad vs > bad in:,obese,0.524,0.209,1.31,0.22
-<good vs good in:,lean vs overwt,0.481,0.228,1.02,0.0732
-<good vs good in:,lean vs obese,0,0,0.948,0.000589
-<good vs good in:,overwt vs obese,0,0,1.97,0.0576
-<good vs good in:,lean vs overwt,1.08,0.381,3.08,1
-<good vs good in:,lean vs obese,0,0,2.01,0.0957
-<good vs good in:,overwt vs obese,0,0,1.83,0.0568
-<good vs good in:,lean,0.444,0.182,1.08,0.115
-<good vs good in:,overwt,1,0.397,2.52,1
-<good vs good in:,obese,1,0.0198,43,1
+group,comparison,pct,RR,lower,upper,p
+bad vs > bad in:,lean vs overwt,(13/13 vs 12/18),0.667,0.486,0.958,0.0275
+bad vs > bad in:,lean vs obese,(13/13 vs 7/11),0.636,0.413,1.02,0.0311
+bad vs > bad in:,overwt vs obese,(12/18 vs 7/11),0.955,0.549,1.66,1
+bad vs > bad in:,lean vs overwt,(13/13 vs 12/18),0.667,0.486,0.958,0.0275
+bad vs > bad in:,lean vs obese,(13/13 vs 4/12),0.333,0.169,0.763,0.000458
+bad vs > bad in:,overwt vs obese,(12/18 vs 4/12),0.5,0.211,1.19,0.135
+bad vs > bad in:,lean,(13/13 vs 13/13),1,0.867,1.15,1
+bad vs > bad in:,overwt,(12/18 vs 12/18),1,0.63,1.59,1
+bad vs > bad in:,obese,(7/11 vs 4/12),0.524,0.209,1.31,0.22
+<good vs good in:,lean vs overwt,(9/13 vs 6/18),0.481,0.228,1.02,0.0732
+<good vs good in:,lean vs obese,(9/13 vs 0/11),0,0,0.948,0.000589
+<good vs good in:,overwt vs obese,(6/18 vs 0/11),0,0,1.97,0.0576
+<good vs good in:,lean vs overwt,(4/13 vs 6/18),1.08,0.381,3.08,1
+<good vs good in:,lean vs obese,(4/13 vs 0/12),0,0,2.01,0.0957
+<good vs good in:,overwt vs obese,(6/18 vs 0/12),0,0,1.83,0.0568
+<good vs good in:,lean,(9/13 vs 4/13),0.444,0.182,1.08,0.115
+<good vs good in:,overwt,(6/18 vs 6/18),1,0.397,2.52,1
+<good vs good in:,obese,(0/11 vs 0/12),1,0.0198,43,1

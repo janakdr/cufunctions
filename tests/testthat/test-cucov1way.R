@@ -8,8 +8,10 @@ test_that("cucov1way(tcstudy, tcpre, Diet) summary, coef, posthoc, p-matrix, and
   out <- capture.output(with(NEJM, cucov1way(tcstudy, tcpre, Diet)))
 
   # Summary table
-  actual_summary <- parse_summary_table(out)
   golden_summary <- load_golden("cucov1way_tcstudy_tcpre_Diet_summary")
+  actual_summary <- parse_summary_table(out, col_names = colnames(golden_summary)[-1])
+  
+  expect_contains(colnames(actual_summary), c("1 vs 2", "1 vs 3", "2 vs 3"))
   expect_table_match(actual_summary, golden_summary,
                      label = "cucov1way summary")
 
@@ -39,8 +41,12 @@ test_that("cucov1way with g1order reorders summary and coefficients", {
                                   g1order = c("Step1", "Mono", "AAD"))))
 
   # Summary table (columns reordered)
-  actual_summary <- parse_summary_table(out)
   golden_summary <- load_golden("cucov1way_tcstudy_tcpre_Diet_g1order_summary")
+  actual_summary <- parse_summary_table(out, col_names = colnames(golden_summary)[-1])
+  
+  # Explicitly verify multi-word group comparisons are preserved as single columns
+  expect_contains(colnames(actual_summary), c("1 vs 2", "1 vs 3", "2 vs 3"))
+  
   expect_table_match(actual_summary, golden_summary,
                      label = "cucov1way g1order summary")
 

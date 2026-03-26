@@ -45,8 +45,11 @@ test_that("cucox matched golden", {
   expect_true(!is.na(hr_start) && !is.na(hr_end))
   hr_lines <- output[hr_start:(hr_end-1)]
   hr_lines <- hr_lines[trimws(hr_lines) != ""]
-  actual_hr <- parse_fixed_width_table(hr_lines[1], hr_lines[2:length(hr_lines)], id_col = "term")
+  hr_col_names <- c("Hazard Ratio", "HR for non-event", "lower .95", "upper .95")
+  actual_hr <- parse_fixed_width_table(hr_lines[1], hr_lines[2:length(hr_lines)], id_col = "term", col_names = hr_col_names)
   golden_hr <- load_golden("cucox_coxdata_hr")
+  
+  expect_contains(colnames(actual_hr), "HR for non-event")
   expect_table_match(actual_hr, golden_hr, id_col = "term", label = "Hazard Ratios", tol = 0.01)
 })
 

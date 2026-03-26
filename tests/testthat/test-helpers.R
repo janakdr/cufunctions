@@ -276,7 +276,7 @@ test_that("expect_table_match fails on extra rows", {
   golden <- data.frame(stat = "A", x = "1", stringsAsFactors = FALSE)
   expect_error(
     expect_table_match(actual, golden, label = "test"),
-    "Extra rows"
+    "Extra row"
   )
 })
 
