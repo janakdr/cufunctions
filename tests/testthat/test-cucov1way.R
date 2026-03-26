@@ -64,3 +64,22 @@ test_that("cucov1way with g1order reorders summary and coefficients", {
   expect_table_match(actual_pmat, golden_pmat,
                      label = "cucov1way g1order p-matrix")
 })
+
+# --- cucov1way(tcstudy, tcpre, Diet, c(160,180,200)) — cutpoints ---
+
+test_that("cucov1way with cutpoints produces interaction coefficients and posthoc at each cut", {
+  out <- capture.output(with(NEJM, cucov1way(tcstudy, tcpre, Diet,
+                                  c(160, 180, 200))))
+
+  # Coefficients (interaction model with tcpre:Diet terms)
+  actual_coef <- parse_coef_table(out)
+  golden_coef <- load_golden("cucov1way_tcstudy_tcpre_Diet_c160_coef")
+  expect_table_match(actual_coef, golden_coef, id_col = "term",
+                     label = "cucov1way cutpoints coefficients", tol = 0.01)
+
+  # Posthoc comparisons at each cutpoint
+  expect_posthoc_match(out, "cucov1way_tcstudy_tcpre_Diet_c160_posthoc", tol = 0.01)
+
+  # F-tests
+  expect_partial_f_match(out, "cucov1way_tcstudy_tcpre_Diet_c160_f_tests", tol = 0.01)
+})
