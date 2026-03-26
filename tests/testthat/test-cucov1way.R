@@ -25,7 +25,8 @@ test_that("cucov1way(tcstudy, tcpre, Diet) summary, coef, posthoc, p-matrix, and
   expect_posthoc_match(out, "cucov1way_tcstudy_tcpre_Diet_posthoc")
 
   # P-value matrix
-  actual_pmat <- parse_p_matrix(out, "Summary of p-values")
+  pmat_section <- extract_section_lines(out, "Summary of p-values")
+  actual_pmat <- parse_matrix_from_header(pmat_section, 2)
   golden_pmat <- load_golden("cucov1way_tcstudy_tcpre_Diet_p_matrix")
   expect_table_match(actual_pmat, golden_pmat,
                      label = "cucov1way p-matrix")
@@ -57,7 +58,8 @@ test_that("cucov1way with g1order reorders summary and coefficients", {
                      label = "cucov1way g1order coefficients")
 
   # P-value matrix (reordered)
-  actual_pmat <- parse_p_matrix(out, "Summary of p-values")
+  pmat_section <- extract_section_lines(out, "Summary of p-values")
+  actual_pmat <- parse_matrix_from_header(pmat_section, 2)
   golden_pmat <- load_golden("cucov1way_tcstudy_tcpre_Diet_g1order_p_matrix")
   expect_table_match(actual_pmat, golden_pmat,
                      label = "cucov1way g1order p-matrix")

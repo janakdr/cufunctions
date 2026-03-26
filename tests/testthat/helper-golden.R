@@ -23,6 +23,7 @@ load_golden <- function(name) {
 #' @param stop_prefix_list List of strings that mark the end of the section (checked via startsWith). Default is an empty list.
 #' @return Character vector of section lines, or NULL if not found
 extract_section_lines <- function(output, header_pattern, stop_prefix_list = list()) {
+  if (length(output) == 1) output <- strsplit(output, "\n")[[1]]
   idx <- which(grepl(header_pattern, output))
   if (length(idx) == 0) return(NULL)
   start <- idx[1]
@@ -916,29 +917,6 @@ parse_matrix_from_header <- function(lines, header_idx) {
   df
 }
 
-#' Parse a generic p-value matrix by searching for a header pattern.
-#'
-#' Finds the section by grep, then skips blanks to the matrix header
-#' and delegates to parse_matrix_from_header.
-#'
-#' @param output Character vector of captured output lines
-#' @param header_pattern Regex pattern to identify the section header
-#' @return A data.frame in matrix form
-parse_p_matrix <- function(output, header_pattern) {
-  lines <- output
-  if (length(lines) == 1) lines <- strsplit(lines, "\n")[[1]]
-
-  sec_idx <- grep(header_pattern, lines)
-  if (length(sec_idx) == 0) testthat::fail(sprintf("Matrix header '%s' not found", header_pattern))
-  sec_idx <- sec_idx[1]
-
-  header_idx <- sec_idx + 1
-  while (header_idx <= length(lines) && trimws(lines[header_idx]) == "")
-    header_idx <- header_idx + 1
-
-  parse_matrix_from_header(lines, header_idx)
-}
-
 #' Parse "Partial F-test vs simpler models" section.
 #'
 #' Example output:
@@ -949,18 +927,12 @@ parse_p_matrix <- function(output, header_pattern) {
 #' @param output Character vector of captured output lines
 #' @return A data.frame with columns p_value and model
 parse_f_tests <- function(output) {
-  lines <- output
-  if (length(lines) == 1) lines <- strsplit(lines, "\n")[[1]]
-
-  sec_idx <- grep("Partial F-test vs simpler models:", lines, fixed = TRUE)
-  if (length(sec_idx) == 0) testthat::fail("F-tests header not found")
+  section <- extract_section_lines(output, "Partial F-test vs simpler models:")
+  if (is.null(section)) testthat::fail("F-tests header not found")
 
   f_rows <- list()
-  for (i in (sec_idx[1] + 1):length(lines)) {
-    trimmed <- trimws(lines[i])
-    if (trimmed == "" || startsWith(trimmed, ">")) break
-
-    m <- regmatches(trimmed, regexec("^p=([^ ]+) vs (.+)$", trimmed))[[1]]
+  for (line in section[-1]) {
+    m <- regmatches(trimws(line), regexec("^p=([^ ]+) vs (.+)$", trimws(line)))[[1]]
     if (length(m) > 2) {
       f_rows[[length(f_rows) + 1]] <- data.frame(p_value = m[2], model = m[3],
                                                  stringsAsFactors = FALSE)
