@@ -831,6 +831,7 @@ expect_kw_match <- function(output, golden_name) {
 #' Example output:
 #'   "Pairwise comparisons using Dunn's all-pairs test"
 #'   "(generalizes Wilcoxon rank-sum)"
+#'   ""
 #'   "      AAD  Mono"
 #'   "Mono  0.16 -"
 #'   ...
