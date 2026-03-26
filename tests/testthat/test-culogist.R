@@ -1,7 +1,6 @@
 library(testthat)
 library(cufunctions)
 
-context("culogist")
 
 test_setup <- function() {
   data(AJCN, envir = environment())

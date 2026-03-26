@@ -1,7 +1,6 @@
 library(testthat)
 library(cufunctions)
 
-context("curepmeas")
 
 test_setup <- function() {
   data(delta, envir = environment())

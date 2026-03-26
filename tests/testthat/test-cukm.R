@@ -1,7 +1,6 @@
 library(testthat)
 library(cufunctions)
 
-context("cukm")
 
 test_setup <- function() {
   data(hepc, envir = environment())
