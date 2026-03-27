@@ -607,6 +607,8 @@ expect_grouped_posthoc_match <- function(output, golden_name, tol = 0) {
 
       res <- check_format_match(lines[cursor], comp_pattern, golden_nums, tol)
       if (!res$found_matching_template) {
+        # If the current line does not match the target comparison, advance the
+        # cursor to skip over irrelevant output or text until it is found.
         cursor <- cursor + 1
       } else {
         if (length(res$mismatches) > 0) {
@@ -687,6 +689,8 @@ expect_ordinal_posthoc_match <- function(output, golden_name, tol = 0) {
 
       res <- check_format_match(lines[cursor], comp_pattern, golden_nums, tol)
       if (!res$found_matching_template) {
+        # If the current line does not match the target comparison, advance the
+        # cursor to skip over irrelevant output or text until it is found.
         cursor <- cursor + 1
       } else {
         if (length(res$mismatches) > 0) {
