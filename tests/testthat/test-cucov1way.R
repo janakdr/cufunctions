@@ -66,6 +66,12 @@ test_that("cucov1way with g1order reorders summary and coefficients", {
   golden_pmat <- load_golden("cucov1way_tcstudy_tcpre_Diet_g1order_p_matrix")
   expect_table_match(actual_pmat, golden_pmat,
                      label = "cucov1way g1order p-matrix")
+
+  # Posthoc comparisons (docx L1466-1468)
+  expect_posthoc_match(out, "cucov1way_tcstudy_tcpre_Diet_g1order_posthoc")
+
+  # F-tests (docx L1478-1480)
+  expect_partial_f_match(out, "cucov1way_tcstudy_tcpre_Diet_g1order_f_tests")
 })
 
 # --- cucov1way(tcstudy, tcpre, Diet, c(160,180,200)) — cutpoints ---
