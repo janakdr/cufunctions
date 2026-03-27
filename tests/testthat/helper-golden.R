@@ -437,59 +437,72 @@ compare_values <- function(expected, actual, tol = 0) {
   NULL
 }
 
-# --- Posthoc comparison helpers ---
+# --- Format matching: literal pattern with %n numeric placeholders ---
 
-#' Regexp for matching a number (with optional sign and scientific notation).
+#' Match a literal pattern with %n numeric placeholders against text.
+#'
+#' The pattern is treated as literal text (all regex special characters are
+#' escaped automatically). Each %n is replaced with a numeric capture group.
+#' Captured numbers are compared against golden_nums with tolerance.
+#'
+#' @param text Single string to search in
+#' @param pattern Literal string with %n placeholders for numbers
+#' @param golden_nums Numeric vector of expected values (one per %n)
+#' @param tol Relative tolerance for numeric comparisons (0 = exact)
+#' @return NULL on success, or a descriptive error string
 #' @keywords internal
-posthoc_num_re <- "(-?[0-9]+[.]?[0-9]*(?:[eE][+-]?[0-9]+)?)"
+check_format_match <- function(text, pattern, golden_nums, tol = 0) {
+  num_re <- "(-?[0-9]+\\.?[0-9]*(?:[eE][+-]?[0-9]+)?)"
+  escaped <- re_escape(pattern)
+  re <- gsub("%n", num_re, escaped, fixed = TRUE)
 
-#' Build the posthoc value-matching regexp for a given label.
-#'
-#' Matches lines like:
-#'   "Mono minus AAD: -17.9 ± 5.06, p=0.0012, CL=[-28.2,-7.63]"
-#'
-#' Pattern: <label>: <diff> ± <se>, p=<p>, CL=[<cl_lo>,<cl_hi>]
-#' Each numeric field is captured as a group (5 groups total).
-#'
-#' @param label_re Escaped label to match before the colon
-#' @return A perl-compatible regexp with 5 capture groups
-#' @keywords internal
-posthoc_pattern <- function(label_re) {
-  re <- posthoc_num_re
-  sprintf("%s: %s ± %s, p=%s, CL=\\[%s,%s\\]",
-          label_re, re, re, re, re, re)
-}
+  m <- regmatches(text, regexec(re, text, perl = TRUE))[[1]]
+  if (length(m) == 0) return(paste0("Pattern not found: ", pattern))
 
-#' Compare 5 captured posthoc values against golden, collecting mismatches.
-#' @param actual_vals Character vector of 5 captured values
-#' @param golden_row A row from the golden data.frame
-#' @param row_label Label for mismatch messages
-#' @param tol Relative tolerance (0 = exact)
-#' @return Character vector of mismatch messages (empty if all match)
-#' @keywords internal
-compare_posthoc_values <- function(actual_vals, golden_row, row_label, tol = 0) {
-  col_names <- c("diff", "se", "p", "cl_lo", "cl_hi")
+  captured <- m[2:(length(golden_nums) + 1)]
   mismatches <- character()
-  for (j in seq_along(col_names)) {
-    msg <- compare_values(as.character(golden_row[[col_names[j]]]),
-                          actual_vals[j], tol)
+  for (i in seq_along(golden_nums)) {
+    msg <- compare_values(as.character(golden_nums[i]), captured[i], tol)
     if (!is.null(msg))
-      mismatches <- c(mismatches, sprintf("%s, col '%s': %s", row_label, col_names[j], msg))
+      mismatches <- c(mismatches, sprintf("value %d: %s", i, msg))
   }
-  mismatches
+  if (length(mismatches) > 0) paste(mismatches, collapse = "; ") else NULL
 }
+
+#' Assert that a literal pattern with %n numeric placeholders matches output.
+#'
+#' Wrapper around check_format_match that calls testthat::fail/succeed.
+#'
+#' @param output Character vector of captured output lines
+#' @param pattern Literal string with %n placeholders for numbers
+#' @param golden_nums Numeric vector of expected values (one per %n)
+#' @param tol Relative tolerance for numeric comparisons (0 = exact)
+#' @param label Descriptive label for error messages
+expect_format_match <- function(output, pattern, golden_nums, tol = 0, label = "") {
+  text <- paste(output, collapse = "\n")
+  msg <- check_format_match(text, pattern, golden_nums, tol)
+  if (!is.null(msg)) {
+    testthat::fail(paste0(if (nchar(label) > 0) paste0(label, ": "), msg))
+  } else {
+    testthat::succeed()
+  }
+}
+
+# --- Posthoc comparison helpers ---
 
 #' Escape a string for use in a perl regexp.
 #' @keywords internal
-re_escape <- function(s) gsub("([+().])", "\\\\\\1", s)
+re_escape <- function(s) gsub("([\\[\\](){}.*+?^$|\\\\])", "\\\\\\1", s, perl = TRUE)
+
+#' Posthoc literal pattern (with %n placeholders) for a given label.
+#' @keywords internal
+posthoc_fmt <- function(label) {
+  paste0(label, ": %n \u00b1 %n, p=%n, CL=[%n,%n]")
+}
 
 #' Check that flat post-hoc comparison lines match a golden CSV.
 #'
 #' Golden CSV columns: comparison, diff, se, p, cl_lo, cl_hi
-#'
-#' Example output line:
-#'   "Mono minus AAD: -17.9 +/- 5.06, p=0.0012, CL=[-28.2,-7.63]"
-#'   ...
 #'
 #' @param output Character vector of captured output lines
 #' @param golden_name Basename of the golden CSV file (without .csv)
@@ -501,25 +514,17 @@ expect_posthoc_match <- function(output, golden_name, tol = 0) {
 
   for (i in seq_len(nrow(golden))) {
     row <- golden[i, ]
-    pattern <- posthoc_pattern(re_escape(row$comparison))
-    # regexec returns list of 1: element [1] is full match, [2:6] are captures
-    match_groups <- regmatches(out_text, regexec(pattern, out_text, perl = TRUE))[[1]]
-    if (length(match_groups) == 0) {
-      mismatches <- c(mismatches,
-        sprintf("Row '%s': not found in output", row$comparison))
-      next
-    }
-    captured_values <- match_groups[2:6]  # diff, se, p, cl_lo, cl_hi
-    mismatches <- c(mismatches,
-      compare_posthoc_values(captured_values, row,
-                             sprintf("Row '%s'", row$comparison), tol))
+    pattern <- posthoc_fmt(row$comparison)
+    golden_nums <- c(row$diff, row$se, row$p, row$cl_lo, row$cl_hi)
+    msg <- check_format_match(out_text, pattern, golden_nums, tol)
+    if (!is.null(msg))
+      mismatches <- c(mismatches, sprintf("Row '%s': %s", row$comparison, msg))
   }
 
   if (length(mismatches) > 0) {
-    msg <- sprintf("Post-hoc '%s' found %d mismatch(es):\n%s",
+    testthat::fail(sprintf("Post-hoc '%s' found %d mismatch(es):\n%s",
                    golden_name, length(mismatches),
-                   paste("  -", mismatches, collapse = "\n"))
-    testthat::fail(msg)
+                   paste("  -", mismatches, collapse = "\n")))
   } else {
     testthat::succeed()
   }
@@ -528,14 +533,6 @@ expect_posthoc_match <- function(output, golden_name, tol = 0) {
 #' Check grouped post-hoc comparisons (two-factor, e.g. cu2way).
 #'
 #' Golden CSV columns: group, comparison, diff, se, p, cl_lo, cl_hi
-#'
-#' Example output:
-#'   "AAD"
-#'   "M minus F: -20.1 +/- 4.37, p=6.91e-05, CL=[-29.1,-11.2]"
-#'   ""
-#'   "Mono"
-#'   "M minus F: 19.9 +/- 4.37, p=7.94e-05, CL=[11,28.9]"
-#'   ...
 #'
 #' @param output Character vector of captured output lines
 #' @param golden_name Basename of the golden CSV file (without .csv)
@@ -551,8 +548,7 @@ expect_grouped_posthoc_match <- function(output, golden_name, tol = 0) {
 
   for (i in seq_len(nrow(golden))) {
     row <- golden[i, ]
-    
-    # If group changes, find the next group header in output after cursor
+
     if (is.null(current_group) || row$group != current_group) {
       group_pattern <- sprintf("^%s *$", re_escape(row$group))
       found <- FALSE
@@ -572,29 +568,23 @@ expect_grouped_posthoc_match <- function(output, golden_name, tol = 0) {
       }
     }
 
-    # Find comparison sequentially below group header
     found_comp <- FALSE
-    comp_pattern <- posthoc_pattern(re_escape(row$comparison))
-    
+    comp_pattern <- posthoc_fmt(row$comparison)
+    golden_nums <- c(row$diff, row$se, row$p, row$cl_lo, row$cl_hi)
+
     while (cursor <= length(lines)) {
-      if (trimws(lines[cursor]) == "") {
+      if (trimws(lines[cursor]) == "") { cursor <- cursor + 1; next }
+
+      msg <- check_format_match(lines[cursor], comp_pattern, golden_nums, tol)
+      if (!is.null(msg) && startsWith(msg, "Pattern not found")) {
         cursor <- cursor + 1
-        next
-      }
-      
-      match_groups <- regmatches(lines[cursor], regexec(comp_pattern, lines[cursor], perl = TRUE))[[1]]
-      if (length(match_groups) > 0) {
-        captured_values <- match_groups[2:6]
-        mismatches <- c(mismatches,
-          compare_posthoc_values(captured_values, row,
-                                 sprintf("Group '%s', row '%s'", row$group, row$comparison), tol))
+      } else {
+        if (!is.null(msg))
+          mismatches <- c(mismatches,
+            sprintf("Group '%s', row '%s': %s", row$group, row$comparison, msg))
         cursor <- cursor + 1
         found_comp <- TRUE
         break
-      } else {
-        # If the current line does not match the target comparison, advance the
-        # cursor to skip over irrelevant output or text until it is found.
-        cursor <- cursor + 1
       }
     }
 
@@ -606,19 +596,18 @@ expect_grouped_posthoc_match <- function(output, golden_name, tol = 0) {
   }
 
   if (length(mismatches) > 0) {
-    msg <- sprintf("Grouped post-hoc '%s' found %d mismatch(es):\n%s",
+    testthat::fail(sprintf("Grouped post-hoc '%s' found %d mismatch(es):\n%s",
                    golden_name, length(mismatches),
-                   paste("  -", mismatches, collapse = "\n"))
-    testthat::fail(msg)
+                   paste("  -", mismatches, collapse = "\n")))
   } else {
     testthat::succeed()
   }
 }
+
 #' Check that ordinal relative risk posthoc output matches golden CSV values.
 #'
-#' Example input:
-#'   "AAD"
-#'   "M vs F: 38.5% RR=0.821, CL=[0.452,1.49], p=0.517"
+#' This uses its own regex (not check_format_match) because it needs to
+#' capture a non-numeric pct string in addition to the numeric values.
 #'
 #' @param output Character vector of captured output lines
 #' @param golden_name Basename of the golden CSV file (without .csv)
@@ -631,13 +620,11 @@ expect_ordinal_posthoc_match <- function(output, golden_name, tol = 0) {
 
   cursor <- 1
   current_group <- NULL
-
-  # Ordinal RR regex: label:(fraction) RR=val, CL=[val,val] ... p=val
   num_re <- "(-?[0-9\\.]+e?-?[0-9]*|Inf|-Inf)"
-  
+
   for (i in seq_len(nrow(golden))) {
     row <- golden[i, ]
-    
+
     if (is.null(current_group) || row$group != current_group) {
       group_pattern <- sprintf("^%s *$", re_escape(row$group))
       found <- FALSE
@@ -656,33 +643,31 @@ expect_ordinal_posthoc_match <- function(output, golden_name, tol = 0) {
     }
 
     found_comp <- FALSE
-    comp_re <- sprintf("%s:\\s*(.*?)\\s*RR=%s, CL=\\[%s,%s\\].*p=%s", 
+    comp_re <- sprintf("%s:\\s*(.*?)\\s*RR=%s, CL=\\[%s,%s\\].*p=%s",
                        re_escape(row$comparison), num_re, num_re, num_re, num_re)
-    
+
     while (cursor <= length(lines)) {
-      if (trimws(lines[cursor]) == "") {
-        cursor <- cursor + 1; next
-      }
-      
-      match_groups <- regmatches(lines[cursor], regexec(comp_re, lines[cursor], perl = TRUE))[[1]]
+      if (trimws(lines[cursor]) == "") { cursor <- cursor + 1; next }
+
+      match_groups <- regmatches(lines[cursor],
+                                 regexec(comp_re, lines[cursor], perl = TRUE))[[1]]
       if (length(match_groups) > 0) {
         actual_pct <- trimws(match_groups[2])
-        actual_vals <- match_groups[3:6] # RR, lower, upper, p
+        actual_vals <- match_groups[3:6]
         golden_vals <- c(row$RR, row$lower, row$upper, row$p)
-        
-        # Compare PCT as string
-        if (!is.null(row$pct) && as.character(row$pct) != actual_pct) {
-          mismatches <- c(mismatches, sprintf("Group '%s', row '%s' pct: expected '%s', got '%s'", 
-                                               row$group, row$comparison, row$pct, actual_pct))
-        }
 
-        for (c_idx in 1:4) {
-          rel_diff <- abs(as.numeric(golden_vals[c_idx]) - as.numeric(actual_vals[c_idx])) / 
-                      max(abs(as.numeric(golden_vals[c_idx])), abs(as.numeric(actual_vals[c_idx])), 1e-10)
-          if (!is.na(rel_diff) && rel_diff > tol) {
-            mismatches <- c(mismatches, sprintf("Group '%s', row '%s' value idx %d: expected %s, got %s", 
-                                                 row$group, row$comparison, c_idx, golden_vals[c_idx], actual_vals[c_idx]))
-          }
+        if (!is.null(row$pct) && as.character(row$pct) != actual_pct) {
+          mismatches <- c(mismatches, sprintf(
+            "Group '%s', row '%s' pct: expected '%s', got '%s'",
+            row$group, row$comparison, row$pct, actual_pct))
+        }
+        for (c_idx in seq_along(golden_vals)) {
+          msg <- compare_values(as.character(golden_vals[c_idx]),
+                                actual_vals[c_idx], tol)
+          if (!is.null(msg))
+            mismatches <- c(mismatches, sprintf(
+              "Group '%s', row '%s' value %d: %s",
+              row$group, row$comparison, c_idx, msg))
         }
         cursor <- cursor + 1
         found_comp <- TRUE
@@ -691,11 +676,14 @@ expect_ordinal_posthoc_match <- function(output, golden_name, tol = 0) {
         cursor <- cursor + 1
       }
     }
-    if (!found_comp) mismatches <- c(mismatches, sprintf("Group '%s', row '%s': not found", row$group, row$comparison))
+    if (!found_comp)
+      mismatches <- c(mismatches, sprintf("Group '%s', row '%s': not found",
+                                           row$group, row$comparison))
   }
 
   if (length(mismatches) > 0) {
-    testthat::fail(sprintf("Ordinal posthoc found %d mismatches:\n%s", length(mismatches), paste(" -", mismatches, collapse="\n")))
+    testthat::fail(sprintf("Ordinal posthoc found %d mismatches:\n%s",
+                   length(mismatches), paste(" -", mismatches, collapse = "\n")))
   } else {
     testthat::succeed()
   }
@@ -768,19 +756,16 @@ expect_table_match <- function(actual, golden, id_col = "stat", label = "table",
 #'
 #' Golden CSV columns: chi_squared, df, p
 #'
-#' Example output line:
-#'   "Kruskal-Wallis chi-squared = 10.193, df = 2, p-value = 0.006118"
-#'
 #' @param output Character vector of captured output lines
 #' @param golden_name Basename of the golden CSV file (without .csv)
-expect_kw_match <- function(output, golden_name) {
+#' @param tol Relative tolerance for numeric comparisons (0 = exact)
+expect_kw_match <- function(output, golden_name, tol = 0) {
   golden <- load_golden(golden_name)
-  out_text <- paste(output, collapse = "\n")
   row <- golden[1, ]
-  expected <- sprintf("Kruskal-Wallis chi-squared = %s, df = %s, p-value = %s",
-                      row$chi_squared, row$df, row$p)
-  expect_match(out_text, expected, fixed = TRUE,
-               label = "Kruskal-Wallis result")
+  expect_format_match(output,
+    "Kruskal-Wallis chi-squared = %n, df = %n, p-value = %n",
+    c(row$chi_squared, row$df, row$p), tol = tol,
+    label = "Kruskal-Wallis")
 }
 
 #' Parse Dunn's pairwise comparison matrix from captured output.

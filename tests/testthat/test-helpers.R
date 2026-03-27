@@ -115,7 +115,7 @@ test_that("expect_posthoc_match fails on missing comparison line", {
     "test_posthoc_missing")
   expect_error(
     expect_posthoc_match(fake_output, gn, tol = 0),
-    "not found in output"
+    "Pattern not found"
   )
 })
 
@@ -129,7 +129,7 @@ test_that("expect_posthoc_match fails on value mismatch", {
     "test_posthoc_mismatch")
   expect_error(
     expect_posthoc_match(fake_output, gn, tol = 0),
-    "col 'diff'"
+    "value 1"
   )
 })
 
