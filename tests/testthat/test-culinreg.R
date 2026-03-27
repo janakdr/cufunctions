@@ -56,4 +56,48 @@ test_that("culinreg standard run matches golden", {
   golden_coef2 <- load_golden("culinreg_Met_coef2")
   actual_coef2 <- parse_coef_table(coef2_output, col_names = colnames(golden_coef2)[-1])
   expect_table_match(actual_coef2, golden_coef2, id_col = "term", label = "Coef 2", tol = 0.01)
+
+  # 6. LR tests of top model (docx L3192-3203) — spot-check first and last
+  expect_format_match(
+    output,
+    paste0("vs # 27 : LR, degf, ", "\u03c7\u00b2 p-value %n %n %n"),
+    c(41.7, 1, 1.06e-10),
+    tol = 0.1
+  )
+  expect_format_match(
+    output,
+    paste0("vs # 10 : LR, degf, ", "\u03c7\u00b2 p-value %n %n %n"),
+    c(315, 2, 0),
+    tol = 0.02
+  )
+
+  # 7. Model fit stats — full model (docx L3145-3147)
+  full_section <- output[1:grep("Model selection table", output)[1]]
+  expect_format_match(
+    full_section,
+    "Residual standard error: %n on %n degrees of freedom",
+    c(1.805, 79),
+    tol = 0.02
+  )
+  expect_format_match(
+    full_section,
+    "Multiple R-squared:  %n",
+    c(0.9949),
+    tol = 0.02
+  )
+
+  # 8. Model fit stats — reduced model (docx L3224-3226)
+  reduced_section <- output[grep("Model selection table", output)[1]:length(output)]
+  expect_format_match(
+    reduced_section,
+    "Residual standard error: %n on %n degrees of freedom",
+    c(1.794, 80),
+    tol = 0.02
+  )
+  expect_format_match(
+    reduced_section,
+    "F-statistic:  %n on %n and %n DF",
+    c(3893, 4, 80),
+    tol = 0.1
+  )
 })

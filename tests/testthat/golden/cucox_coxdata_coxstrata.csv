@@ -1,0 +1,5 @@
+Treatment,N,Observed,Expected,(O-E)^2/E,(O-E)^2/V
+CoxStrata=Q1,49,4,9.81,3.44,4.64
+CoxStrata=Q2,48,6,10.73,2.08,2.94
+CoxStrata=Q3,48,3,10.33,5.20,7.16
+CoxStrata=Q4,49,25,7.14,44.71,56.05

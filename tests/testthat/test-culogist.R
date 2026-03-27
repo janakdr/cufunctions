@@ -64,4 +64,58 @@ test_that("culogist standard run matches golden", {
                                         id_col = "term", col_names = or_col_names)
   expect_table_match(actual_or, golden_or, id_col = "term", label = "Odds Ratio", tol = 0.03)
 
+  # 6. Null/Residual deviance + AIC — full model (docx L2995-2997)
+  # Note: Deviance Residuals are not captured by capture.output (R prints them
+  # directly to console via print.summary.glm), so we skip those.
+  expect_format_match(
+    output,
+    "Null deviance: %n  on %n  degrees of freedom",
+    c(92.751, 84),
+    tol = 0.02
+  )
+  # Only match first occurrence (full model has df=79)
+  full_model_section <- output[1:grep("Model selection table", output)[1]]
+  expect_format_match(
+    full_model_section,
+    "Residual deviance: %n  on %n  degrees of freedom",
+    c(55.207, 79),
+    tol = 0.5
+  )
+  expect_format_match(full_model_section, "AIC: %n", c(67.207), tol = 0.5)
+
+  # 7. Likelihood Ratio test (docx L3046-3047)
+  expect_format_match(
+    output,
+    paste0("vs 17: LR, degf, ", "\u03c7\u00b2 p-value %n, %n, %n"),
+    c(12.3, 1, 4.43e-04),
+    tol = 0.1
+  )
+
+  # 8. Null/Residual deviance + AIC — reduced model (docx L3070-3072)
+  reduced_model_section <- output[grep("Model selection table", output)[1]:length(output)]
+  expect_format_match(
+    reduced_model_section,
+    "Residual deviance: %n  on %n  degrees of freedom",
+    c(58.413, 82),
+    tol = 0.5
+  )
+  expect_format_match(reduced_model_section, "AIC: %n", c(64.413), tol = 0.5)
+
+  # 9. 2×2 Classification Table (docx L3087-3093)
+  expect_format_match(
+    output,
+    "Accuracy %n%; Sensitivity %n%; Specificity %n%",
+    c(87.1, 60, 95.4),
+    tol = 0.02
+  )
+  expect_format_match(
+    output,
+    "Positive Predictive Value %n%; Negative Predictive Value %n%",
+    c(80, 88.6),
+    tol = 0.02
+  )
+
+  # 10. AUC / C-statistic (docx L3095)
+  expect_format_match(output, "AUC =  %n", c(0.878), tol = 0.02)
+
 })
