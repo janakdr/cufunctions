@@ -105,7 +105,7 @@ test_that("cu2way(feel, WTCAT, Sex, ordinal) posthoc matches golden", {
   sub_bad <- out[idx_bad:length(out)]
   for (i in seq_len(nrow(rows_bad))) {
     row <- rows_bad[i, ]
-    pattern <- sprintf("%s: log(%%n)±%%n vs log(%%n)±%%n p=%%n", row$comparison)
+    pattern <- paste0(row$comparison, ": log(%n)±%n vs log(%n)±%n p=%n")
     gold_nums <- c(row$v1, row$se1, row$v2, row$se2, row$p)
     expect_format_match(sub_bad, pattern, gold_nums, tol = 0.02)
   }
@@ -116,7 +116,7 @@ test_that("cu2way(feel, WTCAT, Sex, ordinal) posthoc matches golden", {
   sub_good <- out[idx_good:length(out)]
   for (i in seq_len(nrow(rows_good))) {
     row <- rows_good[i, ]
-    pattern <- sprintf("%s: log(%%n)±%%n vs log(%%n)±%%n p=%%n", row$comparison)
+    pattern <- paste0(row$comparison, ": log(%n)±%n vs log(%n)±%n p=%n")
     gold_nums <- c(row$v1, row$se1, row$v2, row$se2, row$p)
     expect_format_match(sub_good, pattern, gold_nums, tol = 0.02)
   }
