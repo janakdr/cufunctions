@@ -598,7 +598,7 @@ curepmeas = function(dsgiven, dnam, repnam, fac2=NULL, idnam=NULL, minimal=F,
     if (dodredge) {
       dsnomiss = na.omit(rml)
       fitlm = lme(formla, random=forra, data=dsnomiss) # no need for na.action
-      fitlm$call[[1]] <- quote(nlme::lme.formula) # enable dredge to find lme.formula
+      fitlm$call[[1]] <- quote(nlme::lme) # enable dredge to find lme.formula
       fitlm$call[[2]] <- formla # assign formula object instead of string
       print(summary(fitlm))
       oldw <- getOption("warn")
@@ -638,7 +638,7 @@ curepmeas = function(dsgiven, dnam, repnam, fac2=NULL, idnam=NULL, minimal=F,
       }
     }
     fitlm = lme(formla, random=forra, data=rml, na.action = "na.omit")
-    fitlm$call[[1]] <- quote(nlme::lme.formula) # enable dredge to find lme.formula
+    fitlm$call[[1]] <- quote(nlme::lme) # enable dredge to find lme.formula
     fitlm$call[[2]] <- formla
     print(summary(fitlm))
     conum = 0
