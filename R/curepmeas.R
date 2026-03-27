@@ -639,7 +639,7 @@ curepmeas = function(dsgiven, dnam, repnam, fac2=NULL, idnam=NULL, minimal=F,
     }
     fitlm = lme(formla, random=forra, data=rml, na.action = "na.omit")
     fitlm$call[[1]] <- quote(nlme::lme.formula) # enable dredge to find lme.formula
-    fitlm$call[[2]] <- formla # assign formula object instead of string
+    fitlm$call[[2]] <- formla
     print(summary(fitlm))
     conum = 0
     for (i in 1:length(rml)) {if (names(rml[i])==cov) conum=i}
