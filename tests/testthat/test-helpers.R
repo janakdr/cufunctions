@@ -221,9 +221,10 @@ test_that("grouped posthoc sequentially matches duplicate repeating group header
 test_that("ordinal posthoc skips unexpected lines to find successful match", {
   fake_output <- c("GroupA",
                    "random console warning",
-                   "A minus B: (2/3) RR=1.5, CL=[0.5,2.5] ... p=0.05")
+                   "A minus B:(2/3 vs 4/5) RR=1.5, CL=[0.5,2.5] Fisher's Exact p=0.05")
   gn <- with_temp_golden(
     data.frame(group = "GroupA", comparison = "A minus B",
+               n1 = 2, d1 = 3, n2 = 4, d2 = 5,
                RR = 1.5, lower = 0.5, upper = 2.5, p = 0.05,
                stringsAsFactors = FALSE),
     "test_ordinal_skip_garbage")
@@ -233,15 +234,17 @@ test_that("ordinal posthoc skips unexpected lines to find successful match", {
 
 test_that("ordinal posthoc sequentially matches duplicate repeating group headers correctly", {
   fake_output <- c("GroupA",
-                   "A minus B: (2/3) RR=1.5, CL=[0.5,2.5] ... p=0.05",
+                   "A minus B:(2/3 vs 4/5) RR=1.5, CL=[0.5,2.5] Fisher's Exact p=0.05",
                    "GroupB",
-                   "C minus D: (4/5) RR=5.0, CL=[-0.1,0.1] ... p=0.99",
+                   "C minus D:(4/5 vs 6/7) RR=5.0, CL=[-0.1,0.1] Fisher's Exact p=0.99",
                    "GroupA", # Identical header repeated later!
-                   "E minus F: (9/10) RR=9.9, CL=[1.0,2.0] ... p=0.50")
+                   "E minus F:(9/10 vs 11/12) RR=9.9, CL=[1.0,2.0] Fisher's Exact p=0.50")
   
   gn <- with_temp_golden(
     data.frame(group = c("GroupA", "GroupB", "GroupA"), 
                comparison = c("A minus B", "C minus D", "E minus F"),
+               n1 = c(2, 4, 9), d1 = c(3, 5, 10),
+               n2 = c(4, 6, 11), d2 = c(5, 7, 12),
                RR = c(1.5, 5.0, 9.9), lower = c(0.5, -0.1, 1.0), upper = c(2.5, 0.1, 2.0), p = c(0.05, 0.99, 0.50),
                stringsAsFactors = FALSE),
     "test_ordinal_duplicate_headers")

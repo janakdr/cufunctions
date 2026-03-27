@@ -36,9 +36,11 @@
 #' @param remove choose from =c("xlab","ylab","x.text","y.text","x.ticks","y.ticks","grid","x.grid","y.grid","axis","x.axis","y.axis")
 #' @return returns list with plot object, slope, intercept, pval, R^2
 #' @examples
-#' with(NEJM, cuscatter(tcstudy, tcpre))
-#' with(NEJM, cuscatter(tcstudy, tcpre, showr2eqn="r2"))  # show just R-squared and p-value
-#' # with(NEJM, cuscatter(tcstudy, tcpre, remove = c("x.ticks", "y.ticks")))  # requires ggpubr::rremove
+#' \dontrun{
+#' cuscatter(tcstudy, tcpre)
+#' cuscatter(tcstudy, tcpre, showr2eqn="r2")  # show just R-squared and p-value
+#' cuscatter(tcstudy, tcpre, c("x.ticks","y.ticks"))  # no tick marks
+#' }
 #' @export
 cuscatter = function(yvar,xvar, doline=T, showr2eqn="both", minimal=F,
                     yname=NULL, xname=NULL, title=NULL, caption="",
