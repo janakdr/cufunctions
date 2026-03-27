@@ -6,7 +6,7 @@ cu_plout = function(plotobj,funcname,ftype=NULL,fname=NULL,suff=NULL,seq=0,
                     avplots=F, remove=NULL)
 {
   if (!is.null(remove)) 
-    for (k in 1:length(remove)) plotobj <- plotobj + rremove(remove[k])
+    for (k in 1:length(remove)) plotobj <- plotobj + ggpubr::rremove(remove[k])
   # mfr = par()$mfrow; cat("\nmmfr:"); print(mfr)
   oldw <- getOption("warn")
   options(warn = -1)
