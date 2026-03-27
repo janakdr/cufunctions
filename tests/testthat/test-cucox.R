@@ -52,7 +52,7 @@ test_that("cucox matched golden", {
   expect_contains(colnames(actual_hr), "HR for non-event")
   expect_table_match(actual_hr, golden_hr, id_col = "term", label = "Hazard Ratios", tol = 0.01)
 
-  # 6. Full model likelihood ratio test (docx L3355)
+  # 6. Full model likelihood ratio test
   expect_format_match(
     output,
     "Likelihood ratio test=%n  on %n df, p=%n",
@@ -60,17 +60,17 @@ test_that("cucox matched golden", {
     tol = 0.02
   )
 
-  # 7. LR tests of top model vs nested models (docx L3400-3411)
+  # 7. LR tests of top model vs nested models
   # Spot-check a few key comparisons
   expect_format_match(
     output,
-    paste0("vs # 13 : LR, degf, ", "\u03c7\u00b2 p-value %n %n %n"),
+    "vs # 13 : LR, degf, χ² p-value %n %n %n",
     c(9.09, 1, 0.00257),
     tol = 0.02
   )
   expect_format_match(
     output,
-    paste0("vs # 1 : LR, degf, ", "\u03c7\u00b2 p-value %n %n %n"),
+    "vs # 1 : LR, degf, χ² p-value %n %n %n",
     c(42.5, 3, 3.14e-09),
     tol = 0.02
   )
@@ -91,7 +91,7 @@ test_that("cucox matched golden", {
   )
   expect_format_match(auc_50_section, "AUC) = %n", c(0.768), tol = 0.02)
 
-  # 9. Classification at 75% events (docx L3438-3440)
+  # 9. Classification at 75% events
   auc_75_section <- output[grep("75%", output)[1]:length(output)]
   expect_format_match(
     auc_75_section,
@@ -101,7 +101,7 @@ test_that("cucox matched golden", {
   )
   expect_format_match(auc_75_section, "AUC) = %n", c(0.818), tol = 0.02)
 
-  # 10. Classification at 100% events (docx L3449-3451)
+  # 10. Classification at 100% events
   auc_100_section <- output[grep("all the events", output)[1]:length(output)]
   expect_format_match(
     auc_100_section,
@@ -111,7 +111,7 @@ test_that("cucox matched golden", {
   )
   expect_format_match(auc_100_section, "AUC) = %n", c(0.847), tol = 0.02)
 
-  # 11. CoxStrata KM quartiles survival table (docx L3462-3466)
+  # 11. CoxStrata KM quartiles survival table
   cox_strata_lines <- extract_section_lines(output, "CoxStrata=Q1")
   actual_coxstrata <- parse_fixed_width_table(
     "              N Observed Expected (O-E)^2/E (O-E)^2/V",
@@ -125,7 +125,7 @@ test_that("cucox matched golden", {
     tol = 0.01
   )
 
-  # CoxStrata log-rank test (docx L3469)
+  # CoxStrata log-rank test
   coxstrata_section <- output[grep("CoxStrata=Q1", output)[1]:length(output)]
   expect_format_match(
     coxstrata_section,
@@ -134,10 +134,10 @@ test_that("cucox matched golden", {
     tol = 0.02
   )
 
-  # 12. Concordance (docx L3494)
+  # 12. Concordance
   expect_format_match(output, "Concordance= %n  (se = %n )", c(0.772, 0.044), tol = 0.02)
 
-  # Wald test + Score (logrank) test (docx L3495-3497)
+  # Wald test + Score (logrank) test
   expect_format_match(
     output,
     "Likelihood ratio test= %n  on %n df,   p=%n",
@@ -157,7 +157,7 @@ test_that("cucox matched golden", {
     tol = 0.02
   )
 
-  # Concordance detail counts (docx L3501-3502)
+  # Concordance detail counts
   expect_format_match(
     output,
     "%n pairs concordant; %n pairs disconcordant",

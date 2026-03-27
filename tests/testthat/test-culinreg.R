@@ -57,21 +57,21 @@ test_that("culinreg standard run matches golden", {
   actual_coef2 <- parse_coef_table(coef2_output, col_names = colnames(golden_coef2)[-1])
   expect_table_match(actual_coef2, golden_coef2, id_col = "term", label = "Coef 2", tol = 0.01)
 
-  # 6. LR tests of top model (docx L3192-3203) — spot-check first and last
+  # 6. LR tests of top model — spot-check first and last
   expect_format_match(
     output,
-    paste0("vs # 27 : LR, degf, ", "\u03c7\u00b2 p-value %n %n %n"),
+    "vs # 27 : LR, degf, χ² p-value %n %n %n",
     c(41.7, 1, 1.06e-10),
     tol = 0.1
   )
   expect_format_match(
     output,
-    paste0("vs # 10 : LR, degf, ", "\u03c7\u00b2 p-value %n %n %n"),
+    "vs # 10 : LR, degf, χ² p-value %n %n %n",
     c(315, 2, 0),
     tol = 0.02
   )
 
-  # 7. Model fit stats — full model (docx L3145-3147)
+  # 7. Model fit stats — full model
   full_section <- output[1:grep("Model selection table", output)[1]]
   expect_format_match(
     full_section,
@@ -86,7 +86,7 @@ test_that("culinreg standard run matches golden", {
     tol = 0.02
   )
 
-  # 8. Model fit stats — reduced model (docx L3224-3226)
+  # 8. Model fit stats — reduced model
   reduced_section <- output[grep("Model selection table", output)[1]:length(output)]
   expect_format_match(
     reduced_section,

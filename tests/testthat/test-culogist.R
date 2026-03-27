@@ -86,7 +86,7 @@ test_that("culogist standard run matches golden", {
   # 7. Likelihood Ratio test (docx L3046-3047)
   expect_format_match(
     output,
-    paste0("vs 17: LR, degf, ", "\u03c7\u00b2 p-value %n, %n, %n"),
+    "vs 17: LR, degf, χ² p-value %n, %n, %n",
     c(12.3, 1, 4.43e-04),
     tol = 0.1
   )
