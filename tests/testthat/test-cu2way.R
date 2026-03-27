@@ -92,6 +92,34 @@ test_that("cu2way(feel, WTCAT, Sex, ordinal) posthoc matches golden", {
   data(AJCN, envir = environment())
   out <- capture.output(with(AJCN, cu2way(feel, WTCAT, Sex, g1order=c("lean","overwt","obese"), ordinal=c("bad","ok","good"))))
   expect_ordinal_posthoc_match(out, "cu2way_ordinal_posthoc", tol = 0.02)
+
+  # Overall Fisher's Exact p-value
+  expect_format_match(out, "Overall Fisher's Exact p-value = %n", c(5.00e-04), tol = 0.02)
+
+  # Log-transformed ratios comparisons (Subset by group header to avoid false positives)
+  golden_log <- load_golden("cu2way_log_ratios")
+
+  # Group 1: bad vs > bad
+  rows_bad <- golden_log[golden_log$group == "bad vs > bad in:", ]
+  idx_bad <- which(grepl("bad vs > bad in:", out))
+  sub_bad <- out[idx_bad:length(out)]
+  for (i in seq_len(nrow(rows_bad))) {
+    row <- rows_bad[i, ]
+    pattern <- sprintf("%s: log(%%n)±%%n vs log(%%n)±%%n p=%%n", row$comparison)
+    gold_nums <- c(row$v1, row$se1, row$v2, row$se2, row$p)
+    expect_format_match(sub_bad, pattern, gold_nums, tol = 0.02)
+  }
+
+  # Group 2: <good vs good
+  rows_good <- golden_log[golden_log$group == "<good vs good in:", ]
+  idx_good <- which(grepl("<good vs good in:", out))
+  sub_good <- out[idx_good:length(out)]
+  for (i in seq_len(nrow(rows_good))) {
+    row <- rows_good[i, ]
+    pattern <- sprintf("%s: log(%%n)±%%n vs log(%%n)±%%n p=%%n", row$comparison)
+    gold_nums <- c(row$v1, row$se1, row$v2, row$se2, row$p)
+    expect_format_match(sub_good, pattern, gold_nums, tol = 0.02)
+  }
 })
 
 test_that("cu2way(feel, WTCAT, Sex, ordinal, scale='percent') produces same results", {

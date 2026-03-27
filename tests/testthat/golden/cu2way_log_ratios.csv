@@ -1,0 +1,7 @@
+group,comparison,v1,se1,v2,se2,p
+bad vs > bad in:,lean vs overwt,1,0.0727,1,0.236,1
+bad vs > bad in:,lean vs obese,1,0.0727,0.524,0.468,0.172
+bad vs > bad in:,overwt vs obese,1,0.236,0.524,0.468,0.217
+<good vs good in:,lean vs overwt,0.444,0.455,1,0.471,0.216
+<good vs good in:,lean vs obese,0.444,0.455,1,1.96,0.687
+<good vs good in:,overwt vs obese,1,0.471,1,1.96,1
