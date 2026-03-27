@@ -449,7 +449,9 @@ compare_values <- function(expected, actual, tol = 0) {
 #' @param pattern Literal string with %n placeholders for numbers
 #' @param golden_nums Numeric vector of expected values (one per %n)
 #' @param tol Relative tolerance for numeric comparisons (0 = exact)
-#' @return NULL on success, or a descriptive error string
+#' @return A list with two elements:
+#'   \item{found_matching_template}{Boolean indicating if the pattern was found structurally}
+#'   \item{mismatches}{Character vector of numeric mismatch messages (empty on success)}
 #' @keywords internal
 check_format_match <- function(text, pattern, golden_nums, tol = 0) {
   num_re <- "(-?[0-9]+\\.?[0-9]*(?:[eE][+-]?[0-9]+)?)"
@@ -457,7 +459,9 @@ check_format_match <- function(text, pattern, golden_nums, tol = 0) {
   re <- gsub("%n", num_re, escaped, fixed = TRUE)
 
   m <- regmatches(text, regexec(re, text, perl = TRUE))[[1]]
-  if (length(m) == 0) return(paste0("Pattern not found: ", pattern))
+  if (length(m) == 0) {
+    return(list(found_matching_template = FALSE, mismatches = character()))
+  }
 
   captured <- m[2:(length(golden_nums) + 1)]
   mismatches <- character()
@@ -466,7 +470,7 @@ check_format_match <- function(text, pattern, golden_nums, tol = 0) {
     if (!is.null(msg))
       mismatches <- c(mismatches, sprintf("value %d: %s", i, msg))
   }
-  if (length(mismatches) > 0) paste(mismatches, collapse = "; ") else NULL
+  return(list(found_matching_template = TRUE, mismatches = mismatches))
 }
 
 #' Assert that a literal pattern with %n numeric placeholders matches output.
@@ -480,8 +484,11 @@ check_format_match <- function(text, pattern, golden_nums, tol = 0) {
 #' @param label Descriptive label for error messages
 expect_format_match <- function(output, pattern, golden_nums, tol = 0, label = "") {
   text <- paste(output, collapse = "\n")
-  msg <- check_format_match(text, pattern, golden_nums, tol)
-  if (!is.null(msg)) {
+  res <- check_format_match(text, pattern, golden_nums, tol)
+  if (!res$found_matching_template) {
+    testthat::fail(paste0(if (nchar(label) > 0) paste0(label, ": "), "Pattern not found: ", pattern))
+  } else if (length(res$mismatches) > 0) {
+    msg <- paste(res$mismatches, collapse = "; ")
     testthat::fail(paste0(if (nchar(label) > 0) paste0(label, ": "), msg))
   } else {
     testthat::succeed()
@@ -525,9 +532,13 @@ expect_posthoc_match <- function(output, golden_name, tol = 0) {
     row <- golden[i, ]
     pattern <- posthoc_fmt(row$comparison)
     golden_nums <- c(row$diff, row$se, row$p, row$cl_lo, row$cl_hi)
-    msg <- check_format_match(out_text, pattern, golden_nums, tol)
-    if (!is.null(msg))
+    res <- check_format_match(out_text, pattern, golden_nums, tol)
+    if (!res$found_matching_template) {
+      mismatches <- c(mismatches, sprintf("Row '%s': Pattern not found", row$comparison))
+    } else if (length(res$mismatches) > 0) {
+      msg <- paste(res$mismatches, collapse = "; ")
       mismatches <- c(mismatches, sprintf("Row '%s': %s", row$comparison, msg))
+    }
   }
 
   if (length(mismatches) > 0) {
@@ -566,6 +577,7 @@ expect_grouped_posthoc_match <- function(output, golden_name, tol = 0) {
   for (i in seq_len(nrow(golden))) {
     row <- golden[i, ]
 
+    # If group changes, find the next group header in output after cursor
     if (is.null(current_group) || row$group != current_group) {
       group_pattern <- sprintf("^%s *$", re_escape(row$group))
       found <- FALSE
@@ -585,6 +597,7 @@ expect_grouped_posthoc_match <- function(output, golden_name, tol = 0) {
       }
     }
 
+    # Find comparison sequentially below group header
     found_comp <- FALSE
     comp_pattern <- posthoc_fmt(row$comparison)
     golden_nums <- c(row$diff, row$se, row$p, row$cl_lo, row$cl_hi)
@@ -592,13 +605,15 @@ expect_grouped_posthoc_match <- function(output, golden_name, tol = 0) {
     while (cursor <= length(lines)) {
       if (trimws(lines[cursor]) == "") { cursor <- cursor + 1; next }
 
-      msg <- check_format_match(lines[cursor], comp_pattern, golden_nums, tol)
-      if (!is.null(msg) && startsWith(msg, "Pattern not found")) {
+      res <- check_format_match(lines[cursor], comp_pattern, golden_nums, tol)
+      if (!res$found_matching_template) {
         cursor <- cursor + 1
       } else {
-        if (!is.null(msg))
+        if (length(res$mismatches) > 0) {
+          msg <- paste(res$mismatches, collapse = "; ")
           mismatches <- c(mismatches,
             sprintf("Group '%s', row '%s': %s", row$group, row$comparison, msg))
+        }
         cursor <- cursor + 1
         found_comp <- TRUE
         break
@@ -662,7 +677,6 @@ expect_ordinal_posthoc_match <- function(output, golden_name, tol = 0) {
     }
 
     found_comp <- FALSE
-    # Ordinal RR pattern: label:(n1/d1 vs n2/d2) RR=val, CL=[val,val] Fisher's Exact p=val
     comp_pattern <- paste0(row$comparison,
       ":(%n/%n vs %n/%n) RR=%n, CL=[%n,%n] Fisher's Exact p=%n")
     golden_nums <- c(row$n1, row$d1, row$n2, row$d2,
@@ -671,13 +685,15 @@ expect_ordinal_posthoc_match <- function(output, golden_name, tol = 0) {
     while (cursor <= length(lines)) {
       if (trimws(lines[cursor]) == "") { cursor <- cursor + 1; next }
 
-      msg <- check_format_match(lines[cursor], comp_pattern, golden_nums, tol)
-      if (!is.null(msg) && startsWith(msg, "Pattern not found")) {
+      res <- check_format_match(lines[cursor], comp_pattern, golden_nums, tol)
+      if (!res$found_matching_template) {
         cursor <- cursor + 1
       } else {
-        if (!is.null(msg))
+        if (length(res$mismatches) > 0) {
+          msg <- paste(res$mismatches, collapse = "; ")
           mismatches <- c(mismatches,
             sprintf("Group '%s', row '%s': %s", row$group, row$comparison, msg))
+        }
         cursor <- cursor + 1
         found_comp <- TRUE
         break
