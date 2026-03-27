@@ -258,37 +258,17 @@ test_that("cu1way(WTCAT, MetSyn, ordinal) summary matches golden", {
   golden <- load_golden("cu1way_ordinal_summary")
   expect_table_match(actual, golden, label = "cu1way ordinal summary", tol = 0.02)
 
-  # Pearson's χ² p-value (docx L2591)
-  expect_format_match(
-    out,
-    "Overall Pearson's \u03c7\u00b2 p-value = %n",
-    c(0.0107),
-    tol = 0.02
-  )
+  # Pearson's χ² p-value
+  expect_format_match(out, "Overall Pearson's χ² p-value = %n", c(0.0107), tol = 0.02)
 
-  # Fisher's Exact p-value (docx L2592 = 0.0055, actual = 0.0095 — R version diff)
-  expect_format_match(
-    out,
-    "Overall Fisher's Exact p-value = %n",
-    c(0.0055),
-    tol = 0.5
-  )
+  # Fisher's Exact p-value
+  expect_format_match(out, "Overall Fisher's Exact p-value = %n", c(0.0055), tol = 0.01)
 
-  # Relative Risk: lean vs > lean (docx L2606)
-  expect_format_match(
-    out,
-    "RR=%n, CL=[%n,%n] Fisher's Exact p=%n",
-    c(1.54, 1.24, 1.92, 0.0046),
-    tol = 0.02
-  )
+  # Relative Risk: lean vs > lean
+  expect_format_match(out, "RR=%n, CL=[%n,%n] Fisher's Exact p=%n", c(1.54, 1.24, 1.92, 0.0046), tol = 0.02)
 
-  # Relative Risk: < obese vs obese (docx L2610)
+  # Relative Risk: < obese vs obese
   rr_obese_section <- out[grep("obese vs obese", out)[1]:length(out)]
-  expect_format_match(
-    rr_obese_section,
-    "RR=%n, CL=[%n,%n] Fisher's Exact p=%n",
-    c(2.09, 1.07, 4.09, 0.0483),
-    tol = 0.02
-  )
+  expect_format_match(rr_obese_section, "RR=%n, CL=[%n,%n] Fisher's Exact p=%n", c(2.09, 1.07, 4.09, 0.0483), tol = 0.02)
 })
 
