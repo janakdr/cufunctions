@@ -176,9 +176,8 @@ returns nothing
 Does two-way anova and post-hoc tests or contingency tables, and makes a bar graph
 }
 \examples{
-\dontrun{
-cu2way(tcchange, Diet, sex)  # two-factor anova with interaction (all possible contrasts)
-cu2way(tcchange, Diet, sex, interact=F)  # two-factor anova with no interaction (all possible contrasts)
-cu2way(feel,WTCAT,Sex)  # contingency tables (all possible 2x2s)
-}
+# for two-way anova and post-hoc t-tests, graphing mean+/-sd
+with(NEJM, cu2way(tcchange, Diet, sex))
+with(NEJM, cu2way(tcchange, Diet, sex, interact=FALSE))  # no interaction in model
+with(AJCN, cu2way(feel, WTCAT, Sex))  # ordinal response data (contingency tables)
 }

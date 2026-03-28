@@ -72,12 +72,11 @@
 #' @param remove choose from =c("xlab","ylab","x.text","y.text","x.ticks","y.ticks","grid","x.grid","y.grid","axis","x.axis","y.axis")
 #' @return returns nothing
 #' @examples
-#' \dontrun{
-#' cu1way(tcchange, Diet)  # for one-way anova and post-hoc t-tests, graphing mean+/-sd
-#' cu1way(tcchange, Diet, ebars=N)  # N=0 for 1 or 4, 1 for SD, 2 for SE, 3 for CL
-#' cu1way(tcchange, Diet, ebars=4)  # for nonparametric Dunn
-#' cu1way(feel,WTCAT)  # contingency tables (all possible 2x2s)
-#' }
+#' # for one-way anova and post-hoc t-tests, graphing mean+/-sd
+#' with(NEJM, cu1way(tcchange, Diet))
+#' # ebars: 0 for 1 or 4, 1 for SD, 2 for SE, 3 for CL, 4 for nonparametric Dunn
+#' with(NEJM, cu1way(tcchange, Diet, ebars=4))
+#' with(AJCN, cu1way(feel, WTCAT))  # contingency tables (all possible 2x2s)
 #' @export
 cu1way = function(depvar, group1, ebars=0, ordinal=NULL, plot="bar", ytrans="none",
                   scale="frequency", dots=0, barcolor="black", barfill="colors", casecontrol=F,

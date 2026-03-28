@@ -5,9 +5,11 @@
 #' @param ... remaining arguments for chosen function
 #' @return nothing
 #' @examples
+#' \donttest{
+#' with(NEJM, cuomics("1way", NEJM, "tcstudy", "hcchange", "tchc1w", Diet))
+#' with(NEJM, cuomics("2way", NEJM, "tcstudy", "hcchange", "tchc2w", Diet, sex))
+#' }
 #' \dontrun{
-#' cuomics("1way", NEJM, "tcstudy", "hcchange", "tchc1w", Diet)
-#' cuomics("2way", NEJM, "tcstudy", "hcchange", "tchc2w", Diet, sex)
 #' cuomics("cov1way", NEJM, "tcstudy", "hcchange", "tchccov1", tcpre, Diet)
 #' cuomics("cov2way", NEJM, "tcstudy", "hcchange", "tchccov2", tcpre, Diet, sex)
 #' cuomics("scatter", NEJM, "tcstudy", "hcchange", "tchcscat", tcpre)

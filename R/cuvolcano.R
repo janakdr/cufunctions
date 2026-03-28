@@ -11,7 +11,8 @@
 #' @param ylim =5 (default) for upper limit of graph (-log10(pval))
 #' @examples
 #' \dontrun{
-#' cuvolcano(omicnejm,c("AAD","Step1","Mono","AAD"), titlend="Volc")
+#' # Requires omicnejm from cuomics(); see cuomics examples
+#' cuvolcano(omicnejm, c("AAD", "Step1", "Mono", "AAD"), titlend = "Volc")
 #' }
 #' @export
 cuvolcano = function(dsomics, gpairs, xdash=0.5, psig = 0.05, psigmin = 0.2, pfactor=1, 

@@ -34,6 +34,7 @@ Volcano plot
 }
 \examples{
 \dontrun{
-cuvolcano(omicnejm,c("AAD","Step1","Mono","AAD"), titlend="Volc")
+# Requires omicnejm from cuomics(); see cuomics examples
+cuvolcano(omicnejm, c("AAD", "Step1", "Mono", "AAD"), titlend = "Volc")
 }
 }

@@ -27,7 +27,8 @@ Imports:
     car
 Suggests:
     devEMF,
-    testthat (>= 3.0.0)
+    testthat (>= 3.0.0),
+    withr
 License: What license it uses
 Encoding: UTF-8
 LazyData: true

@@ -52,7 +52,5 @@ Multiple linear regression, all possible models, summarize best (or specified) m
 do added variable plots
 }
 \examples{
-\dontrun{
 culinreg(NEJM, "tcstudy", "tcpre+tgpre+Diet")
-}
 }

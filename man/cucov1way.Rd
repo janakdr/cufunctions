@@ -109,8 +109,8 @@ returns nothing
 Does one-way analysis of covariance (ancova), all contrasts, and a graph
 }
 \examples{
-\dontrun{
-cucov1way (tcstudy, tcpre, Diet)  # for regression, plot, contrasts (parallel lines, no interaction)
-cucov1way (tcstudy, tcpre, Diet, c(150,220))  # for regression, plot, contrasts at tcpre=150,220 (non-parallel lines)
-}
+# for regression, plot, contrasts (parallel lines, no interaction)
+with(NEJM, cucov1way(tcstudy, tcpre, Diet))
+# for regression, plot, contrasts at tcpre=150,220 (non-parallel lines)
+with(NEJM, cucov1way(tcstudy, tcpre, Diet, c(150, 220)))
 }

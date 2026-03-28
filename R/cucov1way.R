@@ -41,10 +41,10 @@
 #' @param remove choose from =c("xlab","ylab","x.text","y.text","x.ticks","y.ticks","grid","x.grid","y.grid","axis","x.axis","y.axis")
 #' @return returns nothing
 #' @examples
-#' \dontrun{
-#' cucov1way (tcstudy, tcpre, Diet)  # for regression, plot, contrasts (parallel lines, no interaction)
-#' cucov1way (tcstudy, tcpre, Diet, c(150,220))  # for regression, plot, contrasts at tcpre=150,220 (non-parallel lines)
-#' }
+#' # for regression, plot, contrasts (parallel lines, no interaction)
+#' with(NEJM, cucov1way(tcstudy, tcpre, Diet))
+#' # for regression, plot, contrasts at tcpre=150,220 (non-parallel lines)
+#' with(NEJM, cucov1way(tcstudy, tcpre, Diet, c(150, 220)))
 #' @export
 cucov1way = function(depvar, covar, group1, xs=NULL, breakpt=F,
                      ebars=1, dosimpler=T, partialF=TRUE, plotcons="yes",

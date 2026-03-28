@@ -59,8 +59,7 @@ Displays table of # at risk, and p-value. Does survival (default) or cumulative 
 Plus sign indicates loss to follow-up (right-censoring).
 }
 \examples{
-\dontrun{
-cukm(TimeToEvent, Outcome, Treatment)
-cukm(TimeToEvent, Outcome, Treatment, kmtype="ci")  # for cumulative incidence
-}
+# for Kaplan-Meier curves, log-rank and Gehan tests
+with(hepc, cukm(time, status, Treatment))
+with(hepc, cukm(time, status, Treatment, kmtype="ci"))  # cumulative incidence
 }
