@@ -133,9 +133,8 @@ test_that("curepmeas Case 4: continuous TG, two factors", {
 test_that("curepmeas Case 5: continuous TG, two factors with covariate", {
   skip_if_not_installed("nlme")
   skip_if_not_installed("MuMIn")
-  # MuMIn::dredge needs lme.formula on the search path
-  require(nlme, quietly = TRUE)
   delta <- test_setup()
+
 
   output <- wide_capture({
     res <- curepmeas(delta, "TG", "Diet", "sex", cov = "age+age*Diet", ebars=1)
