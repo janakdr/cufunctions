@@ -6,7 +6,7 @@
 #' @param mainx =1 (default), 2 to interchange the two factors in bar graph
 #' @param itrans type of transformation if any
 #' @param minimal = FALSE (default), T or TRUE to suppress all output (for cuomics)
-#' @param ebars =1 (default)/2/3 (post-hoc t, SD/SE/CL) or 4 (nonparametric, IQR) or -N (nonparm if any norm fail)
+#' @param ebars =0 (default to be 1 or 4)/1/2/3 (post-hoc t, SD/SE/CL) or 4 (nonparametric, IQR) or -N (nonparm if any norm fail)
 #' @param dots =0 (default), 1 to display data on graph
 #' @param barcolor for outline color, barfill for fill color. Use barfill="colors" for colors by group.
 #' @param plot ="bar" (default) for bar graphs; "box" "violin" "rod" "no"
@@ -69,7 +69,7 @@
 #' }
 cu_rep2way = function(ddep,dgp1,dgp2,dsub,depvar, group1, group2, Subject,
                      interact=TRUE, partialF=FALSE, mainx=1, itrans, minimal=F,
-                     ebars=1, dots=0, barcolor="black", barfill="colors", plot="bar",
+                     ebars=0, dots=0, barcolor="black", barfill="colors", plot="bar",
                      order=NULL, psigcld=0, conf.int=0.95, ddepn=NULL,
                      depname=NULL, g1name=NULL, g2name=NULL, pnorm=0.05,
                      pvpairs="std", pvypos=NULL, pvstinc=0.05, pvlab="p", 
@@ -213,8 +213,9 @@ cu_rep2way = function(ddep,dgp1,dgp2,dsub,depvar, group1, group2, Subject,
         nlevm1 = gp2-1; pvalues = rep(-1,nlevm1*nlevm1); ipo = -1; i1b=gp2*(i1-1)
         for (i2 in 1:nlevm1) {
           for (j2 in (i2+1):gp2) {
-            pvalues[ipo+j2] = wilcox.test(depvar ~ groupvar, ds, paired=F, 
-                                          subset = groupvar %in% c(bothnames[i1b+i2],bothnames[i1b+j2]))$p.value
+            pvalues[ipo+j2] =
+              wilcox.test(depvar[groupvar==bothnames[i1b+i2]], 
+                depvar[groupvar==bothnames[i1b+j2]], paired=F, exact=F)$p.value
           }
           ipo = ipo+nlevm1
         }
@@ -420,8 +421,10 @@ cu_rep2way = function(ddep,dgp1,dgp2,dsub,depvar, group1, group2, Subject,
         for (i1 in 1:gp11) {  # comparing factor 1 levels
           for (j1 in (i1+1):gp1) {
             jpval = nlev12m1*((i1-1)*gp2+i2-1)+(j1-1)*gp2+i2-1
-            pvalues[jpval] = wilcox.test(depvar ~ group1, ds, paired=T, exact=F, 
-                                         subset = (group2 %in% c(g2names[i2]))&(group1 %in% c(g1names[i1],g1names[j1])))$p.value
+            pvalues[jpval] = wilcox.test(
+              depvar[(group1==levnams[i1])&(group2==g2names[i2])],
+              depvar[(group1==levnams[j1])&(group2==g2names[i2])],
+              paired=T, exact=F)$p.value
             # cat("\n",i1,i2,j1,jpval)
           }
         }
@@ -432,8 +435,9 @@ cu_rep2way = function(ddep,dgp1,dgp2,dsub,depvar, group1, group2, Subject,
           jpval = nlev12m1*(ipv-1) + jpv-1
           if (pvalues[jpval]<0) {
             j1 = (jpv-1) %/% gp2 + 1;  j2 = (jpv-1) %% gp2 + 1
-            pvalues[jpval] = wilcox.test(depvar ~ groupvar, ds, exact=F, 
-                                         subset = (groupvar %in% c(bothnames[jpv],bothnames[ipv])))$p.value
+            pvalues[jpval] = 
+              wilcox.test(depvar[groupvar==bothnames[jpv]], 
+                depvar[groupvar==bothnames[ipv]], paired=F, exact=F)$p.value
             # cat("\n",i1,i2,j1,j2,jpval)
           }
         }

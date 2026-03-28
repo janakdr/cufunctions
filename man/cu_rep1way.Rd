@@ -5,7 +5,7 @@
 \title{Does repeated measures one-way anova and post-hoc tests (long-format - multiple lines for each subject)}
 \usage{
 cu_rep1way(ddep, dgp, dsub, depvar, groupvar, Subject, itrans, minimal = F,
-  ebars = 1, dots = 0, barcolor = "black", barfill = "colors",
+  ebars = 0, dots = 0, barcolor = "black", barfill = "colors",
   plot = "bar", order = NULL, psigcld = 0, conf.int = 0.95,
   ddepn = NULL, pnorm = 0.05, depname = NULL, g1name = NULL,
   title = NULL, legend = "top", suff = NULL, pvpairs = "std",
@@ -31,7 +31,7 @@ cu_rep1way(ddep, dgp, dsub, depvar, groupvar, Subject, itrans, minimal = F,
 
 \item{minimal}{= FALSE (default), T or TRUE to suppress all output (for cuomics)}
 
-\item{ebars}{=1 (default)/2/3 (post-hoc t, SD/SE/CL) or 4 (nonparametric, IQR) or -N (nonparm if any norm fail)}
+\item{ebars}{=0 (default to be 1 or 4)/1/2/3 (post-hoc t, SD/SE/CL) or 4 (nonparametric, IQR) or -N (nonparm if any norm fail)}
 
 \item{dots}{=0 (default), 1 to display data on graph}
 

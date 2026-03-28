@@ -281,12 +281,13 @@ cutable1 = function(ds, group1=NULL, group2=NULL, doAll=T, brief=F,
   else {ncomp = 0; compnamv = NULL}
   any2x2 = F; anyt = F
   if (!is.data.frame(ds)) {
-    #cat("\nok")
+    # cat("\nok, not dataframe")
     if (is.null(depname)) depname=deparse(substitute(ds))
-    #cat("\ndepname:",depname)
+    # cat("\ndepname:",depname)
     dfn = tab0comp(ds, ylab)
-    #cat("\nafter tab0comp")
     df = dfn[[1]]; normTF = dfn[[2]]; pnormin = dfn[[3]]
+    # cat("\nafter tab0comp, normTF,pnormin,df:",normTF,pnormin,"\n")
+    # print(df)
     colnames(df)=getcolnam()
     if (minimal) return (list(df, normTF, pnormin))
     cat(depname,ifelse(is.null(groupvar),"\n",paste("across",namgrvar,"levels\n")))
@@ -305,6 +306,8 @@ cutable1 = function(ds, group1=NULL, group2=NULL, doAll=T, brief=F,
         # cat("\nivar,names",ivar,names(ds[ivar]),namgrvar)
         depname = namivar; dfn = tab0comp(ds[[ivar]], namivar)
         df = dfn[[1]]; normTF = dfn[[2]]; pnormin = dfn[[3]]
+        # cat("\nafter tab0comp, normTF,pnormin,df:",normTF,pnormin,"\n")
+        # print(df)
         # normTF, pnormin not used for dataframe?  why?
         # cat("\nivar",ivar); print(df)
         if (brief) { #1/2 rows for each column in ds

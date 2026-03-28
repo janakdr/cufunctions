@@ -115,7 +115,7 @@ cucov1way = function(depvar, covar, group1, xs=NULL, breakpt=F,
   nlev1=nlevels(group1)
   # if (nlev1 > nlevmax) stop(paste("# levels in factor 1 is",nlev1,". If serious, set nlevmax>=",nlev1))
   levnams=levels(group1)
-  if (ifcons) if (dosimpler) {
+  if (ifcons) if (dosimpler & !dosimpler) { # work on this later
     cat("\nAnalyzing (just as point of reference) without controlling for",covname,"\n")
     cutable1(depvar,group1,compare=T,brief=T,
              depname=depname,g1name=g1name,plot="no",doAll=F)

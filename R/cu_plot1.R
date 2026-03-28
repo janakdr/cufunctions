@@ -39,7 +39,7 @@ cu_plot1 = function(progname, depvar,group1, g1order, g1name, depname, title,
   #if (is.null(dotshape)) dotshape = 5
   #https://www.datanovia.com/en/blog/ggplot-point-shapes-best-tips/
   # ifdotcolor = FALSE # not used so far
-  if (is.null(barfill) || barfill=="colors") {barcolor = "group1"; barfill = "group1"}
+  if (is.null(barfill) || barfill=="colors") {barcolor = "group1"; barfill = "group1"} #NG
   else if (barfill=="white") barcolor="black"  # ; ifdotcolor = TRUE}
   else barcolor = barfill
   if (is.null(fontmain)) fontmain=c(14,"bold","black")
@@ -58,7 +58,7 @@ cu_plot1 = function(progname, depvar,group1, g1order, g1name, depname, title,
       p = ggbarplot(df,x="group1",y="depvar",add = addon,
                     color=barcolor, fill=barfill, label=letbar, order=g1order,
                     xlab=g1name, ylab=depname, legend=legend, na.rm=F,
-                    size=size, width=width, orientation=orientation, yscale=yscale)
+                    size=size, width=width)
     else if(dots==1) { 
         #https://www.datanovia.com/en/blog/ggplot-point-shapes-best-tips/
         #https://blog.albertkuo.me/post/point-shape-options-in-ggplot/
@@ -71,7 +71,7 @@ cu_plot1 = function(progname, depvar,group1, g1order, g1name, depname, title,
       p = ggbarplot(df,x="group1",y="depvar",add = addon,
                     color=barcolor, fill=barfill, label=letbar, order=g1order,
                     xlab=g1name, ylab=depname, legend=legend, na.rm=F,
-                    size=size, width=width, orientation=orientation, yscale=yscale) +
+                    size=size, width=width) +
         geom_jitter(aes(x=group1,y=depvar, shape=group1),size=dotsize,
                     color = "black", stroke=1.5, width=0.1,height=0) +
         scale_shape_manual(values = dotshape)
@@ -86,7 +86,7 @@ cu_plot1 = function(progname, depvar,group1, g1order, g1name, depname, title,
                     add.parms=list(binwidth=binwidth,dotsize=dotsize),
                     color=barcolor, fill=barfill, label=letbar, order=g1order,
                     xlab=g1name, ylab=depname, legend=legend, na.rm=F,
-                    size=size, width=width, orientation=orientation, yscale=yscale)
+                    size=size, width=width)
     }
     #cat("\nbefore ggbar")
     #add.parms must say dotsize but fill not dotfill; can't change shape
@@ -116,8 +116,8 @@ cu_plot1 = function(progname, depvar,group1, g1order, g1name, depname, title,
   else { # "box" "violin" "rod" #ggboxplot to use stat_pvalue_manual
     if (is.null(posd)) posd = 
         ifelse(plot=="box",0.75,ifelse(plot=="violin",0.9,0.9))
-    if (barfill=="white") p <- ggplot(df,aes(x=group1,y=depvar),yscale=yscale)
-    else p <- ggplot(df,aes(x=group1,y=depvar,fill=group1),yscale=yscale)
+    if (barfill=="white") p <- ggplot(df,aes(x=group1,y=depvar)) #,yscale=yscale
+    else p <- ggplot(df,aes(x=group1,y=depvar,fill=group1))
       # had scale=vscale for geom_boxplot, can't tell why vscale="area"
     if (plot=="box") {p <- p + geom_boxplot(width=width); vjus = -1}
     else if (plot=="violin") {p <- p + geom_violin(trim=F); vjus = -5}
@@ -181,8 +181,8 @@ cu_plot1 = function(progname, depvar,group1, g1order, g1name, depname, title,
              font.xtickslab = fontxticks, font.ytickslab = fontyticks,
              xticks.by=xticks.by, yticks.by=yticks.by,
              x.text.angle=xangle, y.text.angle=yangle, 
-             caption=caption) +
-       labs(colour = g1name, fill = g1name) +
+             caption=caption, orientation=orientation, yscale=yscale) +
+    labs(fill = g1name) +  # colour = g1name, 
        geom_hline(yintercept=0)
   #cat("\nbefore plout")
   cu_plout(p,progname, suff=suff, ftype=ftype, fname=fname, scale=fscale,

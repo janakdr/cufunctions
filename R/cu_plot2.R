@@ -50,7 +50,7 @@ cu_plot2 = function(progname,depvar,group1,group2,nlev1,nlev2, g1order, g1name, 
   # if (is.null(dotshape)) dotshape = 5
   #https://www.datanovia.com/en/blog/ggplot-point-shapes-best-tips/
   # ifdotcolor = FALSE # not used so far
-  if (is.null(barfill) || barfill=="colors") {barcolor = "group1"; barfill = "group1"}
+  if (is.null(barfill) || barfill=="colors") {barcolor = "group1"; barfill = "group1"} #NG 
   else if (barfill=="white") barcolor="black"  # ; ifdotcolor = TRUE}
   else barcolor = barfill
   #if (is.null(dotcolor)) dotcolor = "white"
@@ -82,16 +82,16 @@ cu_plot2 = function(progname,depvar,group1,group2,nlev1,nlev2, g1order, g1name, 
     if (dots==0) 
       p = ggbarplot(df,x="group1",y="depvar",add = addon,
                     add.params=list(binwidth=binwidth,dotsize=dotsize),
-                    color="group2", fill="group2", label=letbar, order=g1order,
+                    color=barcolor, fill="group2", label=letbar, order=g1order,
                     xlab=g1name, ylab=depname, legend=legend, na.rm=F,
-                    size=size, width=width, orientation=orientation, yscale=yscale,
+                    size=size, width=width,
                     position = position_dodge(width=posd),
                     lab.hjust=0.4)  #lab.vjust=c(1,-0.4,1,1,1,1) need to deal with -ve bars
     else if(dots==1) { # separate dotplot leads to 2nd legend
       p = ggbarplot(df,x="group1",y="depvar",add = addon,
-                    color="group2", fill="group2", label=letbar, order=g1order,
+                    color=barcolor, fill="group2", label=letbar, order=g1order,
                     xlab=g1name, ylab=depname, legend=legend, na.rm=F,
-                    size=size, width=width, orientation=orientation, yscale=yscale,
+                    size=size, width=width,
                     position = position_dodge(width=posd),
                     lab.hjust=0.4) + #lab.vjust=c(1,-0.4,1,1,1,1) need to deal with -ve bars
         geom_jitter(aes(x=group1,y=depvar,fill=group2, shape=group2),
@@ -109,9 +109,9 @@ cu_plot2 = function(progname,depvar,group1,group2,nlev1,nlev2, g1order, g1name, 
       #cat ("\nbinwidth",binwidth)
       p = ggbarplot(df,x="group1",y="depvar",add = addon,
                     add.parms=list(binwidth=binwidth,dotsize=dotsize,dotshape=dotshape),
-                    color="group2", fill="group2", label=letbar, order=g1order,
+                    color=barcolor, fill="group2", label=letbar, order=g1order,
                     xlab=g1name, ylab=depname, legend=legend, na.rm=F,
-                    size=size, width=width, orientation=orientation, yscale=yscale,
+                    size=size, width=width,
                     position = position_dodge(width=posd),
                     lab.hjust=0.4)  #lab.vjust=c(1,-0.4,1,1,1,1) need to deal with -ve bars
     }
@@ -227,8 +227,8 @@ cu_plot2 = function(progname,depvar,group1,group2,nlev1,nlev2, g1order, g1name, 
              font.xtickslab = fontxticks, font.ytickslab = fontyticks,
              xticks.by=xticks.by, yticks.by=yticks.by,
              x.text.angle=xangle, y.text.angle=yangle, 
-             caption=caption) + 
-       labs(colour = g2name, fill = g2name) +
+             caption=caption, orientation=orientation, yscale=yscale) + 
+       labs(fill = g2name) +  # colour = g2name, 
        geom_hline(yintercept=0)
   cu_plout(p,progname, suff=suff, ftype=ftype, fname=fname, scale=fscale,
            width=fwidth, height=fheight, dpi=dpi, remove=remove)

@@ -1,6 +1,6 @@
 #' Does one-way anova/post-hoc tests or contingency tables, and makes a bar graph
 #' @param depvar ,group1 required: variable being analyzed, grouping factor
-#' @param ebars =1 (default)/2/3 (post-hoc t, SD/SE/CL) or 4 (nonparametric, IQR) or -N (nonparm if any norm fail)
+#' @param ebars =0 (default to be 1 or 4)/1/2/3 (post-hoc t, SD/SE/CL) or 4 (nonparametric, IQR) or -N (nonparm if any norm fail)
 #' @param ordinal =NULL (default)/T/c("...") to treat variable as no/yes ordinal
 #' @param plot ="bar" (default) for bar graphs; "box" "violin" "rod" "no"
 #' @param ytrans ="none" (default) to transform depvar: "sqrt" "log"
@@ -74,16 +74,16 @@
 #' @examples
 #' \dontrun{
 #' cu1way(tcchange, Diet)  # for one-way anova and post-hoc t-tests, graphing mean+/-sd
-#' cu1way(tcchange, Diet, ebars=N)  # N=1 for SD, 2 for SE, 3 for CL
+#' cu1way(tcchange, Diet, ebars=N)  # N=0 for 1 or 4, 1 for SD, 2 for SE, 3 for CL
 #' cu1way(tcchange, Diet, ebars=4)  # for nonparametric Dunn
 #' cu1way(feel,WTCAT)  # contingency tables (all possible 2x2s)
 #' }
 #' @export
-cu1way = function(depvar, group1, ebars=1, ordinal=NULL, plot="bar", ytrans="none",
+cu1way = function(depvar, group1, ebars=0, ordinal=NULL, plot="bar", ytrans="none",
                   scale="frequency", dots=0, barcolor="black", barfill="colors", casecontrol=F,
                   maxfor2=5, g1order=NULL, psigcld=0, conf.int=0.95, refmean=NA,
                   depname=NULL, g1name=NULL, title=NULL, caption=NULL, minimal=F,
-                  padj="none", pbart=.05, pnorm=.05, chariqr=":",
+                  padj="none", pbart=.01, pnorm=.01, chariqr=":",
                   pvpairs="std", pvypos=NULL, pvstinc=0.05, pvlab="p", 
                   pvprefix="p=", pvsize=NULL, chpvref="ref", pvspill=F,
                   pnosig=0.2, psignif=0.05, p2stars=0.01, p3stars=0.001, p4stars=0.0001,

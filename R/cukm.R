@@ -98,7 +98,7 @@ cukm = function(timevar, statvar, ttmtvar, kmtype="survival", pvalue=T,
   cat("'+' on K-M curves indicates censoring (loss to follow-up)")
   PlotObj = survfit(Surv(Time,Status) ~ Factor, data=ds)
   oldw <- getOption("warn")
-  options(warn = -1)
+  options(warn = -1)   #  
   p=ggsurvplot(PlotObj, data=ds, fun=fun,  pval=pvalue, pval.coord=c(pvalx, 0.1), risk.table=TRUE,
                title=title, legend=legend, legend.title=TtmtNam, xlab=xlab, ylab=ylab,
                risk.table.y.text=risk.table.y.text, legend.labs=legend.labs,
