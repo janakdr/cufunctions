@@ -128,7 +128,7 @@ test_that("cu1way(hcstudy, Diet) coefficients match golden", {
 })
 
 test_that("cu1way(hcstudy, Diet) post-hoc matches golden", {
-  out <- capture.output(with(NEJM, cu1way(hcstudy, Diet, plot = "no")))
+  out <- capture.output(with(NEJM, cu1way(hcstudy, Diet, plot = "no",pnorm=0.01)))
   expect_posthoc_match(out, "cu1way_hcstudy_Diet_posthoc", tol = 0.01)
   out_text <- paste(trimws(out, "right"), collapse = "\n")
   expected_method <- paste(
@@ -141,7 +141,7 @@ test_that("cu1way(hcstudy, Diet) post-hoc matches golden", {
 })
 
 test_that("cu1way(hcstudy, Diet) warns about normality failure", {
-  out <- capture.output(with(NEJM, cu1way(hcstudy, Diet, plot = "no")))
+  out <- capture.output(with(NEJM, cu1way(hcstudy, Diet, plot = "no",ebars=1,pnorm=0.05)))
   out_text <- paste(trimws(out, "right"), collapse = "\n")
   expected_warning <- paste(
     "DATA FAIL NORMALITY TEST IN 1 OF 3 GROUPs. SMALLEST P-VALUE 0.027",
@@ -197,6 +197,7 @@ test_that("cu1way(diffvar, Diet) reports Bartlett failure", {
 })
 
 # --- cu1way(badtcp, Diet) — normality + Bartlett failure ---
+# to do: Janak to add ebars=0 default case
 
 test_that("cu1way(badtcp, Diet) summary table matches golden", {
   out <- capture.output(with(NEJM, cu1way(badtcp, Diet, plot = "no")))
@@ -206,7 +207,7 @@ test_that("cu1way(badtcp, Diet) summary table matches golden", {
 })
 
 test_that("cu1way(badtcp, Diet) ANOVA matches golden", {
-  out <- capture.output(with(NEJM, cu1way(badtcp, Diet, plot = "no")))
+  out <- capture.output(with(NEJM, cu1way(badtcp, Diet, plot = "no",ebars=1)))
   actual <- parse_anova_table(out)
   golden <- load_golden("cu1way_badtcp_Diet_anova")
   expect_table_match(actual, golden, id_col = "source",
@@ -214,7 +215,7 @@ test_that("cu1way(badtcp, Diet) ANOVA matches golden", {
 })
 
 test_that("cu1way(badtcp, Diet) post-hoc matches golden", {
-  out <- capture.output(with(NEJM, cu1way(badtcp, Diet, plot = "no")))
+  out <- capture.output(with(NEJM, cu1way(badtcp, Diet, plot = "no",ebars=1)))
   expect_posthoc_match(out, "cu1way_badtcp_Diet_posthoc")
   out_text <- paste(trimws(out, "right"), collapse = "\n")
   expected_method <- paste(
@@ -227,7 +228,7 @@ test_that("cu1way(badtcp, Diet) post-hoc matches golden", {
 })
 
 test_that("cu1way(badtcp, Diet) warns about normality and Bartlett failure", {
-  out <- capture.output(with(NEJM, cu1way(badtcp, Diet, plot = "no")))
+  out <- capture.output(with(NEJM, cu1way(badtcp, Diet, plot = "no",ebars=1)))
   out_text <- paste(trimws(out, "right"), collapse = "\n")
   expected_normality <- paste(
     "DATA FAIL NORMALITY TEST IN 1 OF 3 GROUPs. SMALLEST P-VALUE <0.001",

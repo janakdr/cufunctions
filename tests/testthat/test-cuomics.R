@@ -41,7 +41,8 @@ test_that("cuomics 2way generates matching csv", {
   actual_file <- paste0(fname, "-cuomics.csv")
   
   # Execute function, avoiding attach namespace collision by passing bare environment
-  capture.output(suppressWarnings(suppressMessages(with(NEJM, cuomics("2way", NEJM, "tcstudy", "hcchange", fname, Diet, sex)))))
+  capture.output(suppressWarnings(suppressMessages(with(NEJM, cuomics("2way", NEJM, "tcstudy", "hcchange", fname, Diet, sex, pnorm=0.05)))))
+  # TODO (Janak): get rid of pnorm=0.05
   
   # Verify file exists
   expect_true(file.exists(actual_file))
