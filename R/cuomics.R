@@ -5,14 +5,9 @@
 #' @param ... remaining arguments for chosen function
 #' @return nothing
 #' @examples
-#' \dontrun{
+#' attach(NEJM)
 #' cuomics("1way", NEJM, "tcstudy", "hcchange", "tchc1w", Diet)
-#' cuomics("2way", NEJM, "tcstudy", "hcchange", "tchc2w", Diet, sex)
-#' cuomics("cov1way", NEJM, "tcstudy", "hcchange", "tchccov1", tcpre, Diet)
-#' cuomics("cov2way", NEJM, "tcstudy", "hcchange", "tchccov2", tcpre, Diet, sex)
-#' cuomics("scatter", NEJM, "tcstudy", "hcchange", "tchcscat", tcpre)
-#' cuomics("repmeasw", delta, "TC", "like", "tclikerep", "Diet", "sex")
-#' }
+#' detach(NEJM)
 #' @export
 cuomics = function(funcname, dsgiven, dnamf, dnaml, fnom, ...)
 {

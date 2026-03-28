@@ -22,7 +22,5 @@ returns p-value of partial F(np,ndf2) = ((rse1^2*ndf1-rse2^2*ndf2)/np)/rse2^2
 partial F test to test if model augmentation is significant
 }
 \examples{
-\dontrun{
-cupartialF(12.39,33,7.56,30)
-}
+cupartialF(12.39, 33, 7.56, 30)
 }

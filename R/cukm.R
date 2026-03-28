@@ -24,10 +24,9 @@
 #' @param remove choose from =c("xlab","ylab","x.text","y.text","x.ticks","y.ticks","grid","x.grid","y.grid","axis","x.axis","y.axis")
 #' @return returns nothing
 #' @examples
-#' \dontrun{
-#' cukm(TimeToEvent, Outcome, Treatment)
-#' cukm(TimeToEvent, Outcome, Treatment, kmtype="ci")  # for cumulative incidence
-#' }
+#' attach(hepc)
+#' cukm(time, status, Treatment)
+#' detach(hepc)
 #' @export
 cukm = function(timevar, statvar, ttmtvar, kmtype="survival", pvalue=T,
                 allkmpairs=T, tmax=0, xlab="Time", ylab=NULL, title=NULL,

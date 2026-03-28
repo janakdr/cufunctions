@@ -18,9 +18,7 @@
 #' @param remove choose from =c("xlab","ylab","x.text","y.text","x.ticks","y.ticks","grid","x.grid","y.grid","axis","x.axis","y.axis")
 #' @return returns nothing
 #' @examples
-#' \dontrun{
 #' culinreg(NEJM, "tcstudy", "tcpre+tgpre+Diet")
-#' }
 #' @importFrom car avPlots
 #' @export
 culinreg = function(dsgiven, depnam, formula,

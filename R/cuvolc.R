@@ -9,9 +9,7 @@
 #' @param foldmax =NULL (default) for right end of log2(FoldChange) (usually set to 2)
 #' @param ylim =5 (default) for upper limit of graph (-log10(pval))
 #' @examples
-#' \dontrun{
-#' cuvolc(tgpre,Diet)
-#' }
+#' cuvolc(volc)
 #' @export
 cuvolc = function(ds, xdash=0.5, psig = 0.05, psigmin = 0.2, pfactor=1, 
                   foldmin=NULL, foldmax=NULL, ylim=5, title="Volcano Plot")

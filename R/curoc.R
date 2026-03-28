@@ -13,11 +13,8 @@
 #' @param veccolor =c("red","blue","green","black") (default) for multiple curves (polr object)
 #' @return returns nothing
 #' @examples
-#' \dontrun{
-#' curoc(logstep, MetSyn)  # for AUC and summary table with best accuracy
-#' curoc(logstep, MetSyn,c(0.3,0.7))  # for AUC and 3 summary tables (best accuracy, prob=0.3, 0.7)
-#' curoc(logstep, MetSyn, twolev=F)  # for multi-level outcome variable analyzed by polr
-#' }
+#' logfit <- glm(MetSyn ~ TG + HDL, data = Met, family = binomial)
+#' curoc(logfit, Met$MetSyn)
 #' @export
 curoc = function(LRobj, depvar, twolev=TRUE, xs=NULL, namedep=NULL, logitlog="logit", 
                  printfit=F, emf=F, xlabroc="1 - Specificity", ylabroc="Sensitivity",

@@ -33,9 +33,7 @@
 #' @param remove choose from =c("xlab","ylab","x.text","y.text","x.ticks","y.ticks","grid","x.grid","y.grid","axis","x.axis","y.axis")
 #' @return returns nothing
 #' @examples
-#' \dontrun{
 #' cucox(coxdata, "TimeToEvent", "Outcome", "C.Index + scale(LVEF) + scale(BNP)")
-#' }
 #' @importFrom ggpubr ggarrange
 #' @importFrom survminer ggadjustedcurves
 #' @export

@@ -88,7 +88,5 @@ Cox modeling, all possible models, summarize best (or specified) model,
 LR tests, ROCs, K-M of Cox score strata, predicted K-M for each factor
 }
 \examples{
-\dontrun{
 cucox(coxdata, "TimeToEvent", "Outcome", "C.Index + scale(LVEF) + scale(BNP)")
-}
 }
