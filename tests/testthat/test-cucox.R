@@ -51,6 +51,118 @@ test_that("cucox matched golden", {
   
   expect_contains(colnames(actual_hr), "HR for non-event")
   expect_table_match(actual_hr, golden_hr, id_col = "term", label = "Hazard Ratios", tol = 0.01)
+
+  # Full model likelihood ratio test
+  expect_format_match(
+    output,
+    "Likelihood ratio test=%n  on %n df, p=%n",
+    c(44.43, 4, 5.219e-09),
+    tol = 0.02
+  )
+
+  # Spot-check LR tests of top model vs nested models
+  expect_format_match(
+    output,
+    "vs # 13 : LR, degf, χ² p-value %n %n %n",
+    c(9.09, 1, 0.00257),
+    tol = 0.02
+  )
+  expect_format_match(
+    output,
+    "vs # 1 : LR, degf, χ² p-value %n %n %n",
+    c(42.5, 3, 3.14e-09),
+    tol = 0.02
+  )
+
+  # Classification at 50% events
+  auc_50_section <- output[grep("half the events", output)[1]:length(output)]
+  expect_format_match(
+    auc_50_section,
+    "Accuracy %n%; Sensitivity %n%; Specificity %n%",
+    c(69.6, 73.7, 69.1),
+    tol = 0.02
+  )
+  expect_format_match(
+    auc_50_section,
+    "Positive Predictive Value %n%; Negative Predictive Value %n%",
+    c(21.9, 95.7),
+    tol = 0.02
+  )
+  expect_format_match(auc_50_section, "AUC) = %n", c(0.768), tol = 0.02)
+
+  # Classification at 75% events
+  auc_75_section <- output[grep("75%", output)[1]:length(output)]
+  expect_format_match(
+    auc_75_section,
+    "Accuracy %n%; Sensitivity %n%; Specificity %n%",
+    c(72.9, 75, 72.4),
+    tol = 0.02
+  )
+  expect_format_match(auc_75_section, "AUC) = %n", c(0.818), tol = 0.02)
+
+  # Classification at 100% events
+  auc_100_section <- output[grep("all the events", output)[1]:length(output)]
+  expect_format_match(
+    auc_100_section,
+    "Accuracy %n%; Sensitivity %n%; Specificity %n%",
+    c(77.2, 68.4, 94.7),
+    tol = 0.02
+  )
+  expect_format_match(auc_100_section, "AUC) = %n", c(0.847), tol = 0.02)
+
+  # CoxStrata KM quartiles survival table
+  cox_strata_lines <- extract_section_lines(output, "CoxStrata=Q1")
+  actual_coxstrata <- parse_fixed_width_table(
+    "              N Observed Expected (O-E)^2/E (O-E)^2/V",
+    output[grep("CoxStrata=Q1", output)[1]:(grep("CoxStrata=Q4", output)[1])],
+    id_col = "Treatment"
+  )
+  golden_coxstrata <- load_golden("cucox_coxdata_coxstrata")
+  expect_table_match(
+    actual_coxstrata, golden_coxstrata,
+    id_col = "Treatment", label = "CoxStrata quartiles",
+    tol = 0.01
+  )
+
+  # CoxStrata log-rank test
+  coxstrata_section <- output[grep("CoxStrata=Q1", output)[1]:length(output)]
+  expect_format_match(
+    coxstrata_section,
+    "Chisq= %n  on 3 degrees of freedom, p= %n",
+    c(56.4, 3e-12),
+    tol = 0.02
+  )
+
+  # Concordance
+  expect_format_match(output, "Concordance= %n  (se = %n )", c(0.772, 0.044), tol = 0.02)
+
+  # Wald test + Score (logrank) test
+  expect_format_match(
+    output,
+    "Likelihood ratio test= %n  on %n df,   p=%n",
+    c(42.5, 3, 3e-09),
+    tol = 0.02
+  )
+  expect_format_match(
+    output,
+    "Wald test            = %n  on %n df,   p=%n",
+    c(38.04, 3, 3e-08),
+    tol = 0.02
+  )
+  expect_format_match(
+    output,
+    "Score (logrank) test = %n  on %n df,   p=%n",
+    c(45.43, 3, 7e-10),
+    tol = 0.02
+  )
+
+  # Concordance detail counts
+  expect_format_match(
+    output,
+    "%n pairs concordant; %n pairs disconcordant",
+    c(4174, 1236),
+    tol = 0.02
+  )
 })
 
 test_that("cucox handles nscat == 0 safely without crashing", {

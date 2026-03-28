@@ -66,6 +66,10 @@ test_that("cucov1way with g1order reorders summary and coefficients", {
   golden_pmat <- load_golden("cucov1way_tcstudy_tcpre_Diet_g1order_p_matrix")
   expect_table_match(actual_pmat, golden_pmat,
                      label = "cucov1way g1order p-matrix")
+
+  expect_posthoc_match(out, "cucov1way_tcstudy_tcpre_Diet_g1order_posthoc")
+
+  expect_partial_f_match(out, "cucov1way_tcstudy_tcpre_Diet_g1order_f_tests")
 })
 
 # --- cucov1way(tcstudy, tcpre, Diet, c(160,180,200)) — cutpoints ---
@@ -80,8 +84,43 @@ test_that("cucov1way with cutpoints produces interaction coefficients and postho
   expect_table_match(actual_coef, golden_coef, id_col = "term",
                      label = "cucov1way cutpoints coefficients", tol = 0.01)
 
-  # Posthoc comparisons at each cutpoint
   expect_posthoc_match(out, "cucov1way_tcstudy_tcpre_Diet_c160_posthoc", tol = 0.01)
+
+  expect_format_match(
+    out,
+    "AAD: %n ± %n, p=%n, CL=[%n,%n]",
+    c(1.01, 0.192, 1.18e-05, 0.615, 1.4),
+    tol = 0.02
+  )
+  expect_format_match(
+    out,
+    "Mono: %n ± %n, p=%n, CL=[%n,%n]",
+    c(0.931, 0.172, 6.95e-06, 0.581, 1.28),
+    tol = 0.02
+  )
+  expect_format_match(
+    out,
+    "Step1: %n ± %n, p=%n, CL=[%n,%n]",
+    c(0.778, 0.226, 0.00173, 0.316, 1.24),
+    tol = 0.02
+  )
+
+  expect_format_match(
+    out,
+    "Mono minus AAD: %n ± %n, p=%n, CL=[%n,%n]",
+    c(-0.0757, 0.258, 0.771, -0.602, 0.45),
+    tol = 0.02
+  )
+
+  slope_pmat_section <- extract_section_lines(out, "Summary of p-values of slope comparisons")
+  expect_true(!is.null(slope_pmat_section))
+  actual_slope_pmat <- parse_matrix_from_header(slope_pmat_section, 2)
+  golden_slope_pmat <- load_golden("cucov1way_slope_pmatrix")
+  expect_table_match(
+    actual_slope_pmat, golden_slope_pmat,
+    label = "cucov1way slope p-matrix",
+    tol = 0.02
+  )
 
   # F-tests
   expect_partial_f_match(out, "cucov1way_tcstudy_tcpre_Diet_c160_f_tests", tol = 0.01)

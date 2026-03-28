@@ -1,4 +1,4 @@
-# Tests for cucov2way based on cufuncs-tests.docx.txt
+# Tests for cucov2way
 # Golden values are in tests/testthat/golden/*.csv
 
 
@@ -65,6 +65,34 @@ test_that("cucov2way(interact=F, c(160,180,200)) matches golden", {
 
   # Posthoc (Not grouped because interact=F)
   expect_posthoc_match(out, "cucov2way_tcstudy_tcpre_Diet_sex_nointeract_c160_posthoc")
+
+  # Slopes within Diet levels
+  expect_format_match(
+    out,
+    "AAD: %n ± %n, p=%n, CL=[%n,%n]",
+    c(1.03, 0.19, 8.71e-06, 0.636, 1.41),
+    tol = 0.02
+  )
+  expect_format_match(
+    out,
+    "Mono: %n ± %n, p=%n, CL=[%n,%n]",
+    c(0.963, 0.171, 4.5e-06, 0.613, 1.31),
+    tol = 0.02
+  )
+  expect_format_match(
+    out,
+    "Step1: %n ± %n, p=%n, CL=[%n,%n]",
+    c(0.79, 0.224, 0.00141, 0.332, 1.25),
+    tol = 0.02
+  )
+
+  # Slope comparisons between Diet levels
+  expect_format_match(
+    out,
+    "Mono minus AAD: %n ± %n, p=%n, CL=[%n,%n]",
+    c(-0.0622, 0.255, 0.809, -0.583, 0.459),
+    tol = 0.02
+  )
 
   # F-tests
   expect_partial_f_match(out, "cucov2way_tcstudy_tcpre_Diet_sex_nointeract_c160_f_tests")

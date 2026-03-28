@@ -116,6 +116,55 @@ test_that("curepmeas Case 4: continuous TG, two factors", {
     res <- curepmeas(delta, "TG", "Diet", "sex", ebars=1)
   })
 
+  # REML Fit Table (Trim trailing spaces from output lines to prevent brittle failures)
+  out_trimmed <- gsub(" +$", "", output)
+  expect_format_match(
+    out_trimmed,
+    paste0(
+      "Linear mixed-effects model fit by REML\n",
+      "  Data: NULL\n",
+      "      AIC      BIC    logLik\n",
+      "  %n %n %n"
+    ),
+    c(2847.49, 2880.913, -1414.745),
+    tol = 0.05
+  )
+
+  # Random Effects Table (Formula: ~1 | Subject)
+  expect_format_match(
+    out_trimmed,
+    paste0(
+      " Formula: ~1 | Subject\n",
+      "        (Intercept)\n",
+      "StdDev:    %n"
+    ),
+    c(37.84367),
+    tol = 0.05
+  )
+
+  # Random Effects Table (Formula: ~1 | group1 %in% Subject)
+  expect_format_match(
+    out_trimmed,
+    paste0(
+      " Formula: ~1 | group1 %in% Subject\n",
+      "        (Intercept) Residual\n",
+      "StdDev:    %n %n"
+    ),
+    c(12.95167, 7.700413),
+    tol = 0.05
+  )
+
+  # Fixed Effects Table (Token-based parsing using expect_table_match)
+  lines_fixed <- extract_section_lines(out_trimmed, "^Fixed effects:")
+  df_fixed <- parse_fixed_width_table(lines_fixed[2], lines_fixed[3:8], id_col = "term")
+
+  golden_fixed <- load_golden("curepmeas_TG_Diet_sex_fixed_coef")
+  expect_table_match(
+    df_fixed, golden_fixed,
+    id_col = "term", label = "curepmeas Case 4 fixed effects",
+    tol = 0.05
+  )
+
   # Grouped posthoc comparisons (tol=0.5 needed because near-zero diffs like
   # 0.0211 have large relative differences across R versions)
   expect_grouped_posthoc_match(output, "curepmeas_TG_Diet_sex_posthoc", tol = 0.5)

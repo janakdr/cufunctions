@@ -770,9 +770,13 @@ expect_table_match <- function(actual, golden, id_col = "stat", label = "table",
   }
 
   if (length(mismatches) > 0) {
-    msg <- sprintf("%s comparison found %d mismatch(es):\n%s",
-                   label, length(mismatches),
-                   paste("  -", mismatches, collapse = "\n"))
+    actual_str <- paste(utils::capture.output(print(actual)), collapse = "\n")
+    golden_str <- paste(utils::capture.output(print(golden)), collapse = "\n")
+    msg <- sprintf(
+      "%s comparison found %d mismatch(es):\n%s\n\nActual table:\n%s\n\nExpected (golden) table:\n%s",
+      label, length(mismatches),
+      paste("  -", mismatches, collapse = "\n"),
+      actual_str, golden_str)
     testthat::fail(msg)
   } else {
     testthat::succeed()

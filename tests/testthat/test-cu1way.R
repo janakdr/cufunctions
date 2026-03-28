@@ -1,4 +1,4 @@
-# Tests for cu1way based on cufuncs-tests.docx
+# Tests for cu1way
 # Golden values are in tests/testthat/golden/*.csv
 
 
@@ -257,5 +257,14 @@ test_that("cu1way(WTCAT, MetSyn, ordinal) summary matches golden", {
 
   golden <- load_golden("cu1way_ordinal_summary")
   expect_table_match(actual, golden, label = "cu1way ordinal summary", tol = 0.02)
+
+  expect_format_match(out, "Overall Pearson's χ² p-value = %n", c(0.0107), tol = 0.02)
+
+  expect_format_match(out, "Overall Fisher's Exact p-value = %n", c(0.0055), tol = 0.01)
+
+  expect_format_match(out, "RR=%n, CL=[%n,%n] Fisher's Exact p=%n", c(1.54, 1.24, 1.92, 0.0046), tol = 0.02)
+
+  rr_obese_section <- out[grep("obese vs obese", out)[1]:length(out)]
+  expect_format_match(rr_obese_section, "RR=%n, CL=[%n,%n] Fisher's Exact p=%n", c(2.09, 1.07, 4.09, 0.0483), tol = 0.02)
 })
 
