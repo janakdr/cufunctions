@@ -71,8 +71,8 @@ test_that("cu2way(interact=F) coef, posthoc, and F-tests match golden", {
 # --- cu2way with Ordinal Outcomes ---
 
 test_that("cu2way(feel, WTCAT, Sex, ordinal) counts match golden", {
-  data(AJCN, envir = environment())
-  out <- capture.output(with(AJCN, cu2way(feel, WTCAT, Sex, g1order=c("lean","overwt","obese"), ordinal=c("bad","ok","good"))))
+  data(Met, envir = environment())
+  out <- capture.output(with(Met, cu2way(feel, WTCAT, Sex, g1order=c("lean","overwt","obese"), ordinal=c("bad","ok","good"))))
   
   counts_lines <- extract_section_lines(out, "     lean&F")
   expect_true(!is.null(counts_lines))
@@ -89,8 +89,8 @@ test_that("cu2way(feel, WTCAT, Sex, ordinal) counts match golden", {
 })
 
 test_that("cu2way(feel, WTCAT, Sex, ordinal) posthoc matches golden", {
-  data(AJCN, envir = environment())
-  out <- capture.output(with(AJCN, cu2way(feel, WTCAT, Sex, g1order=c("lean","overwt","obese"), ordinal=c("bad","ok","good"))))
+  data(Met, envir = environment())
+  out <- capture.output(with(Met, cu2way(feel, WTCAT, Sex, g1order=c("lean","overwt","obese"), ordinal=c("bad","ok","good"))))
   expect_ordinal_posthoc_match(out, "cu2way_ordinal_posthoc", tol = 0.02)
 
   expect_format_match(out, "Overall Fisher's Exact p-value = %n", c(5.00e-04), tol = 0.02)
@@ -121,8 +121,8 @@ test_that("cu2way(feel, WTCAT, Sex, ordinal) posthoc matches golden", {
 })
 
 test_that("cu2way(feel, WTCAT, Sex, ordinal, scale='percent') produces same results", {
-  data(AJCN, envir = environment())
-  out <- capture.output(with(AJCN, cu2way(feel, WTCAT, Sex,
+  data(Met, envir = environment())
+  out <- capture.output(with(Met, cu2way(feel, WTCAT, Sex,
       g1order=c("lean","overwt","obese"),
       ordinal=c("bad","ok","good"), scale="percent")))
 

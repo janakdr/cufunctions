@@ -3,8 +3,7 @@ library(cufunctions)
 
 
 test_setup <- function() {
-  data(AJCN, envir = environment())
-  Met <- AJCN
+  data(Met, envir = environment())
   return(Met)
 }
 

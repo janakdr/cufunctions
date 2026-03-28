@@ -262,8 +262,8 @@ test_that("cu1way(badtcp, Diet) warns about normality and Bartlett failure", {
 # --- cu1way with Ordinal Outcomes ---
 
 test_that("cu1way(WTCAT, MetSyn, ordinal) summary matches golden", {
-  data(AJCN, envir = environment())
-  out <- capture.output(with(AJCN, cu1way(WTCAT, MetSyn, ordinal=c("lean","overwt","obese"), plot="no")))
+  data(Met, envir = environment())
+  out <- capture.output(with(Met, cu1way(WTCAT, MetSyn, ordinal=c("lean","overwt","obese"), plot="no")))
   
   actual <- parse_summary_table(out)
 

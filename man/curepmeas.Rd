@@ -35,7 +35,7 @@ curepmeas(dsgiven, dnam, repnam, fac2 = NULL, idnam = NULL, minimal = F,
 
 \item{fac2}{char-string of name of 2nd, non-repeated grouping factor (default NULL)}
 
-\item{idnam}{(to indicat long format) =char-string of name of ID/Subject variable (default NULL)}
+\item{idnam}{(to indicate long format) =char-string of name of ID/Subject variable (default NULL)}
 
 \item{minimal}{= FALSE (default), T or TRUE to suppress all output (for cuomics)}
 

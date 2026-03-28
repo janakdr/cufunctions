@@ -65,7 +65,7 @@ do ROC curve(s), AUC, and summary table with best accuracy
 }
 \examples{
 \dontrun{
-culogist(AJCN, "MetSyn", "TG+HDL+LN_TG+BMI+GLUC")  # for AUC and summary table with best accuracy
-culogist(AJCN, "MetSyn", "TG+HDL+LN_TG+BMI+GLUC",c(0.3,0.7))  # 3 summary tables (best accuracy, prob=0.3, 0.7)
+culogist(Met, "MetSyn", "TG+HDL+LN_TG+BMI+GLUC")  # for AUC and summary table with best accuracy
+culogist(Met, "MetSyn", "TG+HDL+LN_TG+BMI+GLUC",c(0.3,0.7))  # 3 summary tables (best accuracy, prob=0.3, 0.7)
 }
 }
