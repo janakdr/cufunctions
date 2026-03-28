@@ -46,7 +46,7 @@ test_that("cukm test 1 matches golden (Treatment)", {
 
 test_that("cukm test 2 matches golden (Treatment, kmtype=ci)", {
   hepc <- test_setup()
-  # This is functionally identical in output to test 1 as shown in the docx
+  # Output is identical to test 1
   output <- capture.output(with(hepc, cukm(time, status, Treatment, kmtype="ci", ftype="pdf")))
   
   actual_df <- extract_km_table(output, "Control vs. Prednisolone")
@@ -70,7 +70,7 @@ test_that("cukm test 3 matches golden (Treat3 multi-category)", {
   hepc <- test_setup()
   output <- capture.output(with(hepc, cukm(time, status, Treat3, ftype="pdf")))
   
-  # 1. Control vs Drugtwo
+
   actual_df1 <- extract_km_table(output, "Control vs. Drugtwo")
   golden_df1 <- load_golden("cukm_hepc_test3_1")
   expect_table_match(actual_df1, golden_df1, id_col = "Treatment", label = "Test 3 - Control vs Drugtwo", tol = 0.01)
@@ -90,7 +90,7 @@ test_that("cukm test 3 matches golden (Treat3 multi-category)", {
     tol = 0.02
   )
 
-  # 2. Control vs Prednisolone — survival table
+
   actual_df2 <- extract_km_table(output, "Control vs. Prednisolone")
   golden_df2 <- load_golden("cukm_hepc_test3_2")
   expect_table_match(actual_df2, golden_df2, id_col = "Treatment", label = "Test 3 - Control vs Prednisolone", tol = 0.01)
@@ -110,7 +110,7 @@ test_that("cukm test 3 matches golden (Treat3 multi-category)", {
     tol = 0.02
   )
 
-  # 3. Drugtwo vs Prednisolone — survival table
+
   actual_df3 <- extract_km_table(output, "Drugtwo vs. Prednisolone")
   golden_df3 <- load_golden("cukm_hepc_test3_3")
   expect_table_match(actual_df3, golden_df3, id_col = "Treatment", label = "Test 3 - Drugtwo vs Prednisolone", tol = 0.01)
@@ -130,7 +130,7 @@ test_that("cukm test 3 matches golden (Treat3 multi-category)", {
     tol = 0.02
   )
 
-  # 4. Overall — survival table
+
   overall_start <- grep("Overall", output)[1]
   actual_df4 <- extract_km_table(output[overall_start:length(output)], "Overall")
   golden_df4 <- load_golden("cukm_hepc_test3_overall")

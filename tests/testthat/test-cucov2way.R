@@ -1,4 +1,4 @@
-# Tests for cucov2way based on cufuncs-tests.docx.txt
+# Tests for cucov2way
 # Golden values are in tests/testthat/golden/*.csv
 
 

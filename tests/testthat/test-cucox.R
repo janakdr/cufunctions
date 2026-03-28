@@ -52,7 +52,7 @@ test_that("cucox matched golden", {
   expect_contains(colnames(actual_hr), "HR for non-event")
   expect_table_match(actual_hr, golden_hr, id_col = "term", label = "Hazard Ratios", tol = 0.01)
 
-  # 6. Full model likelihood ratio test
+  # Full model likelihood ratio test
   expect_format_match(
     output,
     "Likelihood ratio test=%n  on %n df, p=%n",
@@ -60,8 +60,7 @@ test_that("cucox matched golden", {
     tol = 0.02
   )
 
-  # 7. LR tests of top model vs nested models
-  # Spot-check a few key comparisons
+  # Spot-check LR tests of top model vs nested models
   expect_format_match(
     output,
     "vs # 13 : LR, degf, χ² p-value %n %n %n",
@@ -75,7 +74,7 @@ test_that("cucox matched golden", {
     tol = 0.02
   )
 
-  # 8. Classification at 50% events (docx L3427-3429)
+  # Classification at 50% events
   auc_50_section <- output[grep("half the events", output)[1]:length(output)]
   expect_format_match(
     auc_50_section,
@@ -91,7 +90,7 @@ test_that("cucox matched golden", {
   )
   expect_format_match(auc_50_section, "AUC) = %n", c(0.768), tol = 0.02)
 
-  # 9. Classification at 75% events
+  # Classification at 75% events
   auc_75_section <- output[grep("75%", output)[1]:length(output)]
   expect_format_match(
     auc_75_section,
@@ -101,7 +100,7 @@ test_that("cucox matched golden", {
   )
   expect_format_match(auc_75_section, "AUC) = %n", c(0.818), tol = 0.02)
 
-  # 10. Classification at 100% events
+  # Classification at 100% events
   auc_100_section <- output[grep("all the events", output)[1]:length(output)]
   expect_format_match(
     auc_100_section,
@@ -111,7 +110,7 @@ test_that("cucox matched golden", {
   )
   expect_format_match(auc_100_section, "AUC) = %n", c(0.847), tol = 0.02)
 
-  # 11. CoxStrata KM quartiles survival table
+  # CoxStrata KM quartiles survival table
   cox_strata_lines <- extract_section_lines(output, "CoxStrata=Q1")
   actual_coxstrata <- parse_fixed_width_table(
     "              N Observed Expected (O-E)^2/E (O-E)^2/V",
@@ -134,7 +133,7 @@ test_that("cucox matched golden", {
     tol = 0.02
   )
 
-  # 12. Concordance
+  # Concordance
   expect_format_match(output, "Concordance= %n  (se = %n )", c(0.772, 0.044), tol = 0.02)
 
   # Wald test + Score (logrank) test

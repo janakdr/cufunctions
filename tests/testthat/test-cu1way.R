@@ -1,4 +1,4 @@
-# Tests for cu1way based on cufuncs-tests.docx
+# Tests for cu1way
 # Golden values are in tests/testthat/golden/*.csv
 
 
