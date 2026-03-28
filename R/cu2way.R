@@ -5,7 +5,7 @@
 #' @param partialF =TRUE (default), F or FALSE for no partial F vs simpler models
 #' @param ordinal =NULL (default)/T/c("...") to treat variable as no/yes ordinal
 #' @param scale ="frequency" (default) or "percent"
-#' @param ebars =1 (default)/2/3 (post-hoc t, SD/SE/CL) or 4 (nonparametric, IQR) or -N (nonparm if any norm fail)
+#' @param ebars =0 (default to be 1 or 4)/1/2/3 (post-hoc t, SD/SE/CL) or 4 (nonparametric, IQR) or -N (nonparm if any norm fail)
 #' @param dots =0 (default), 1 to display data on graph
 #' @param plot ="bar" (default) for bar graphs; "box" "violin" "rod" "no"
 #' @param ytrans ="none" (default) to transform depvar: "sqrt" "log"
@@ -20,8 +20,8 @@
 #' @param caption =NULL (default)/"yes"/"caption text" to get caption ("yes" to list n's)
 #' @param minimal =F (default)/T for minimal console output and no graph
 #' @param padj ="none"(default), p-value adjustment for multiple comparisons, can be "bonferroni", "holm")
-#' @param pbart =0.05 (default)/x for Bartlett test threshold for variance homogeneity
-#' @param pnorm =0.05 (default)/x for normality test threshold
+#' @param pbart =0.01 (default)/x for Bartlett test threshold for variance homogeneity
+#' @param pnorm =0.01 (default)/x for normality test threshold
 #' @param chariqr =":" (default)/x for character to separate quartiles ("-" "," etc)
 #' @param charamp ="&" (default)/x for character to separate group1&2 levels ("-" etc)
 #' @param pvpairs="std" (default)/"all"/i/c(ij,ik,...) to show std or all or vs.i or pval's of i/j, i/k ...
@@ -78,11 +78,11 @@
 #' }
 #' @export
 cu2way = function(depvar,group1,group2, interact=TRUE, dosimpler=F, partialF=TRUE, ordinal=NULL,
-                  scale="frequency", ebars=1, dots=0, plot="bar", ytrans="none",
+                  scale="frequency", ebars=0, dots=0, plot="bar", ytrans="none",
                   barcolor="black", barfill="colors", casecontrol=F,
                   maxfor2=5, g1order=NULL, g2order=NULL, psigcld=0, conf.int=0.95,
                   depname=NULL, g1name=NULL, g2name=NULL, title=NULL, caption=NULL, minimal=F,
-                  padj="none", pbart=.05, pnorm=.05, chariqr=":", charamp="&",
+                  padj="none", pbart=.01, pnorm=.01, chariqr=":", charamp="&",
                   pvpairs="std", pvypos=NULL, pvstinc=0.05, pvlab="p", 
                   pvprefix="p=", pvsize=NULL, chpvref="ref", pvspill=F,
                   pnosig=0.2, psignif=0.05, p2stars=0.01, p3stars=0.001, p4stars=0.0001,
@@ -464,30 +464,33 @@ cu2way = function(depvar,group1,group2, interact=TRUE, dosimpler=F, partialF=TRU
   }  
 
   nlevnom = nlevels(dsnomiss$B) # not correct with missing combinations
-  if (!minimal)
+  if (!minimal) {
     cat("\nSkewness, Kurtosis & Normality testing not done if SD=0 or n<6 or n>4000 (or for All).",
         "\nNormality by Shapiro-Wilk, p-value shown if <0.1\n\n")
-  if (ebars !=4) {
-    pnormin = 1; nfail = 0 #; print(df)
-    for (j in 1:nlevboth12) { # logic from table0. should exclude missings
-      pvalch = df[nrowmax,j] # ; cat ("\n",j," '",pvalch," '")
-      if (!is.na(pvalch) && !is.null(pvalch) && pvalch!=" ") {
-        if (regexpr("<",pvalch) > 0) 
-        {pnormin = 0; nfail = nfail+1} # < means < 0.001
-        else if ((pval=as.numeric(pvalch))<0.05) 
-        {pnormin = min(pnormin,pval); nfail = nfail+1}
-        # cat ("\n",j," '",pvalch,"' ",pnormin,sep="")
+    if (ebars !=4) {
+      pnormin = 1; nfail = 0 #; print(df)
+      for (j in 1:nlevboth12) { # logic from table0. should exclude missings
+        pvalch = df[nrowmax,j] # ; cat ("\n",j," '",pvalch," '")
+        if (!is.na(pvalch) && !is.null(pvalch) && pvalch!=" ") {
+          if (regexpr("<",pvalch) > 0) 
+          {pnormin = 0; nfail = nfail+1} # < means < 0.001
+          else if ((pval=as.numeric(pvalch))<0.05) 
+          {pnormin = min(pnormin,pval); nfail = nfail+1}
+          # cat ("\n",j," '",pvalch,"' ",pnormin,sep="")
+        }
       }
-    }
-    if (!minimal) if (nfail > 0) {
-      cat("\nDATA FAIL NORMALITY TEST IN",nfail,"OF",nlevboth12,"GROUPs.",
-          "SMALLEST P-VALUE",ifelse(pnormin==0,"<0.001",pnormin))
-      if (ebars<=0) {ebars=4; cat("\nNONPARAMETRIC ANALYSIS WILL BE DONE.\n")}
-      else cat("\nLOOK FOR DATA ERRORS IN 'Min' AND 'Max' VALUES.",
-               "\nIF DATA ARE NOT NORMAL,",
-               "\nYOU SHOULD USE THE NONPARAMETRIC DUNN TEST (ebars=4)\n")
-    } # end of !minimal - code parallels cu1way
-    else if (ebars<=0) ebars = min(3,max(1,-ebars))
+      if (nfail > 0) {
+        cat("\nDATA FAIL NORMALITY TEST IN",nfail,"OF",nlevboth12,"GROUPs.",
+            "SMALLEST P-VALUE",ifelse(pnormin==0,"<0.001",pnormin))
+        if (ebars<=0) {ebars=4; cat("\nNONPARAMETRIC ANALYSIS WILL BE DONE.\n")}
+        else cat("\nLOOK FOR DATA ERRORS IN 'Min' AND 'Max' VALUES.",
+                 "\nIF DATA ARE NOT NORMAL,",
+                 "\nYOU SHOULD USE THE NONPARAMETRIC DUNN TEST (ebars=4)\n")
+      } # code parallels cu1way
+      else if (ebars<=0) ebars = min(3,max(1,-ebars))
+    } # end of ebars != 4
+  } # end of !minimal
+  if (ebars != 4) {
     pool.sd=T
     nlevact = 0; nmink = 0; chisq = 0; sumsq = 0; sumlnsq = 0; sumn1 = 0
     for (jg in 1:nlevboth12) {

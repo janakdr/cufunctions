@@ -2,7 +2,7 @@
 #' @param ddep,dgp,dsub, depvar , groupvar, Subject  (3 required)
 #' @param itrans type of transformation if any
 #' @param minimal = FALSE (default), T or TRUE to suppress all output (for cuomics)
-#' @param ebars =1 (default)/2/3 (post-hoc t, SD/SE/CL) or 4 (nonparametric, IQR) or -N (nonparm if any norm fail)
+#' @param ebars =0 (default to be 1 or 4)/1/2/3 (post-hoc t, SD/SE/CL) or 4 (nonparametric, IQR) or -N (nonparm if any norm fail)
 #' @param dots =0 (default), 1 to display data on graph
 #' @param barcolor for outline color, barfill for fill color. Use fill="colors" for colors by group.
 #' @param barfill ="colors" (default) for colors by group ("lancet" for 2 factors, other journal options "aaas", "jco", "uchicago", "npg"
@@ -63,7 +63,7 @@
 #' cu_rep1way(TG, Diet, ID)
 #' }
 cu_rep1way = function(ddep,dgp,dsub,depvar, groupvar, Subject, itrans, minimal=F,
-                     ebars=1, dots=0, barcolor="black", barfill="colors", plot="bar",
+                     ebars=0, dots=0, barcolor="black", barfill="colors", plot="bar",
                      order=NULL, psigcld=0, conf.int=0.95, ddepn=NULL, pnorm=0.05,
                      depname=NULL, g1name=NULL, title=NULL, legend="top", suff=NULL,
                      pvpairs="std", pvypos=NULL, pvstinc=0.05, pvlab="p", 
@@ -232,8 +232,8 @@ cu_rep1way = function(ddep,dgp,dsub,depvar, groupvar, Subject, itrans, minimal=F
       print (fried)
       for (i in 1:nlevm1) { #missing data: "'x' and 'y' must have the same length"
         for (j in (i+1):(nlev)) {
-          pvalues[ipo+j] = wilcox.test(depvar ~ groupvar, ds, paired=T, exact=F, 
-                                       subset = groupvar %in% c(levnams[i],levnams[j]))$p.value
+          pvalues[ipo+j] = wilcox.test(depvar[groupvar==levnams[i]], 
+            depvar[groupvar==levnams[j]], paired=T, exact=F)$p.value
         }
         ipo = ipo+nlevm1
       }

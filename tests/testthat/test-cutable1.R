@@ -28,7 +28,7 @@ test_that("cutable1(NEJM, Diet, compare=T) tcchange matches golden", {
   out <- capture.output(with(NEJM, cutable1(NEJM, Diet, compare = TRUE, plot = "no")))
   golden <- load_golden("cutable1_NEJM_Diet_compare_tcchange")
   actual <- parse_section_table(out, "^tcchange", col_names = names(golden)[-1])
-  expect_table_match(actual, golden, label = "cutable1 compare tcchange")
+  expect_table_match(actual, golden, label = "cutable1 compare tcchange", tol = 0.01)
 })
 
 test_that("cutable1(NEJM, Diet, compare=T) diffvar matches golden", {

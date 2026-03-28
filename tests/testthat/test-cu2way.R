@@ -5,7 +5,7 @@
 # --- cu2way(tcchange, sex, Diet) — full interaction model ---
 
 test_that("cu2way(tcchange, sex, Diet) summary, pairwise, coef, posthoc, and F-tests match golden", {
-  out <- capture.output(with(NEJM, cu2way(tcchange, sex, Diet, plot = "no")))
+  out <- capture.output(with(NEJM, cu2way(tcchange, sex, Diet, plot = "no",ebars=1)))
 
   # Summary table
   golden <- load_golden("cu2way_tcchange_sex_Diet_summary")
@@ -40,7 +40,7 @@ test_that("cu2way(tcchange, sex, Diet) summary, pairwise, coef, posthoc, and F-t
 # --- cu2way(tcchange, sex, Diet, plot="violin") — same stats ---
 
 test_that("cu2way violin plot produces same coefficients", {
-  out <- capture.output(with(NEJM, cu2way(tcchange, sex, Diet, plot = "violin", dots = 1)))
+  out <- capture.output(with(NEJM, cu2way(tcchange, sex, Diet, plot = "violin", dots = 1, ebars=1)))
   actual <- parse_coef_table(out)
   golden <- load_golden("cu2way_tcchange_sex_Diet_coef")
   expect_table_match(actual, golden, id_col = "term",
@@ -50,7 +50,7 @@ test_that("cu2way violin plot produces same coefficients", {
 # --- cu2way(tcchange, sex, Diet, interact=F) — additive model ---
 
 test_that("cu2way(interact=F) coef, posthoc, and F-tests match golden", {
-  out <- capture.output(with(NEJM, cu2way(tcchange, sex, Diet, interact = FALSE, plot = "no")))
+  out <- capture.output(with(NEJM, cu2way(tcchange, sex, Diet, interact = FALSE, plot = "no", ebars=1)))
 
   # Coefficients
   actual_coef <- parse_coef_table(out)

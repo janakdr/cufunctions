@@ -5,12 +5,12 @@
 \title{Does two-way anova and post-hoc tests or contingency tables, and makes a bar graph}
 \usage{
 cu2way(depvar, group1, group2, interact = TRUE, dosimpler = F,
-  partialF = TRUE, ordinal = NULL, scale = "frequency", ebars = 1,
+  partialF = TRUE, ordinal = NULL, scale = "frequency", ebars = 0,
   dots = 0, plot = "bar", ytrans = "none", barcolor = "black",
   barfill = "colors", casecontrol = F, maxfor2 = 5, g1order = NULL,
   g2order = NULL, psigcld = 0, conf.int = 0.95, depname = NULL,
   g1name = NULL, g2name = NULL, title = NULL, caption = NULL,
-  minimal = F, padj = "none", pbart = 0.05, pnorm = 0.05,
+  minimal = F, padj = "none", pbart = 0.01, pnorm = 0.01,
   chariqr = ":", charamp = "&", pvpairs = "std", pvypos = NULL,
   pvstinc = 0.05, pvlab = "p", pvprefix = "p=", pvsize = NULL,
   chpvref = "ref", pvspill = F, pnosig = 0.2, psignif = 0.05,
@@ -41,7 +41,7 @@ cu2way(depvar, group1, group2, interact = TRUE, dosimpler = F,
 
 \item{scale}{="frequency" (default) or "percent"}
 
-\item{ebars}{=1 (default)/2/3 (post-hoc t, SD/SE/CL) or 4 (nonparametric, IQR) or -N (nonparm if any norm fail)}
+\item{ebars}{=0 (default to be 1 or 4)/1/2/3 (post-hoc t, SD/SE/CL) or 4 (nonparametric, IQR) or -N (nonparm if any norm fail)}
 
 \item{dots}{=0 (default), 1 to display data on graph}
 
@@ -71,9 +71,9 @@ cu2way(depvar, group1, group2, interact = TRUE, dosimpler = F,
 
 \item{padj}{="none"(default), p-value adjustment for multiple comparisons, can be "bonferroni", "holm")}
 
-\item{pbart}{=0.05 (default)/x for Bartlett test threshold for variance homogeneity}
+\item{pbart}{=0.01 (default)/x for Bartlett test threshold for variance homogeneity}
 
-\item{pnorm}{=0.05 (default)/x for normality test threshold}
+\item{pnorm}{=0.01 (default)/x for normality test threshold}
 
 \item{chariqr}{=":" (default)/x for character to separate quartiles ("-" "," etc)}
 

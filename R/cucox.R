@@ -175,7 +175,7 @@ cucox = function(dsgiven, timnam, depnam, formula, dopredkm=T, doroc=T, docoxkm=
       if (is.integer(ds[,g2num]) | is.factor(ds[,g2num]) | is.logical(ds[,g2num])) {
         p = ggadjustedcurves(fitcox, data=ds, variable=fac2, 
           palette=palette, fun=fun, xlab=xlabpredkm, ylab=ylabpredkm,
-          title=titlepredkm, legend.title=fac2)
+          title=titlepredkm)  #  , legend.title=fac2
         nscat = nscat+1
         if (nscat==1) plist = list(p)
         else plist[[nscat]] = p
@@ -184,7 +184,7 @@ cucox = function(dsgiven, timnam, depnam, formula, dopredkm=T, doroc=T, docoxkm=
     if (nscat > 0) {
       if (nscat==1) {nverkm=1; nhorkm=1}
       pout = ggarrange(plotlist=plist,nrow=nverkm,ncol=nhorkm)
-      cu_plout(pout,"curepmeas-scat", ftype=ftype, fname=fname,
+      cu_plout(pout,"cucox-predkm", ftype=ftype, fname=fname,
         scale=fscale, width=fwidth, height=fheight, dpi=dpi,remove=remove)
     }
   }

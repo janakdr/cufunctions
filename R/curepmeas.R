@@ -12,7 +12,7 @@
 #' @param sumdiff =1 (default) or -1 for difference summary and bar graph, 0 for not (1 for rest-Igroup, -1 for Igroup-rest)
 #' @param scale ="frequency" (default) or "percent"
 #' @param scatter = "yes" (default) for scatter plots of repeated measures, "no" for none
-#' @param ebars =1 (default)/2/3 (post-hoc t, SD/SE/CL) or 4 (nonparametric, IQR)
+#' @param ebars =0 (default to be 1 or 4)/1/2/3 (post-hoc t, SD/SE/CL) or 4 (nonparametric, IQR) or -N (nonparm if any norm fail)
 #' @param dots =0 (default), 1 to display data on graph
 #' @param barcolor for outline color, barfill for fill color. Use barfill="colors" for colors by group.
 #' @param plot ="bar" (default) for bar graphs; "box" "violin" "rod" "no"
@@ -91,7 +91,7 @@
 curepmeas = function(dsgiven, dnam, repnam, fac2=NULL, idnam=NULL, minimal=F,
                      interact=TRUE, partialF=TRUE, cov=NULL, ytrans="none",
                      maxlines=0, mainx=1, sumdiff=1, scale="frequency", scatter="yes",
-                     ebars=1, dots=0, barcolor="black", barfill=NULL, plot="bar",
+                     ebars=0, dots=0, barcolor="black", barfill=NULL, plot="bar",
                      ordinal=NULL, g1order=NULL, g2order=NULL, difforder=NULL, 
                      depname=NULL, g1name=NULL, g2name=NULL, title=NULL, pnorm=0.05,
                      psigcld=0, conf.int=0.95, ddepn=NULL, shape=16, caption=NULL,

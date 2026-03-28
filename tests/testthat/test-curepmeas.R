@@ -93,7 +93,8 @@ test_that("curepmeas Case 3: continuous TG, single factor", {
   delta <- test_setup()
 
   output <- wide_capture({
-    res <- curepmeas(delta, "TG", "Diet")
+    res <- curepmeas(delta, "TG", "Diet", ebars=1)
+    #  TODO (Janak): get rid of ebars=1
   })
 
   # Posthoc comparisons
@@ -112,7 +113,7 @@ test_that("curepmeas Case 4: continuous TG, two factors", {
   delta <- test_setup()
 
   output <- wide_capture({
-    res <- curepmeas(delta, "TG", "Diet", "sex")
+    res <- curepmeas(delta, "TG", "Diet", "sex", ebars=1)
   })
 
   # Grouped posthoc comparisons (tol=0.5 needed because near-zero diffs like
@@ -137,7 +138,7 @@ test_that("curepmeas Case 5: continuous TG, two factors with covariate", {
   delta <- test_setup()
 
   output <- wide_capture({
-    res <- curepmeas(delta, "TG", "Diet", "sex", cov = "age+age*Diet")
+    res <- curepmeas(delta, "TG", "Diet", "sex", cov = "age+age*Diet", ebars=1)
   })
 
   # Grouped posthoc is the same as without covariate (cov doesn't change posthoc)

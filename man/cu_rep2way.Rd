@@ -6,7 +6,7 @@
 \usage{
 cu_rep2way(ddep, dgp1, dgp2, dsub, depvar, group1, group2, Subject,
   interact = TRUE, partialF = FALSE, mainx = 1, itrans, minimal = F,
-  ebars = 1, dots = 0, barcolor = "black", barfill = "colors",
+  ebars = 0, dots = 0, barcolor = "black", barfill = "colors",
   plot = "bar", order = NULL, psigcld = 0, conf.int = 0.95,
   ddepn = NULL, depname = NULL, g1name = NULL, g2name = NULL,
   pnorm = 0.05, pvpairs = "std", pvypos = NULL, pvstinc = 0.05,
@@ -40,7 +40,7 @@ cu_rep2way(ddep, dgp1, dgp2, dsub, depvar, group1, group2, Subject,
 
 \item{minimal}{= FALSE (default), T or TRUE to suppress all output (for cuomics)}
 
-\item{ebars}{=1 (default)/2/3 (post-hoc t, SD/SE/CL) or 4 (nonparametric, IQR) or -N (nonparm if any norm fail)}
+\item{ebars}{=0 (default to be 1 or 4)/1/2/3 (post-hoc t, SD/SE/CL) or 4 (nonparametric, IQR) or -N (nonparm if any norm fail)}
 
 \item{dots}{=0 (default), 1 to display data on graph}
 

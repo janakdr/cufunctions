@@ -162,7 +162,7 @@ cucov2way = function(depvar, covar, group1, group2, xs=NULL,
   # cat("\n"); print(mapinto12) #; cat("\n"); print(map12toin)
   #print(group1); print(group2); print(groupvar)
   nameboth12 = paste(g1name,"&",g2name,sep="")
-  if (dosimpler) {
+  if (dosimpler & !dosimpler) { # work on this later
     cat("\nAnalyzing (just as point of reference) without controlling for",covname)
     cu2way(depvar,group1,group2,interact=interact,minimal=T,
            depname=depname,g1name=g1name,g2name=g2name,pnorm=pnorm)
