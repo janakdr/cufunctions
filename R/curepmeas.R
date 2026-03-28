@@ -1,7 +1,7 @@
 #' Does repeated measures one- or two-way anova and post-hoc tests (format wide or long - 1/many lines for each subject)
 #' @param dsgiven ,dnam,repnam required: dataset, char-strings of names of variable being analyzed, repeated grouping factor
 #' @param fac2 char-string of name of 2nd, non-repeated grouping factor (default NULL)
-#' @param idnam (to indicat long format) =char-string of name of ID/Subject variable (default NULL)
+#' @param idnam (to indicate long format) =char-string of name of ID/Subject variable (default NULL)
 #' @param minimal = FALSE (default), T or TRUE to suppress all output (for cuomics)
 #' @param interact =TRUE (default), F or FALSE for no interaction
 #' @param partialF =TRUE (default), F or FALSE for no partial F vs simpler models
@@ -597,9 +597,8 @@ curepmeas = function(dsgiven, dnam, repnam, fac2=NULL, idnam=NULL, minimal=F,
     forrach = paste("~1|id/",repnam); forra = as.formula(forrach)
     if (dodredge) {
       dsnomiss = na.omit(rml)
-      # cat("\nformach,forrach:\n",formach,"\n",forrach,"\n")
       fitlm = lme(formla, random=forra, data=dsnomiss) # no need for na.action
-      #fitlm$call[2] = formach #setting [4] to random part crashes dredge
+      fitlm$call[2] = formach #setting [4] to random part crashes dredge
       print(summary(fitlm))
       oldw <- getOption("warn")
       options(warn = -1)
