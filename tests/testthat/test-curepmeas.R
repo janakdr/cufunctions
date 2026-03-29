@@ -7,6 +7,17 @@ test_setup <- function() {
   return(delta)
 }
 
+char_to_numeric_list <- function(vec) {
+  lapply(vec, function(v) {
+    if (is.null(v) || is.na(v)) return(v)
+    v_trimmed <- trimws(v)
+    if (v_trimmed == "") return(v)
+    num <- suppressWarnings(as.numeric(v_trimmed))
+    if (!is.na(num)) num else v
+  })
+}
+
+
 test_that("curepmeas Case 1: single factor", {
   delta <- test_setup()
   
@@ -196,10 +207,28 @@ test_that("curepmeas Case 5: continuous TG, two factors with covariate", {
   expect_match(paste(output, collapse = "\n"), "Model selection table", fixed = TRUE)
 })
 
-test_that("curepmeas Case 6: nonparametric mode triggers levnams bug", {
+test_that("curepmeas Case 6: nonparametric mode structured output", {
   delta <- test_setup()
   
-  # This should crash with "object 'levnams' not found" because of the typo in cu_rep2way.R
-  curepmeas(delta, "TG", "Diet", "sex", ebars = 4, minimal = TRUE)
-  expect_true(TRUE) # Dummy expectation so test isn't empty
+  output <- wide_capture({
+    res <- curepmeas(delta, "TG", "Diet", "sex", ebars = 4, minimal = TRUE)
+  })
+  
+  res[[1]] <- char_to_numeric_list(res[[1]])
+  
+  expected_res <- list(
+    list(Variable = "TG", `F:AAD_mean` = 82.7, `F:AAD_sd` = 30.5,
+         `F:LowSat_mean` = 90.4 , `F:LowSat_sd` = 38.2, `F:Step1_mean` = 90.4, `F:Step1_sd` = 36.8,
+         `F:LowSat-AAD_mean` = 7.72, `F:LowSat-AAD_sd` = 19.5, `F:Step1-AAD_mean` = 7.73,
+         `F:Step1-AAD_sd` = 14.2, `F:Step1-LowSat_mean` = 0.0139, `F:Step1-LowSat_sd` = 17.4,
+         `M:AAD_mean` = 106, `M:AAD_sd` = 40.6, `M:LowSat_mean` = 119, `M:LowSat_sd` = 48.7,
+         `M:Step1_mean` = 116, `M:Step1_sd` = 49.9, `M:LowSat-AAD_mean` = 12.9,
+         `M:LowSat-AAD_sd` = 26.8, `M:Step1-AAD_mean` = 9.98, `M:Step1-AAD_sd` = 22.9,
+         `M:Step1-LowSat_mean` = -2.92, `M:Step1-LowSat_sd` = 26.7, `??` = -1, `??` = -1,
+         `??` = -1, `??` = -1, `??` = -1, `??` = -1, `??` = -1, `??` = -1, `??` = -1,
+         `??` = -1, `??` = -1, `??` = -1, `??` = -1, `any drop` = ""),
+    NULL
+  )
+  
+  expect_equal(res, expected_res, tolerance = 0.01)
 })
