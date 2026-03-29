@@ -19,7 +19,6 @@
 #' @return returns nothing
 #' @examples
 #' culinreg(NEJM, "tcstudy", "tcpre+tgpre+Diet")
-#' @importFrom car avPlots
 #' @export
 culinreg = function(dsgiven, depnam, formula,
                   weights=NULL, printfit=F, ndecfit=2, dodredge=T, usemod=1,

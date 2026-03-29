@@ -7,7 +7,14 @@
 #' @examples
 #' attach(NEJM)
 #' cuomics("1way", NEJM, "tcstudy", "hcchange", "tchc1w", Diet)
+#' cuomics("2way", NEJM, "tcstudy", "hcchange", "tchc2w", Diet, sex)
+#' # cuomics("cov1way", NEJM, "tcstudy", "hcchange", "tchccov1", tcpre, Diet)
+#' # cuomics("cov2way", NEJM, "tcstudy", "hcchange", "tchccov2", tcpre, Diet, sex)
+#' # cuomics("scatter", NEJM, "tcstudy", "hcchange", "tchcscat", tcpre)
 #' detach(NEJM)
+#' attach(delta)
+#' cuomics("repmeasw", delta, "TC", "TG", "tctgrep", "Diet", "sex")
+#' detach(delta)
 #' @export
 cuomics = function(funcname, dsgiven, dnamf, dnaml, fnom, ...)
 {
@@ -90,6 +97,9 @@ cuomics = function(funcname, dsgiven, dnamf, dnaml, fnom, ...)
   if (ifun>=nfuncpos-1) {
     if (is.null(repout)) cat("\nNo results. Only one visit?")
     else write.csv(repmat,file=fnom, row.names=F)
+    largs = list(...)
+    normvisit = if ("normvisit" %in% names(largs)) largs$normvisit else 0
+    normway = if ("normway" %in% names(largs)) largs$normway else "fold"
     if (normvisit > 0) {
       filenorm = paste(normway,".",fnom,sep="")
       write.csv(rmwall,file=filenorm, row.names=F)

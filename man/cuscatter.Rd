@@ -100,5 +100,7 @@ scatterplot of yvar vs xvar
 \examples{
 attach(NEJM)
 cuscatter(tcstudy, tcpre)
+cuscatter(tcstudy, tcpre, showr2eqn="r2")  # show just R-squared and p-value
+cuscatter(tcstudy, tcpre, remove=c("x.ticks", "y.ticks"))  # no tick marks
 detach(NEJM)
 }

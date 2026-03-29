@@ -64,5 +64,7 @@ Logistic regression, all possible models, summarize best (or specified) model,
 do ROC curve(s), AUC, and summary table with best accuracy
 }
 \examples{
-culogist(Met, "MetSyn", "TG+HDL+LN_TG+BMI+GLUC")
+culogist(Met, "MetSyn", "TG+HDL+LN_TG+BMI+GLUC")  # for AUC and summary table with best accuracy
+# 3 summary tables (best accuracy, prob=0.3, 0.7)
+culogist(Met, "MetSyn", "TG+HDL+LN_TG+BMI+GLUC", c(0.3, 0.7))
 }

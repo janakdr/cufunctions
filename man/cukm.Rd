@@ -61,5 +61,6 @@ Plus sign indicates loss to follow-up (right-censoring).
 \examples{
 attach(hepc)
 cukm(time, status, Treatment)
+cukm(time, status, Treatment, kmtype="ci")  # for cumulative incidence
 detach(hepc)
 }

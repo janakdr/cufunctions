@@ -26,6 +26,7 @@
 #' @examples
 #' attach(hepc)
 #' cukm(time, status, Treatment)
+#' cukm(time, status, Treatment, kmtype="ci")  # for cumulative incidence
 #' detach(hepc)
 #' @export
 cukm = function(timevar, statvar, ttmtvar, kmtype="survival", pvalue=T,

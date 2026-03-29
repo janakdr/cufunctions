@@ -46,5 +46,8 @@ nothing
 Does repeated measures one- or two-way anova and post-hoc tests (format wide or long - 1/many lines for each subject)
 }
 \examples{
-curepmany(delta, "TC", "TG", "Diet")
+curepmany(delta, "TC", "TG", "Diet")  # one line per subject; TG.xx TG.yy etc as names of TG data
+curepmany(delta, "TC", "TG", "Diet", "sex")  # with sex as second factor, Diet*sex interaction in model
+curepmany(delta, "TC", "TG", "Diet", "sex", interact=FALSE)  # no Diet*sex interaction
+curepmany(delta, "TC", "TG", "Diet", "sex", cov="age+sex*age")  # with covariate adjustment
 }

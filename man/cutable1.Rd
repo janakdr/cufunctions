@@ -180,6 +180,12 @@ Table 1 with optional box or violin plots
 attach(NEJM)
 cutable1(tgpre, Diet)
 detach(NEJM)
-cutable1(NEJM, plot="violin")
-cutable1(NEJM, Diet, brief=TRUE, plot="no")
+cutable1(NEJM, plot="violin")  # single table all variables, violin plots
+attach(NEJM)
+cutable1(NEJM, Diet, plot="no")  # separate tables all variables, no plots
+cutable1(NEJM, Diet, brief=TRUE)  # single table for all variables by Diet columns
+cutable1(NEJM, Diet, brief=TRUE, sdsamerow=FALSE)  # to put SD/IQR on separate line
+cutable1(NEJM, Diet, brief=TRUE, pnorm=0)  # to get only mean&SD
+cutable1(NEJM, Diet, brief=TRUE, pnorm=1)  # to get only median&IQR
+detach(NEJM)
 }
