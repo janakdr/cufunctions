@@ -45,6 +45,7 @@ For logistic-regression, does ROC curve(s), AUC, and summary table with best acc
 logfit <- glm(MetSyn ~ TG + HDL, data = Met, family = binomial)
 curoc(logfit, Met$MetSyn)
 curoc(logfit, Met$MetSyn, xs=c(0.3, 0.7))  # AUC with 3 summary tables
+# Requires MASS package for polr (ordinal logistic regression)
 \dontrun{
 polrfit <- MASS::polr(as.factor(WTCAT) ~ TG + HDL, data = Met)
 curoc(polrfit, Met$WTCAT, twolev=FALSE)  # multi-level via polr

@@ -22,6 +22,7 @@ dataframe object read
 Does a read.table and returns a dataframe object
 }
 \examples{
+# Requires interactive file chooser dialog
 \dontrun{
 HD = curead()
 NEJM = curead(skip=1)
