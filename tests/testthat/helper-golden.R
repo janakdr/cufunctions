@@ -12,6 +12,11 @@ wide_capture <- function(expr) {
   old_width <- getOption("width")
   options(width = 10000)
   on.exit(options(width = old_width))
+  # Open a temp PNG device so base-graphics calls (e.g. barplot in
+  # cu_rep2fac) don't crash during R CMD check batch mode.
+  # PNG handles Unicode (Δ) in titles; PDF's mbcsToSbcs conversion fails.
+  grDevices::png(tempfile(fileext = ".png"))
+  on.exit(grDevices::dev.off(), add = TRUE)
   capture.output(expr)
 }
 
