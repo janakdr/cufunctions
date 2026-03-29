@@ -783,7 +783,7 @@ cu2way = function(depvar,group1,group2, interact=TRUE, dosimpler=F, partialF=TRU
 #    print(pairout)
 #    options(warn = oldw)
 #    pvalues = pairout$p.value
-    capture.output(dunout <- dunn.test(dsnomiss$A,dsnomiss$B, method=padj, altp=T, table=F, kw=F))
+    suppressMessages(capture.output(dunout <- dunn.test(dsnomiss$A,dsnomiss$B, method=padj, altp=T, table=F, kw=F)))
     idu=0; nm1 = nlevnom-1; pvalues = matrix(c(rep(0,nm1*nm1)),nrow=nm1,ncol=nm1)
     for (i in 2:nlevnom) {  # 2/25 check that the logic is correct
       for (j in 1:(i-1)) {idu=idu+1; pvalues[i-1,j] = dunout$altP[idu]}

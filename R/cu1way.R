@@ -509,7 +509,7 @@ cu1way = function(depvar, group1, ebars=0, ordinal=NULL, plot="bar", ytrans="non
 #    pairout$data.name = paste(depname,"compared across",g1name,"groups")
 #    pvalues = pairout$p.value
 #    options(warn = oldw)
-    capture.output(dunout <- dunn.test(dsnomiss$A,dsnomiss$B, method=padj, altp=T, table=F, kw=F))
+    suppressMessages(capture.output(dunout <- dunn.test(dsnomiss$A,dsnomiss$B, method=padj, altp=T, table=F, kw=F)))
     idu=0; nm1 = nlev-1; pvalues = matrix(c(rep(0,nm1*nm1)),nrow=nm1,ncol=nm1)
     for (i in 2:nlev) {
       for (j in 1:(i-1)) {idu=idu+1; pvalues[i-1,j] = dunout$altP[idu]}

@@ -154,7 +154,7 @@ cutable1 = function(ds, group1=NULL, group2=NULL, doAll=T, brief=F,
         else {
           #cat(", dunn")
           pvalues = matrix(nrow=nlevm1,ncol=nlevm1)
-          capture.output(pvalvec <- dunn.test(depv, groupvar, altp=T, table=F, kw=F)$altP)
+          suppressMessages(capture.output(pvalvec <- dunn.test(depv, groupvar, altp=T, table=F, kw=F)$altP))
           ic = 0
           for (i in 2:nlev) for (j in 1:(i-1)) {
             ic = ic+1; pvalues[i-1,j] = pvalvec[ic]
