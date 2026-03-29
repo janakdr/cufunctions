@@ -422,8 +422,8 @@ cu_rep2way = function(ddep,dgp1,dgp2,dsub,depvar, group1, group2, Subject,
           for (j1 in (i1+1):gp1) {
             jpval = nlev12m1*((i1-1)*gp2+i2-1)+(j1-1)*gp2+i2-1
             pvalues[jpval] = wilcox.test(
-              depvar[(group1==levnams[i1])&(group2==g2names[i2])],
-              depvar[(group1==levnams[j1])&(group2==g2names[i2])],
+              depvar[(group1==g1names[i1])&(group2==g2names[i2])],
+              depvar[(group1==g1names[j1])&(group2==g2names[i2])],
               paired=T, exact=F)$p.value
             # cat("\n",i1,i2,j1,jpval)
           }

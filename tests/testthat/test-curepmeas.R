@@ -195,3 +195,11 @@ test_that("curepmeas Case 5: continuous TG, two factors with covariate", {
   # Verify model selection output is present
   expect_match(paste(output, collapse = "\n"), "Model selection table", fixed = TRUE)
 })
+
+test_that("curepmeas Case 6: nonparametric mode triggers levnams bug", {
+  delta <- test_setup()
+  
+  # This should crash with "object 'levnams' not found" because of the typo in cu_rep2way.R
+  curepmeas(delta, "TG", "Diet", "sex", ebars = 4, minimal = TRUE)
+  expect_true(TRUE) # Dummy expectation so test isn't empty
+})
