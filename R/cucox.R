@@ -34,8 +34,8 @@
 #' @return returns nothing
 #' @examples
 #' cucox(coxdata, "TimeToEvent", "Outcome", "C.Index + scale(LVEF) + scale(BNP)")
-#' @importFrom survminer ggadjustedcurves
 #' @importFrom ggpubr ggarrange
+#' @importFrom survminer ggadjustedcurves
 #' @export
 cucox = function(dsgiven, timnam, depnam, formula, dopredkm=T, doroc=T, docoxkm=T,
                  wtnam=NULL, printfit=F, dodredge=T, usemod=1,
