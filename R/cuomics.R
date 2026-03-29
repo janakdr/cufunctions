@@ -106,6 +106,9 @@ cuomics = function(funcname, dsgiven, dnamf, dnaml, fnom, ...)
   if (ifun>=nfuncpos-1) {
     if (is.null(repout)) cat("\nNo results. Only one visit?")
     else utils::write.csv(repmat,file=fnom, row.names=F)
+    largs = list(...)
+    normvisit = if ("normvisit" %in% names(largs)) largs$normvisit else 0
+    normway = if ("normway" %in% names(largs)) largs$normway else "fold"
     if (normvisit > 0) {
       filenorm = paste(normway,".",fnom,sep="")
       utils::write.csv(rmwall,file=filenorm, row.names=F)
