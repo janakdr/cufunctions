@@ -102,6 +102,18 @@ test_that("cu1way(tcchange, Diet, ebars=4) Dunn pairwise matches golden", {
                      label = "cu1way(tcchange, Diet, ebars=4) Dunn")
 })
 
+test_that("cu1way(tcchange, Diet, ebars=4) does not leak dunn.test messages to stderr", {
+  # dunn.test emits "α = 0.05 / Reject Ho if p ≤ α" via message();
+  # these must be suppressed so they don't pollute test output.
+  msgs <- capture.output(
+    capture.output(with(NEJM, cu1way(tcchange, Diet, ebars = 4, plot = "no"))),
+    type = "message"
+  )
+  # Filter out any empty strings — only real messages matter
+  msgs <- msgs[nzchar(trimws(msgs))]
+  expect_length(msgs, 0)
+})
+
 # --- cu1way(hcstudy, Diet) — normality failure, still does ANOVA ---
 
 test_that("cu1way(hcstudy, Diet) summary table matches golden", {
