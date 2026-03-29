@@ -73,11 +73,12 @@
 #' @return returns nothing
 #' @examples
 #' attach(NEJM)
-#' cu1way(tcchange, Diet)  # one-way anova and post-hoc t-tests
-#' cu1way(tcchange, Diet, ebars=4)  # nonparametric Dunn
+#' cu1way(tcchange, Diet)  # for one-way anova and post-hoc t-tests, graphing mean+/-sd
+#' # cu1way(tcchange, Diet, ebars=N)  # N=0 for 1 or 4, 1 for SD, 2 for SE, 3 for CL
+#' cu1way(tcchange, Diet, ebars=4)  # for nonparametric Dunn
 #' detach(NEJM)
 #' attach(Met)
-#' cu1way(feel, WTCAT)  # contingency tables (all possible 2x2s)
+#' cu1way(feel, WTCAT) # contingency tables (all possible 2x2s)
 #' detach(Met)
 #' @export
 cu1way = function(depvar, group1, ebars=0, ordinal=NULL, plot="bar", ytrans="none",
