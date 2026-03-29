@@ -33,6 +33,7 @@
 #' @param remove choose from =c("xlab","ylab","x.text","y.text","x.ticks","y.ticks","grid","x.grid","y.grid","axis","x.axis","y.axis")
 #' @return returns nothing
 #' @examples
+#' # Internal function, not exported; called via curepmeas()
 #' \dontrun{
 #' cu_rep2way(TG, Diet, sex, ID)  # with interaction between the two fixed factors
 #' cu_rep2way(TG, Diet, sex, ID, interact=F)  # with no interaction (pointless, same result as without 2nd factor)

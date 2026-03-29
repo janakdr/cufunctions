@@ -31,6 +31,7 @@
 #' @param remove choose from =c("xlab","ylab","x.text","y.text","x.ticks","y.ticks","grid","x.grid","y.grid","axis","x.axis","y.axis")
 #' @return returns nothing
 #' @examples
+#' # Internal function, not exported; called via curepmeas()
 #' \dontrun{
 #' cu_rep1way(TG, Diet, ID)
 #' }

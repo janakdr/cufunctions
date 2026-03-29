@@ -7,6 +7,7 @@
 #'
 #' @return dataframe object read
 #' @examples
+#' # Requires interactive file chooser dialog
 #' \dontrun{
 #' HD = curead()
 #' NEJM = curead(skip=1)

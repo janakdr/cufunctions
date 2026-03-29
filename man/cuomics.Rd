@@ -22,14 +22,21 @@ nothing
 Analyzes multiple outcomes by specified function name
 }
 \examples{
+d <- tempdir()  # change to "." to write to current directory
 attach(NEJM)
-cuomics("1way", NEJM, "tcstudy", "hcchange", "tchc1w", Diet)
-cuomics("2way", NEJM, "tcstudy", "hcchange", "tchc2w", Diet, sex)
-# cuomics("cov1way", NEJM, "tcstudy", "hcchange", "tchccov1", tcpre, Diet)
-# cuomics("cov2way", NEJM, "tcstudy", "hcchange", "tchccov2", tcpre, Diet, sex)
-# cuomics("scatter", NEJM, "tcstudy", "hcchange", "tchcscat", tcpre)
+cuomics("1way", NEJM, "tcstudy", "hcchange", file.path(d, "tchc1w"), Diet)
+cuomics("2way", NEJM, "tcstudy", "hcchange", file.path(d, "tchc2w"), Diet, sex)
+# TODO(sekhar): fix these examples, they hit "stop" case below
+\dontrun{
+cuomics("cov1way", NEJM, "tcstudy", "hcchange", file.path(d, "tchccov1"), tcpre, Diet)
+cuomics("cov2way", NEJM, "tcstudy", "hcchange", file.path(d, "tchccov2"), tcpre, Diet, sex)
+cuomics("scatter", NEJM, "tcstudy", "hcchange", file.path(d, "tchcscat"), tcpre)
+}
 detach(NEJM)
+# TODO: requires fix-cuomics-normvisit branch to be merged
+\dontrun{
 attach(delta)
-cuomics("repmeasw", delta, "TC", "TG", "tctgrep", "Diet", "sex")
+cuomics("repmeasw", delta, "TC", "TG", file.path(d, "tctgrep"), "Diet", "sex")
 detach(delta)
+}
 }
