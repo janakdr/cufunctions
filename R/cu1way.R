@@ -244,10 +244,10 @@ cu1way = function(depvar, group1, ebars=0, ordinal=NULL, plot="bar", ytrans="non
     }
   }
   else { # continuous, not categorical, code below needed in 2 places
-    dsnomiss = na.omit(data.frame(A=depvar,B=group1))
+    dsnomiss = stats::na.omit(data.frame(A=depvar,B=group1))
     g <- factor(dsnomiss$B)
     avv <- tapply(dsnomiss$A, g, mean, na.rm = TRUE)
-    sdv <- tapply(dsnomiss$A, g, sd, na.rm = TRUE)
+    sdv <- tapply(dsnomiss$A, g, stats::sd, na.rm = TRUE)
     nsv <- tapply(!is.na(dsnomiss$A), g, sum)
     degf <- nsv - 1
     total.degf <- sum(degf)
@@ -275,7 +275,7 @@ cu1way = function(depvar, group1, ebars=0, ordinal=NULL, plot="bar", ytrans="non
       chvref = paste(" v",round(refmean,1))
       for (ig1 in 1:nlev) {
         tstat = abs(avv[ig1]-refmean)*sqrt(nsv[ig1])/pooled.sd
-        pv1t = 2 * pt(-tstat, total.degf) # same as pt(tstat,..., lower.tail=F)
+        pv1t = 2 * stats::pt(-tstat, total.degf) # same as stats::pt(tstat,..., lower.tail=F)
         repout[jrepo] = ifelse (pv1t <= pnosig,
                ifelse (pv1t < 0.001, "<.001", round(pv1t,3)))
         repn[jrepo] = paste(names(repou)[ig1],chvref); jrepo = jrepo+1
@@ -325,11 +325,11 @@ cu1way = function(depvar, group1, ebars=0, ordinal=NULL, plot="bar", ytrans="non
         colsum[j] = sum(df2mat[,j])
         if (colsum[j]>0) df2mat[,j] = 100*df2mat[,j]/colsum[j]
       }
-      plotobj <- barplot(df2mat, xlab=g1name, ylab=depname,
+      plotobj <- graphics::barplot(df2mat, xlab=g1name, ylab=depname,
                          main=paste(depname,"distribution at different levels of",g1name),
-                         col=rainbow(nlevdep), legend = rownames(df2), 
+                         col=grDevices::rainbow(nlevdep), legend = rownames(df2), 
                          args.legend = list(x = "topright", bty = "n"))
-      if (scale == "percent") plotobj <- text(plotobj,102,labels=colsum,xpd=T)
+      if (scale == "percent") plotobj <- graphics::text(plotobj,102,labels=colsum,xpd=T)
       # ggbarplot? if (!is.null(caption)) plotobj <- ggpar(plotobj,caption=caption)
       plotobj # cu_plout with barplot obj prints out x vector or NULL
       #cu_plout(plotobj,"curm",emf,suff=suff) # must rephrase
@@ -382,7 +382,7 @@ cu1way = function(depvar, group1, ebars=0, ordinal=NULL, plot="bar", ytrans="non
       else if (ebars<=0) ebars = min(3,max(1,-ebars))
     }
     if (ebars !=4) {
-      myaov = aov(depvar ~ group1)
+      myaov = stats::aov(depvar ~ group1)
       cat("\none-way anova: aov(",depname," ~ ",g1name,")\n",sep="")
       print(summary(myaov))
       coeffs = c("(Intercept)") # below loads g1names into coeffs
@@ -390,13 +390,13 @@ cu1way = function(depvar, group1, ebars=0, ordinal=NULL, plot="bar", ytrans="non
       strcall = paste("lm(",depname," ~ ",g1name,sep="")
     }
     else {
-      myaov = kruskal.test(depvar ~ group1)
+      myaov = stats::kruskal.test(depvar ~ group1)
       myaov$data.name = paste(depname,"by",g1name)
       print(myaov)
     }
   } # end of !minimal
   
-  dsnomiss = na.omit(data.frame(A=depvar,B=group1))
+  dsnomiss = stats::na.omit(data.frame(A=depvar,B=group1))
   if (ebars != 4) {
     pool.sd=T
     nlevact = 0; nmink = 0; chisq = 0; sumsq = 0; sumlnsq = 0; sumn1 = 0
@@ -415,7 +415,7 @@ cu1way = function(depvar, group1, ebars=0, ordinal=NULL, plot="bar", ytrans="non
     else if (chisq>0) pval = 0  # some group(s) with zero variance
     else if (nlevact>1) { # >1 group with at least 2
       chisq = (nmink*log(sumsq/nmink) - sumlnsq)/(1+(sumn1-1/nmink)/(3*(nlevact-1)))
-      pval = pchisq(chisq, df=nlevact-1, lower.tail=F)
+      pval = stats::pchisq(chisq, df=nlevact-1, lower.tail=F)
     }
     #bt=bartlett.test(depvar,group1)
     #bt$data.name = paste(depname,"across",g1name,"groups")
@@ -441,7 +441,7 @@ cu1way = function(depvar, group1, ebars=0, ordinal=NULL, plot="bar", ytrans="non
                           "groups",ifelse(padj=="none","using Fisher's LSD",""))
       pairout$method = paste(pairout$method,signif(pooled.sd,3))
       if (!minimal) {
-        fit = lm(depvar ~ group1)
+        fit = stats::lm(depvar ~ group1)
         fit$call = paste(strcall,")",sep="")
         names(fit$coefficients) = coeffs
         print(summary(fit))
@@ -456,7 +456,7 @@ cu1way = function(depvar, group1, ebars=0, ordinal=NULL, plot="bar", ytrans="non
         pvalues = pairout$p.value
         if (!is.na(refmean)) for (ig1 in 1:nlev) {
           tstat = abs(avv[ig1]-refmean)*sqrt(nsv[ig1])/pooled.sd
-          pv1t = 2 * pt(-tstat, total.degf) # same as pt(tstat,..., lower.tail=F)
+          pv1t = 2 * stats::pt(-tstat, total.degf) # same as stats::pt(tstat,..., lower.tail=F)
           cat(g1names[ig1], " v ", round(refmean,1),": p=",
             ifelse (pv1t < 0.001, "<.001", round(pv1t,3)),"\n", sep="")
         }
@@ -485,7 +485,7 @@ cu1way = function(depvar, group1, ebars=0, ordinal=NULL, plot="bar", ytrans="non
               if (sedif==0) pvalt = ifelse(mudif==0,1,0)
               else {
                 ndf = (se1sq+se2sq)**2/(se1sq**2/(n1-1)+se2sq**2/(n2-1))
-                tstat = mudif/sedif; pvalt = 2 * pt(-abs(tstat), ndf)
+                tstat = mudif/sedif; pvalt = 2 * stats::pt(-abs(tstat), ndf)
               }
               #cat(n1,n2,sds[i],sds[j],mudif,sedif,tstat,ndf,pvalt,"\n")
               cat(g1names[j], " minus ", g1names[i],": ",
@@ -511,7 +511,7 @@ cu1way = function(depvar, group1, ebars=0, ordinal=NULL, plot="bar", ytrans="non
 #    pairout$data.name = paste(depname,"compared across",g1name,"groups")
 #    pvalues = pairout$p.value
 #    options(warn = oldw)
-    suppressMessages(capture.output(dunout <- dunn.test(dsnomiss$A,dsnomiss$B, method=padj, altp=T, table=F, kw=F)))
+    suppressMessages(utils::capture.output(dunout <- dunn.test(dsnomiss$A,dsnomiss$B, method=padj, altp=T, table=F, kw=F)))
     idu=0; nm1 = nlev-1; pvalues = matrix(c(rep(0,nm1*nm1)),nrow=nm1,ncol=nm1)
     for (i in 2:nlev) {
       for (j in 1:(i-1)) {idu=idu+1; pvalues[i-1,j] = dunout$altP[idu]}

@@ -15,8 +15,8 @@ cu_chi2fish = function(contab, prelabel, casecontrol=F) {
   minrc = minrowsum*mincolsum; RROR = -1; cl1 = -1; cl2 = -1; selogrror = -1
       # if (minrc<0) {pchi2 = -1; pfish = -1}
   minexp = minrc/mtt
-  pchi2 = ifelse(minexp<5, -0.8, chisq.test(contab)$p.value)
-  pfish = ifelse(minexp>10, -0.5, fisher.test(contab,simulate.p.value=TRUE)$p.value)
+  pchi2 = ifelse(minexp<5, -0.8, stats::chisq.test(contab)$p.value)
+  pfish = ifelse(minexp>10, -0.5, stats::fisher.test(contab,simulate.p.value=TRUE)$p.value)
   if (nrow(contab)>2 || ncol(contab)>2) {
     cat("\n")
     if (pchi2>0) cat("Overall Pearson's \u03C7\u00B2 p-value = ",

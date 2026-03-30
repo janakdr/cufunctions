@@ -32,7 +32,7 @@ curoc = function(LRobj, depvar, twolev=TRUE, xs=NULL, namedep=NULL, logitlog="lo
   if (twolev) {
     if (nlev != 2) stop("If >2 levels, call polr, then call curoc with twolev=F")
     veccase = as.character(depvar)
-    vecprob = fitted.values(LRobj); veclegs = c(rep("AUC",nroc))
+    vecprob = stats::fitted.values(LRobj); veclegs = c(rep("AUC",nroc))
   }
   else {
     veccase = c(rep(0,nsubj)); vecprob = c(rep(0,nsubj))
@@ -41,13 +41,13 @@ curoc = function(LRobj, depvar, twolev=TRUE, xs=NULL, namedep=NULL, logitlog="lo
     #print(coeffs)
   }
   add = FALSE; jcolor=0
-  par(font.lab=2, mfrow=c(1,1)) # in case set elsewhere
+  graphics::par(font.lab=2, mfrow=c(1,1)) # in case set elsewhere
   for (jroc in 1:nroc) {
     if (!twolev) {
       if (jcolor < length(veccolor)) {jcolor = jcolor+1} else jcolor = 1
       color = veccolor[jcolor]; veccolors[jroc] = color
       for (i in 1:nsubj) {
-        vecprob[i] = vecprob[i] + fitted.values(LRobj)[i,jroc]
+        vecprob[i] = vecprob[i] + stats::fitted.values(LRobj)[i,jroc]
         if (as.numeric(depvar[i]) <= jroc) {veccase[i] = "No"} else veccase[i] = "Yes"
       }
     }
@@ -110,7 +110,7 @@ curoc = function(LRobj, depvar, twolev=TRUE, xs=NULL, namedep=NULL, logitlog="lo
     ROCR::plot(perfPlot, add=add, main=AUCtitle, 
            xlab=xlabroc, ylab=ylabroc, col=color); add=TRUE
   }
-  if (!twolev) legend("bottomright", veclegs, lty=1, col = veccolors, bty="n", inset=c(0,0.01*nroc))
+  if (!twolev) graphics::legend("bottomright", veclegs, lty=1, col = veccolors, bty="n", inset=c(0,0.01*nroc))
   # ROCR::plot just plots, no returned object
   if (is.logical(emf)&&emf) emf = "culogist"
   if (is.character(emf) && nroc==1) {
@@ -122,10 +122,10 @@ curoc = function(LRobj, depvar, twolev=TRUE, xs=NULL, namedep=NULL, logitlog="lo
     oldw <- getOption("warn")
     options(warn = -1)
     perfPlot = performance(PredObj, "tpr", "fpr")
-    par(font.lab=2)
+    graphics::par(font.lab=2)
     ROCR::plot(perfPlot, add=F, main=AUCtitle, xlab=xlab, ylab=ylab, col=color)
     options(warn = oldw)
-    dev.off()
+    grDevices::dev.off()
   }
   cat("") #needed to avoid "RStudioGD" and 2 on next line
   #cu_plout(p,"culogist",emf,seq=ifelse(nroc>1,jroc,0))

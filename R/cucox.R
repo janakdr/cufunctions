@@ -88,7 +88,7 @@ cucox = function(dsgiven, timnam, depnam, formula, dopredkm=T, doroc=T, docoxkm=
     #cat(iv,jv); print(ds[,jv])
   }
   colnames(dscopy) = c(timnam,depnam,varnams)
-  dsnomiss = na.omit(dscopy)
+  dsnomiss = stats::na.omit(dscopy)
   for (jv in 3:(length(varnams)+2)) {
     xvar = dsnomiss[,jv]
     nlev = ifelse(is.factor(xvar),nlevels(xvar),nlevels(as.factor(xvar)))
@@ -98,7 +98,7 @@ cucox = function(dsgiven, timnam, depnam, formula, dopredkm=T, doroc=T, docoxkm=
   if (is.null(wts)) callwt = ""
   else callwt = ",weights=wts"
   fpre = paste("Surv(", timnam, ", ", depnam, ") ~ ", formula, sep="")
-  forla = as.formula(fpre)
+  forla = stats::as.formula(fpre)
   #cat(fpre) #print(forla)
   # dodredge = TRUE # need a way to flag all predictors for ggadjustedcurves
   if (dodredge && length(varnams)>1) {
@@ -133,7 +133,7 @@ cucox = function(dsgiven, timnam, depnam, formula, dopredkm=T, doroc=T, docoxkm=
                  ifelse(usemod==2,"2nd",ifelse(usemod==3,"3rd",paste(usemod,"th best",sep="")))),
                 " model #",rownames(dredobj[usemod]), " (assuming nesting of smaller models)",sep="")
           }
-          twolr = 2*(loglz-logl1); ndf = npz-np1; pvalchi = 1-pchisq(twolr,ndf)
+          twolr = 2*(loglz-logl1); ndf = npz-np1; pvalchi = 1-stats::pchisq(twolr,ndf)
           cat("\nvs #",rownames(dredobj[ir]),": LR, degf, \u03C7\u00B2 p-value",
               signif(twolr,3),ndf,cu_pval9(pvalchi))
         }
@@ -146,7 +146,7 @@ cucox = function(dsgiven, timnam, depnam, formula, dopredkm=T, doroc=T, docoxkm=
       }
       if (length(dredvars)>0) {
         fpre = paste("Surv(", timnam, ", ", depnam, ") ~ ", paste(dredvars, collapse="+"),sep="")
-        forla = as.formula(fpre)
+        forla = stats::as.formula(fpre)
       }
     }
     else dredvars = rep(formula,1)
@@ -194,13 +194,13 @@ cucox = function(dsgiven, timnam, depnam, formula, dopredkm=T, doroc=T, docoxkm=
     colnames(dsroc) = c(timnam,depnam,"cox-score"); nsubj = length(fitcox$y)
     dsord <- dsroc[order(dsroc[,2],dsroc[,1]),]; ibeg = match(1,dsord[,2])
     if (is.logical(doroc)) {
-      evemed = median(dsord[ibeg:nsubj,1])
-      eve75 = quantile(dsord[ibeg:nsubj,1],0.75); evend = dsord[nsubj,1]
+      evemed = stats::median(dsord[ibeg:nsubj,1])
+      eve75 = stats::quantile(dsord[ibeg:nsubj,1],0.75); evend = dsord[nsubj,1]
       doroc = c(evemed,eve75,evend); cm75e = c("half","75% of","all")
     }
     else cm75e = NULL
     #print(dsroc); print(dsord); print(doroc)
-    par(font.lab=2, mfrow=c(nverroc,nhorroc))
+    graphics::par(font.lab=2, mfrow=c(nverroc,nhorroc))
     for (iroc in 1:length(doroc)) {
       timroc = doroc[iroc]
       nsubnom = 0; vecpronom = rep(0,1); veccasnom = rep(0,1)
@@ -249,7 +249,7 @@ cucox = function(dsgiven, timnam, depnam, formula, dopredkm=T, doroc=T, docoxkm=
   }
   if (is.logical(docoxkm) && !docoxkm) docoxkm = NULL
   if (!is.null(docoxkm)) {
-    rq = quantile(fitcox$linear.predictors); 
+    rq = stats::quantile(fitcox$linear.predictors); 
     if (is.logical(docoxkm)) {
       numcat=3; docoxkm = rq[2:4]; stratnam = c("Q1","Q2","Q3","Q4")
       cat("\nKaplan-Meier analysis of CoxStrata quartiles (",

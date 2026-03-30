@@ -71,7 +71,7 @@ cucov1way = function(depvar, covar, group1, xs=NULL, breakpt=F,
      "\nWith >1 continuous covariate, use culinreg.")
   }
   partfout = function(fitlm,charstr) {
-    ndf1 = fitlm$df; rse1 = sigma(fitlm)
+    ndf1 = fitlm$df; rse1 = stats::sigma(fitlm)
     pval = cupartialF(rse1,ndf1,rsez,ndfz)
     cat("\np=",signif(pval,3)," vs model with ",charstr,sep="")
     return(pval)
@@ -154,18 +154,18 @@ cucov1way = function(depvar, covar, group1, xs=NULL, breakpt=F,
     sets=1; zeros=nlev1+1
     if (broken) {
       zeros = zeros+1
-      fit = lm(depvar ~ covnew+group1+ifhigh:covnew, na.action="na.exclude")
+      fit = stats::lm(depvar ~ covnew+group1+ifhigh:covnew, na.action="na.exclude")
     }
-    else fit = lm(depvar ~ covar+group1, na.action="na.exclude")
+    else fit = stats::lm(depvar ~ covar+group1, na.action="na.exclude")
   }
 
   else {
     sets=length(xs); zeros=nlev1*2
     if (broken) {
       zeros = zeros+1
-      fit = lm(depvar ~ covnew+group1+ifhigh:covnew+covnew*group1, na.action="na.exclude")
+      fit = stats::lm(depvar ~ covnew+group1+ifhigh:covnew+covnew*group1, na.action="na.exclude")
     }
-    else fit = lm(depvar ~ covar+group1+covar*group1, na.action="na.exclude")
+    else fit = stats::lm(depvar ~ covar+group1+covar*group1, na.action="na.exclude")
     strcall = paste(strcall," + ",covname,"*",g1name,sep="")
     for (i in 2:nlev1) {   # not used except if broken
       coeffnam = paste(covname,":",g1name,levnams[i],sep="")
@@ -231,17 +231,17 @@ cucov1way = function(depvar, covar, group1, xs=NULL, breakpt=F,
     cat("\nEach p-value compares group above vs to left (adjustment method: none)\n")
     if (partialF) {
       cat("\nPartial F-test vs simpler models:")
-      ndfz = fit$df; rsez = sigma(fit)
+      ndfz = fit$df; rsez = stats::sigma(fit)
       if (is.null(xs)) pvalss = 0
       else {
-        fitss = lm(depvar ~ covar+group1, na.action="na.exclude")
+        fitss = stats::lm(depvar ~ covar+group1, na.action="na.exclude")
         pvalss = partfout(fitss,paste("same slope - cucov1way(",
                                       depsubdep,",",depsubcov,",",depsubg1,")",sep=""))
       }
-      fitg1 = lm(depvar ~ group1, na.action="na.exclude")
+      fitg1 = stats::lm(depvar ~ group1, na.action="na.exclude")
       pval1 = partfout(fitg1, paste("just ",g1name," - cu1way(",depsubdep,",",
                                     depsubg1,")",sep=""))
-      fitco = lm(depvar ~ covar, na.action="na.exclude")
+      fitco = stats::lm(depvar ~ covar, na.action="na.exclude")
       pvalco = partfout(fitco, paste("just ",depsubcov," - lm(",depsubdep," ~ ",
                                      depsubcov,")",sep=""))
       if (pvalss > 0.05 || pval1 > 0.05|| pvalco > 0.05)
@@ -250,9 +250,9 @@ cucov1way = function(depvar, covar, group1, xs=NULL, breakpt=F,
     }
   }
   if (ifplot) {
-    ycalc = predict(fit)
+    ycalc = stats::predict(fit)
     # cat("\n5:",ycalc[5],"'")
-    datf = na.omit(data.frame(A=depvar, B=group1, C=covar, D=ycalc))
+    datf = stats::na.omit(data.frame(A=depvar, B=group1, C=covar, D=ycalc))
     #for (i in 1:nrow(datf)) ptshape[i] ifelse
     #  p <- ggplot(datf, aes(x=datf$C, y=datf$A, group=datf$B)) + 
     #    geom_point(aes(y=datf$A),shape=datf$B) + geom_line(aes(y=datf$D))

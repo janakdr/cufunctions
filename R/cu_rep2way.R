@@ -91,7 +91,7 @@ cu_rep2way = function(ddep,dgp1,dgp2,dsub,depvar, group1, group2, Subject,
                      fheight=NULL,dpi=300,remove=NULL) 
 {
   partfout = function(fitlm,charstr) {
-    ndf1 = fitlm$fixDF$X[1]; rse1 = sigma(fitlm)
+    ndf1 = fitlm$fixDF$X[1]; rse1 = stats::sigma(fitlm)
     #print(fitlm$fixDF$terms); cat("\nndf,rse",ndf1,rse1)
     pval = cupartialF(rse1,ndf1,rsez,ndfz)
     cat("\np=",signif(pval,3)," vs model with ",charstr,sep="")
@@ -166,7 +166,7 @@ cu_rep2way = function(ddep,dgp1,dgp2,dsub,depvar, group1, group2, Subject,
     for (ig1 in 1:nlevboth12) {
       if ((ni1 <- as.numeric(df[1,ig1])) > 0) {
         tstat = abs(as.numeric(df[3,ig1])-refmean)*sqrt(ni1)/poolsd
-        pval1ts[ig1] = 2 * pt(-tstat,ndft)
+        pval1ts[ig1] = 2 * stats::pt(-tstat,ndft)
         # cat ("\n",ig1,ni1,tstat)
       }
       else pval1ts[ig1] = NA
@@ -216,7 +216,7 @@ cu_rep2way = function(ddep,dgp1,dgp2,dsub,depvar, group1, group2, Subject,
         for (i2 in 1:nlevm1) {
           for (j2 in (i2+1):gp2) {
             pvalues[ipo+j2] =
-              wilcox.test(depvar[groupvar==bothnames[i1b+i2]], 
+              stats::wilcox.test(depvar[groupvar==bothnames[i1b+i2]], 
                 depvar[groupvar==bothnames[i1b+j2]], paired=F, exact=F)$p.value
           }
           ipo = ipo+nlevm1
@@ -237,7 +237,7 @@ cu_rep2way = function(ddep,dgp1,dgp2,dsub,depvar, group1, group2, Subject,
     if (interact) {
       zeros = zeros + ninter
       fit = lme(depvar ~ group1+group2+group1*group2, random=~1|Subject/group1,
-                na.action=na.omit)
+                na.action=stats::na.omit)
       for (j in 2:gp2) {
         coeffnam2 = paste(":",g2name,g2names[j],sep="")
         for (i in 2:gp1) {
@@ -354,7 +354,7 @@ cu_rep2way = function(ddep,dgp1,dgp2,dsub,depvar, group1, group2, Subject,
       }
     }  # end of interact=T
     else {
-      fit = lme(depvar ~ group1+group2, random=~1|Subject/group1, na.action=na.omit)
+      fit = lme(depvar ~ group1+group2, random=~1|Subject/group1, na.action=stats::na.omit)
       names(fit$coefficients$fixed) = coeffs
       if (!minimal) {
         cat("Repeated measures anova: lme(",depname," ~ ",g1name,"+",g2name,
@@ -401,19 +401,19 @@ cu_rep2way = function(ddep,dgp1,dgp2,dsub,depvar, group1, group2, Subject,
       if (!minimal) cat("\nSome missing data, so no overall p-value by Friedman.")
       dss = data.frame(Subject, depvar,group2,group1)
       #print(dss)
-      rmw = reshape(dss, direction="wide", idvar="Subject",timevar="group1", v.names="depvar")
+      rmw = stats::reshape(dss, direction="wide", idvar="Subject",timevar="group1", v.names="depvar")
       if (!minimal) print(rmw)
       for (i in 1:nlevm1) {
         for (j in (i+1):(nlev)) {
           #print(dss[,i+1]); cat("\nj"); print(dss[,j+1])
-          pvalues[ipo+j] = wilcox.test(rmw[,i+1], rmw[,j+1], paired=T, exact=F)$p.value
+          pvalues[ipo+j] = stats::wilcox.test(rmw[,i+1], rmw[,j+1], paired=T, exact=F)$p.value
         }
         ipo = ipo+nlevm1
       }
     }
     else {
       for (i2 in 1:gp2) {
-        fried = friedman.test(depvar ~ group1 | Subject, ds,
+        fried = stats::friedman.test(depvar ~ group1 | Subject, ds,
                               subset=group2 == g2names[i2])
         fried$data.name = paste(g2name,'=',g2names[i2],":",
                                 depname,"~",g1name, "| Subject")
@@ -423,7 +423,7 @@ cu_rep2way = function(ddep,dgp1,dgp2,dsub,depvar, group1, group2, Subject,
         for (i1 in 1:gp11) {  # comparing factor 1 levels
           for (j1 in (i1+1):gp1) {
             jpval = nlev12m1*((i1-1)*gp2+i2-1)+(j1-1)*gp2+i2-1
-            pvalues[jpval] = wilcox.test(
+            pvalues[jpval] = stats::wilcox.test(
               depvar[(group1==g1names[i1])&(group2==g2names[i2])],
               depvar[(group1==g1names[j1])&(group2==g2names[i2])],
               paired=T, exact=F)$p.value
@@ -438,7 +438,7 @@ cu_rep2way = function(ddep,dgp1,dgp2,dsub,depvar, group1, group2, Subject,
           if (pvalues[jpval]<0) {
             j1 = (jpv-1) %/% gp2 + 1;  j2 = (jpv-1) %% gp2 + 1
             pvalues[jpval] = 
-              wilcox.test(depvar[groupvar==bothnames[jpv]], 
+              stats::wilcox.test(depvar[groupvar==bothnames[jpv]], 
                 depvar[groupvar==bothnames[ipv]], paired=F, exact=F)$p.value
             # cat("\n",i1,i2,j1,j2,jpval)
           }
@@ -470,11 +470,11 @@ cu_rep2way = function(ddep,dgp1,dgp2,dsub,depvar, group1, group2, Subject,
                             refmean,"\n",pval1ts)
   if (ebars != 4 && partialF && interact) {
     cat("\n\nPartial F-test vs simpler model:")
-    ndfz=fit$fixDF$X[1]; rsez = sigma(fit)
+    ndfz=fit$fixDF$X[1]; rsez = stats::sigma(fit)
     # print(fit$fixDF$terms); cat("\nndfz,rsez",ndfz,rsez)
     #fitnoi = lme(depvar ~ group1+group2, random=~1|Subject/group1)
     pvalnoi = 0 #partfout(fitnoi,"no interaction")
-    fitg1 = lme(depvar ~ group1, random=~1|Subject/group1, na.action=na.omit)
+    fitg1 = lme(depvar ~ group1, random=~1|Subject/group1, na.action=stats::na.omit)
     pval1 = partfout(fitg1, paste("no",g2name))
     if (pvalnoi > 0.05 || pval1 > 0.05) {
       cat("\nModel is overly complex. Consider dropping the second factor.")

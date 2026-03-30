@@ -121,10 +121,10 @@ curepmany = function(dsgiven, dnamf, dnaml, repnam, fac2=NULL, idnam=NULL, minim
   }
   # print(repmat)
   if (is.null(repout)) cat("\nNo results. Only one visit?")
-    else write.csv(repmat,file=fname, row.names=F)
+    else utils::write.csv(repmat,file=fname, row.names=F)
   if (normvisit > 0) {
     filenorm = paste(normway,".",fname,sep="")
-    write.csv(rmwall,file=filenorm, row.names=F)
+    utils::write.csv(rmwall,file=filenorm, row.names=F)
     cat ("\nTransformed data in",filenorm)
   }
 }

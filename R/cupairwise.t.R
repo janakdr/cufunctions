@@ -2,7 +2,7 @@
 #' same arguments as pairwise.t.test, same code (Nov.20) with added:
 #' \code{for (j in 1:length(s)) \{if (is.na(s[j])) s[j] <- 0\}}
 #' @export
-cupairwise.t = function (x, g, p.adjust.method = p.adjust.methods, pool.sd = !paired, 
+cupairwise.t = function (x, g, p.adjust.method = stats::p.adjust.methods, pool.sd = !paired, 
                 paired = FALSE, alternative = c("two.sided", "less", 
                                                 "greater"), ...) 
 {
@@ -16,7 +16,7 @@ cupairwise.t = function (x, g, p.adjust.method = p.adjust.methods, pool.sd = !pa
   if (pool.sd) {
     METHOD <- "t tests with pooled SD"
     xbar <- tapply(x, g, mean, na.rm = TRUE)
-    s <- tapply(x, g, sd, na.rm = TRUE)
+    s <- tapply(x, g, stats::sd, na.rm = TRUE)
     n <- tapply(!is.na(x), g, sum)
     degf <- n - 1
     total.degf <- sum(degf)
@@ -27,8 +27,8 @@ cupairwise.t = function (x, g, p.adjust.method = p.adjust.methods, pool.sd = !pa
       se.dif <- pooled.sd * sqrt(1/n[i] + 1/n[j])
       t.val <- dif/se.dif
       if (alternative == "two.sided") 
-        2 * pt(-abs(t.val), total.degf)
-      else pt(t.val, total.degf, lower.tail = (alternative == 
+        2 * stats::pt(-abs(t.val), total.degf)
+      else stats::pt(t.val, total.degf, lower.tail = (alternative == 
                                                  "less"))
     }
   }
@@ -39,14 +39,14 @@ cupairwise.t = function (x, g, p.adjust.method = p.adjust.methods, pool.sd = !pa
     compare.levels <- function(i, j) {
       xi <- x[as.integer(g) == i]
       xj <- x[as.integer(g) == j]
-      t.test(xi, xj, paired = paired, alternative = alternative, 
+      stats::t.test(xi, xj, paired = paired, alternative = alternative, 
              ...)$p.value
     }
   }
   # cat("\nxbar,s,n,degf,pooled.sd\n")
   # print(xbar);print(s);print(n);print(degf);print(pooled.sd)
   # print(compare.levels); cat("\ng\n"); print(levels(g))
-  PVAL <- pairwise.table(compare.levels, levels(g), p.adjust.method)
+  PVAL <- stats::pairwise.table(compare.levels, levels(g), p.adjust.method)
   ans <- list(method = METHOD, data.name = DNAME, p.value = PVAL, 
               p.adjust.method = p.adjust.method)
   class(ans) <- "pairwise.htest"

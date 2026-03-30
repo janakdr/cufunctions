@@ -30,7 +30,7 @@ cu_dredge = function(regobj,forlag,
     for (ir in 1:printmax) {
       np1 = dredobj[ir,nvar+2]; logl1 = dredobj[ir,nvar+3]
       if (np1 < npz) {
-        twolr = 2*(loglz-logl1); ndf = npz-np1; pvalchi = 1-pchisq(twolr,ndf)
+        twolr = 2*(loglz-logl1); ndf = npz-np1; pvalchi = 1-stats::pchisq(twolr,ndf)
         cat("\nvs ",ir,"th best #",rownames(dredobj[ir]),": LR, degf, \u03C7\u00B2 p-value ",
             signif(twolr,3),", ",ndf,", ",cu_pval9(pvalchi),sep="")
       }
@@ -43,7 +43,7 @@ cu_dredge = function(regobj,forlag,
     ndre = length(dredvars)
     if (ndre>0) { #redo given model if dredge ends with null?
       formula = paste(depnam, paste(dredvars, collapse="+"), sep=" ~ ")
-      forla = as.formula(formula)
+      forla = stats::as.formula(formula)
     }
   }
   dobj$form = forla; dobj$ndred = length(dredvars)

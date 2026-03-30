@@ -140,13 +140,13 @@ cu_estout = function(fit, vec, conf.int=0.95,minimal=F) {
         else if ("lm" %in% class(obj))
         {
           stat.name <- "t.stat"
-          cf <- summary.lm(obj)$coefficients
-          vcv <- summary.lm(obj)$cov.unscaled * summary.lm(obj)$sigma^2
+          cf <- stats::summary.lm(obj)$coefficients
+          vcv <- stats::summary.lm(obj)$cov.unscaled * stats::summary.lm(obj)$sigma^2
           df <- obj$df.residual
           if ("glm" %in% class(obj))
           {
             vcv <- summary(obj)$cov.scaled
-            if(family(obj)[1] %in% c("poisson", "binomial"))
+            if(stats::family(obj)[1] %in% c("poisson", "binomial"))
             {
               stat.name <- "X2.stat"
               df <- 1
@@ -193,24 +193,24 @@ cu_estout = function(fit, vec, conf.int=0.95,minimal=F) {
         else rn <- rownames(cm)
         switch(stat.name,
                t.stat={
-                 prob <- 2 * (1 - pt(abs(ct.diff/vc), df))
+                 prob <- 2 * (1 - stats::pt(abs(ct.diff/vc), df))
                },
                X2.stat={
-                 prob <- 1 - pchisq((ct.diff/vc)^2, df=1)
+                 prob <- 1 - stats::pchisq((ct.diff/vc)^2, df=1)
                })
         
         if (stat.name=="X2.stat")
         {
           retval <- cbind(hyp=beta0, est=ct, stderr=vc,
                           "X^2 value"=(ct.diff/vc)^2,
-                          df=df, prob=1 - pchisq((ct.diff/vc)^2, df=1))
+                          df=df, prob=1 - stats::pchisq((ct.diff/vc)^2, df=1))
           dimnames(retval) <- list(rn, c("beta0", "Estimate", "Std. Error",
                                          "X^2 value", "DF", "Pr(>|X^2|)"))
         }
         else if (stat.name=="t.stat")
         {
           retval <- cbind(hyp=beta0, est=ct, stderr=vc, "t value"=ct.diff/vc,
-                          df=df, prob=2 * (1 - pt(abs(ct.diff/vc), df)))
+                          df=df, prob=2 * (1 - stats::pt(abs(ct.diff/vc), df)))
           dimnames(retval) <- list(rn, c("beta0", "Estimate", "Std. Error",
                                          "t value", "DF", "Pr(>|t|)"))
         }
@@ -222,10 +222,10 @@ cu_estout = function(fit, vec, conf.int=0.95,minimal=F) {
           alpha <- 1 - conf.int
           switch(stat.name,
                  t.stat={
-                   quant <- qt(1 - alpha/2, df)
+                   quant <- stats::qt(1 - alpha/2, df)
                  },
                  X2.stat={
-                   quant <- qt(1 - alpha/2, 100)
+                   quant <- stats::qt(1 - alpha/2, 100)
                  })
           nm <- c(colnames(retval), "Lower.CI", "Upper.CI")
           retval <- cbind(retval, lower=ct.diff - vc * quant, upper=ct.diff +
@@ -261,11 +261,11 @@ cu_estout = function(fit, vec, conf.int=0.95,minimal=F) {
       }
       else if ("lm" %in% class(obj))
       {
-        cf <- summary.lm(obj)$coefficients[, 1]
+        cf <- stats::summary.lm(obj)$coefficients[, 1]
         if ("glm" %in% class(obj))
           vcv <- summary(obj)$cov.scaled
         else
-          vcv <- summary.lm(obj)$cov.unscaled * summary.lm(obj)$sigma^2
+          vcv <- stats::summary.lm(obj)$cov.unscaled * stats::summary.lm(obj)$sigma^2
       }
       else if ("lme" %in% class(obj))
       {
@@ -280,7 +280,7 @@ cu_estout = function(fit, vec, conf.int=0.95,minimal=F) {
       u <- (cm %*% cf)-beta0
       vcv.u <- cm %*% vcv %*% t(cm)
       W <- t(u) %*% solve(vcv.u) %*% u
-      prob <- 1 - pchisq(W, df=df)
+      prob <- 1 - stats::pchisq(W, df=df)
       retval <- as.data.frame(cbind(W, df, prob))
       names(retval) <- c("X2.stat", "DF", "Pr(>|X^2|)")
       print(as.data.frame(retval))

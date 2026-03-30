@@ -144,7 +144,7 @@ cu_rep1way = function(ddep,dgp,dsub,depvar, groupvar, Subject, itrans, minimal=F
     for (ig1 in 1:nlev) {
       if ((ni1 <- as.numeric(df[1,ig1])-as.numeric(df[2,ig1])) > 0) {
         tstat = abs(as.numeric(df[3,ig1])-refmean)*sqrt(ni1)/poolsd
-        pval1ts[ig1] = 2 * pt(-tstat,ndft)
+        pval1ts[ig1] = 2 * stats::pt(-tstat,ndft)
         # cat ("\n",ig1,ni1,tstat)
       }
       else pval1ts[ig1] = NA
@@ -179,7 +179,7 @@ cu_rep1way = function(ddep,dgp,dsub,depvar, groupvar, Subject, itrans, minimal=F
   nlevm1 = nlev-1; pvalues = rep(-1,nlevm1*nlevm1); ipo = -1
   if (!minimal) cat("\n")
   if (ebars != 4) {
-    fit = lme(depvar ~ groupvar, random=~1|Subject/groupvar, na.action=na.omit)
+    fit = lme(depvar ~ groupvar, random=~1|Subject/groupvar, na.action=stats::na.omit)
     coeffs = "(Intercept)"
     for (i in 2:nlev) {coeffnam = paste(g1name,levnams[i],sep=""); coeffs = c(coeffs,coeffnam)}
     # print(fit$coefficients$fixed); print(coeffs)
@@ -217,23 +217,23 @@ cu_rep1way = function(ddep,dgp,dsub,depvar, groupvar, Subject, itrans, minimal=F
       cat("\nSome missing data, so no overall p-value by Friedman.")
       dss = data.frame(Subject, depvar,groupvar)
       # print(dss)
-      rmw = reshape(dss, direction="wide", idvar="Subject",timevar="groupvar", v.names="depvar")
+      rmw = stats::reshape(dss, direction="wide", idvar="Subject",timevar="groupvar", v.names="depvar")
       # print(rmw)
       for (i in 1:nlevm1) {
         for (j in (i+1):(nlev)) {
           #print(dss[,i+1]); cat("\nj"); print(dss[,j+1])
-          pvalues[ipo+j] = wilcox.test(rmw[,i+1], rmw[,j+1], paired=T, exact=F)$p.value
+          pvalues[ipo+j] = stats::wilcox.test(rmw[,i+1], rmw[,j+1], paired=T, exact=F)$p.value
         }
         ipo = ipo+nlevm1
       }
     }
     else {
-      fried = friedman.test(depvar ~ groupvar | Subject)
+      fried = stats::friedman.test(depvar ~ groupvar | Subject)
       fried$data.name = paste(depname,"~",g1name, "| Subject")
       print (fried)
       for (i in 1:nlevm1) { #missing data: "'x' and 'y' must have the same length"
         for (j in (i+1):(nlev)) {
-          pvalues[ipo+j] = wilcox.test(depvar[groupvar==levnams[i]], 
+          pvalues[ipo+j] = stats::wilcox.test(depvar[groupvar==levnams[i]], 
             depvar[groupvar==levnams[j]], paired=T, exact=F)$p.value
         }
         ipo = ipo+nlevm1

@@ -37,17 +37,17 @@ cusum.default = function (object, ..., digits = max(3L, getOption("digits") - 3L
     else {
       qtl <- stats::quantile(object)
       av=mean(object)
-      stdev=sd(object)
+      stdev=stats::sd(object)
       DoNorm=1
       if (nomiss<6 | nomiss>4000 | stdev==0) DoNorm=0
       cv = ifelse(av!=0 && qtl[2]*qtl[4]>0, 100*stdev/abs(av), NA)
-      se=sd(object)/sqrt(nomiss)
+      se=stats::sd(object)/sqrt(nomiss)
       if (DoNorm) {
         sk=e1071::skewness(object, type=2)
         kt=e1071::kurtosis(object, type=2)
-        skp=2*(1-pt(abs(sk/(sqrt(6/nomiss))), nomiss-1))
-        ktp=2*(1-pt(abs(kt/(sqrt(24/nomiss))), nomiss-1))
-        sh=shapiro.test(object)
+        skp=2*(1-stats::pt(abs(sk/(sqrt(6/nomiss))), nomiss-1))
+        ktp=2*(1-stats::pt(abs(kt/(sqrt(24/nomiss))), nomiss-1))
+        sh=stats::shapiro.test(object)
         sh2=sh[[2]] 
       }
     }

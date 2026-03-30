@@ -12,6 +12,11 @@ wide_capture <- function(expr) {
   old_width <- getOption("width")
   options(width = 10000)
   on.exit(options(width = old_width))
+  # Use a png device so Unicode characters (e.g. Δ) in plot titles work
+  # on macOS CI, where the default quartz device fails with mbcsToSbcs.
+  tmp <- tempfile(fileext = ".png")
+  grDevices::png(tmp)
+  on.exit({ grDevices::dev.off(); unlink(tmp) }, add = TRUE)
   capture.output(expr)
 }
 

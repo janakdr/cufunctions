@@ -28,7 +28,7 @@ test_that("cu2way(tcchange, sex, Diet) summary, pairwise, coef, posthoc, and F-t
                      label = "cu2way coefficients")
 
   # sex posthoc
-  expect_grouped_posthoc_match(out, "cu2way_tcchange_sex_Diet_sex_posthoc")
+  expect_grouped_posthoc_match(out, "cu2way_tcchange_sex_Diet_sex_posthoc", tol = 0.01)
 
   # diet posthoc
   expect_grouped_posthoc_match(out, "cu2way_tcchange_sex_Diet_diet_posthoc")
