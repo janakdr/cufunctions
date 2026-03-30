@@ -137,7 +137,7 @@ cu_pvline = function(df,pvpairs,pvalues,nlev1,nlev2,pvlab,pnosig,psignif,p2stars
   # cat ("\njadd,pvdfac,jsub,jsul,nlev",jadd,pvdfac,jsub,jsul,nlev,"\n"); print(df)
   for (ilev in 1:nlev) {
     if (ebars==3) if (dots==0) # critical value for t with n-1 df
-      pvdfac = qt(0.975,max(1,as.numeric(df[1,ilev])-
+      pvdfac = stats::qt(0.975,max(1,as.numeric(df[1,ilev])-
                               as.numeric(df[2,ilev])-1))
     # cat (ilev)
     ytopv[ilev] = as.numeric(df[jsub,ilev])+pvdfac*as.numeric(df[jadd,ilev])

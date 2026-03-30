@@ -141,8 +141,8 @@ cutable1 = function(ds, group1=NULL, group2=NULL, doAll=T, brief=F,
               minexp = minrowsum*min(cot[i],cot[j])/(cot[i]+cot[j])
               #print(contab); cat(chisq.test(contab)$p.value,
               #                   fisher.test(contab,simulate.p.value=TRUE)$p.value)
-              pval = ifelse((minexp>10)&&(min(contab)>0), chisq.test(contab)$p.value,
-                            fisher.test(contab,simulate.p.value=TRUE)$p.value)
+              pval = ifelse((minexp>10)&&(min(contab)>0), stats::chisq.test(contab)$p.value,
+                            stats::fisher.test(contab,simulate.p.value=TRUE)$p.value)
               ic = ic+1; df[ir+1,ic] = pval9ns(pval)
             }
           }
@@ -154,7 +154,7 @@ cutable1 = function(ds, group1=NULL, group2=NULL, doAll=T, brief=F,
         else {
           #cat(", dunn")
           pvalues = matrix(nrow=nlevm1,ncol=nlevm1)
-          suppressMessages(capture.output(pvalvec <- dunn.test(depv, groupvar, altp=T, table=F, kw=F)$altP))
+          suppressMessages(utils::capture.output(pvalvec <- dunn.test(depv, groupvar, altp=T, table=F, kw=F)$altP))
           ic = 0
           for (i in 2:nlev) for (j in 1:(i-1)) {
             ic = ic+1; pvalues[i-1,j] = pvalvec[ic]
@@ -184,7 +184,7 @@ cutable1 = function(ds, group1=NULL, group2=NULL, doAll=T, brief=F,
     }
     #("\npre-is.factor")
     if (!is.factor(depv) && !is.character(depv) && plot!="no") 
-      if (is.null(groupvar)) boxplot(depv, ylab=ylab)
+      if (is.null(groupvar)) graphics::boxplot(depv, ylab=ylab)
     else {
       title=paste(depname, "at levels of", namgrvar)
       #cat("\ntitle:",title)

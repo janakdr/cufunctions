@@ -192,9 +192,9 @@ curepmeas = function(dsgiven, dnam, repnam, fac2=NULL, idnam=NULL, minimal=F,
     if (inum==0) stop("\n",dnam,":No variable name <",idnam,"> Check and re-run\n", sep="")
     if (ifdeb) {cat ("\nlong rml:"); print (rml)}
     oldw <- getOption("warn"); options(warn = -1)
-    rmw = reshape(dsgiven,timevar=repnam,idvar=idnam,direction="wide",v.names=dnam)
+    rmw = stats::reshape(dsgiven,timevar=repnam,idvar=idnam,direction="wide",v.names=dnam)
     options(warn = oldw)
-    if (ifdeb) {cat("\nlong rmw:"); str(rmw); cat("\n"); print(rmw)}
+    if (ifdeb) {cat("\nlong rmw:"); utils::str(rmw); cat("\n"); print(rmw)}
     for (i in 1:length(rmw)) {
       if (substr(names(rmw[i]),1,dvarnc1)==dvardot) {
         varlist=c(varlist,i) #; cat("\ni,iffacdep",i,iffacdep)
@@ -261,7 +261,7 @@ curepmeas = function(dsgiven, dnam, repnam, fac2=NULL, idnam=NULL, minimal=F,
     }
   }
   if (is.null(idnam) || normvisit>0) { # wide format input or normalizn
-    rml = reshape(rmw, varying=c(varlist), timevar=repnam, direction="long")
+    rml = stats::reshape(rmw, varying=c(varlist), timevar=repnam, direction="long")
     for (i in 1:length(rml)) {if (names(rml[i])=="id") inum=i}
   }
   nsubj = nrow(rmw); dslenl = length(rml) # length is number of columns
@@ -425,7 +425,7 @@ curepmeas = function(dsgiven, dnam, repnam, fac2=NULL, idnam=NULL, minimal=F,
     }
     else locf1 = 1
     #print(diffnams)
-    dfl = reshape(dfw, varying=1:diffct, timevar=repnam, direction="long")
+    dfl = stats::reshape(dfw, varying=1:diffct, timevar=repnam, direction="long")
     dfl[,locf1] = factor(dfl[,locf1], levels=diffnams)
     #cat("levels,dfl\n"); print(levels(dfl[,locf1])); print(dfl)
     if (iffacdep) {
@@ -435,7 +435,7 @@ curepmeas = function(dsgiven, dnam, repnam, fac2=NULL, idnam=NULL, minimal=F,
       }
       dfl[,locf1+1] = factor(dfl[,locf1+1], levels=levsdiff)
       colnames(dfx)=colnames(dfw)
-      dfm = reshape(dfx, varying=1:diffct, timevar=repnam, direction="long")
+      dfm = stats::reshape(dfx, varying=1:diffct, timevar=repnam, direction="long")
       dfm[,locf1] = factor(dfm[,locf1], levels=diffnams)
       #cat("dfw\n"); print(dfw); cat("dfx\n"); print(dfx)
       #cat("dfl\n");  print(dfl); cat("dfm\n"); print(dfm)
@@ -591,10 +591,10 @@ curepmeas = function(dsgiven, dnam, repnam, fac2=NULL, idnam=NULL, minimal=F,
       formach = paste(formach,"+",fac2)
       if (interact) formach = paste(formach,"+",repnam,"*",fac2)
     }
-    formach = paste(formach,"+",cov); formla = as.formula(formach)
-    forrach = paste("~1|id/",repnam); forra = as.formula(forrach)
+    formach = paste(formach,"+",cov); formla = stats::as.formula(formach)
+    forrach = paste("~1|id/",repnam); forra = stats::as.formula(forrach)
     if (dodredge) {
-      dsnomiss = na.omit(rml)
+      dsnomiss = stats::na.omit(rml)
       fitlm = lme(formla, random=forra, data=dsnomiss) # no need for na.action
       fitlm$call[[1]] <- quote(nlme::lme) # enable dredge to find lme.formula
       fitlm$call[[2]] <- formla # assign formula object instead of string
@@ -619,7 +619,7 @@ curepmeas = function(dsgiven, dnam, repnam, fac2=NULL, idnam=NULL, minimal=F,
                                                                     ifelse(usemod==2,"2nd",ifelse(usemod==3,"3rd",paste(usemod,"th best",sep="")))),
                 " model #",rownames(dredobj[usemod]), " (assuming nesting of smaller models)",sep="")
           }
-          twolr = 2*(loglz-logl1); ndf = npz-np1; pvalchi = 1-pchisq(twolr,ndf)
+          twolr = 2*(loglz-logl1); ndf = npz-np1; pvalchi = 1-stats::pchisq(twolr,ndf)
           cat("\nvs #",rownames(dredobj[ir]),": LR, degf, \u03C7\u00B2 p-value",
               signif(twolr,3),ndf,cu_pval9(pvalchi))
         }
@@ -632,7 +632,7 @@ curepmeas = function(dsgiven, dnam, repnam, fac2=NULL, idnam=NULL, minimal=F,
       }
       if (length(dredvars)>0) {
         formach = paste(dnam, "~", paste(dredvars, collapse="+"))
-        formla = as.formula(formach)
+        formla = stats::as.formula(formach)
       }
     }
     fitlm = lme(formla, random=forra, data=rml, na.action = "na.omit")
@@ -647,7 +647,7 @@ curepmeas = function(dsgiven, dnam, repnam, fac2=NULL, idnam=NULL, minimal=F,
         groupvar = factor(paste(rml[,rnum], rml[,g2col], sep="&"))
         nameboth12 = paste(g1name,"&",g2name,sep="")
       }
-      ycalc = predict(fitlm)
+      ycalc = stats::predict(fitlm)
       datf = data.frame(rml[,dnum], groupvar, rml[,conum], ycalc)
       print(datf)
       p <- ggplot(datf, aes(rml[,conum],color=groupvar)) + geom_point(aes(y=rml[,dnum]),shape=shape) + geom_line(aes(y=ycalc))

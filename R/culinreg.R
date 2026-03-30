@@ -53,7 +53,7 @@ culinreg = function(dsgiven, depnam, formula,
     }
   }
   if (ndscol==1) stop("\n\nmodel formula has no predictors:",formula)
-  dsnomiss = na.omit(dscopy)
+  dsnomiss = stats::na.omit(dscopy)
   dscorr = dsnomiss
   for (jv in 2:ndscol) {
     xvar = dsnomiss[,jv]
@@ -66,9 +66,9 @@ culinreg = function(dsgiven, depnam, formula,
   cat("\nPairwise correlations and P-values among the variables:\n")
   print(rcorr(as.matrix(dscorr)))
   fpre = paste(depnam, "~", formula)
-  forla = as.formula(fpre)
+  forla = stats::as.formula(fpre)
   if (dodredge && ndscol>2) {
-    fitlm = lm(forla, data=dsnomiss, na.action="na.fail")
+    fitlm = stats::lm(forla, data=dsnomiss, na.action="na.fail")
     sumfit = summary(fitlm)
     sumfit$call = paste("lm(formula = ", fpre,
         ifelse(ifzeroint," (zero intercept)",""), ", data=",
@@ -102,7 +102,7 @@ culinreg = function(dsgiven, depnam, formula,
                 ifelse(usemod==2,"2nd",ifelse(usemod==3,"3rd",paste(usemod,"th best",sep="")))),
               " model #",rownames(dredobj[usemod]), " (assuming nesting of smaller models)",sep="")
         }
-        twolr = 2*(loglz-logl1); ndf = npz-np1; pvalchi = 1-pchisq(twolr,ndf)
+        twolr = 2*(loglz-logl1); ndf = npz-np1; pvalchi = 1-stats::pchisq(twolr,ndf)
         cat("\nvs #",rownames(dredobj[ir]),": LR, degf, \u03C7\u00B2 p-value",
             signif(twolr,3),ndf,cu_pval9(pvalchi))
       }
@@ -118,10 +118,10 @@ culinreg = function(dsgiven, depnam, formula,
     if (length(dredvars)>0) {
       fpre = paste(depnam, "~", paste(dredvars, collapse="+"))
       if (ifzeroint) fpre = paste(fpre,"+0")
-      forla = as.formula(fpre)
+      forla = stats::as.formula(fpre)
     }
   }
-  fitlm = lm(forla, data=dscopy, na.action = "na.exclude", y=T)
+  fitlm = stats::lm(forla, data=dscopy, na.action = "na.exclude", y=T)
   if (printfit) {
     cat ("\n",depnam," Observed and Fitted values for all subjects\n",sep="")
     ndecfit = min(5,max(0,ndecfit))
@@ -148,7 +148,7 @@ culinreg = function(dsgiven, depnam, formula,
     deparse(substitute(dsgiven)),", na.action = 'na.exclude')",sep="")
   print(sumfit)
   #  code above doesn't work for lme - true? look into it.
-  ypred = predict(fitlm)
+  ypred = stats::predict(fitlm)
   if (fitasx)
     scao = cuscatter(dsnomiss[,1],ypred, doline=T, minimal=T, showr2eqn="both",
       xname=paste(depnam,"fitted"), yname=paste(depnam,"observed"), 

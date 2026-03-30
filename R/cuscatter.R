@@ -85,9 +85,9 @@ cuscatter = function(yvar,xvar, doline=T, showr2eqn="both", minimal=F,
   }
   xv = transz(xvar,xscale); fnx = fnz(xscale)
   yv = transz(yvar,yscale); fny = fnz(yscale)
-  cort <- cor.test(xv, yv, method = "pearson")
+  cort <- stats::cor.test(xv, yv, method = "pearson")
   cort$data.name = paste(yname,"and",xname); if (!minimal) print(cort)
-  fit = lm(yv ~ xv); fit$call = paste("lm(",yname," ~ ",xname,")",sep="")
+  fit = stats::lm(yv ~ xv); fit$call = paste("lm(",yname," ~ ",xname,")",sep="")
   names(fit$coefficients) = c("(Intercept)",xname)
   fitlm = summary(fit); if (!minimal) print(fitlm)
   intercept = fitlm$coefficients[1]

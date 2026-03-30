@@ -18,7 +18,7 @@ cu_plot1 = function(progname, depvar,group1, g1order, g1name, depname, title,
                     ftype=NULL,fname=NULL,fscale=NULL,fwidth=NULL,
                     fheight=NULL, dpi=300, remove=NULL, suff=NULL) {
   #print(letbar) #cat("\nenter plot1")
-  df = na.omit(data.frame(depvar, group1)); depvar = df[,1]; group1 = df[,2]
+  df = stats::na.omit(data.frame(depvar, group1)); depvar = df[,1]; group1 = df[,2]
   #print(colnames(df)); print(df)
 
     # colnames(df) = c(g1name,depname); print(df)

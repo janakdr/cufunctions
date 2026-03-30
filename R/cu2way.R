@@ -148,7 +148,7 @@ cu2way = function(depvar,group1,group2, interact=TRUE, dosimpler=F, partialF=TRU
     if (sedif==0) {pvalt = ifelse(mudif==0,1,0); ndf=0}
     else {
       ndf = (se1sq+se2sq)**2/(se1sq**2/ndf1 +se2sq**2/ndf2)
-      tstat = mudif/sedif; pvalt = 2 * pt(-abs(tstat), ndf)
+      tstat = mudif/sedif; pvalt = 2 * stats::pt(-abs(tstat), ndf)
     }
     #cat(sedif,tstat,ndf,pvalt,"\n")
     cat(g1names[i1],": ", signif(mudif,3)," \u00B1 ",
@@ -158,7 +158,7 @@ cu2way = function(depvar,group1,group2, interact=TRUE, dosimpler=F, partialF=TRU
     return(c(pvalt,mudif,sedif,ndf))
   }
   partfout = function(fitlm,charstr) {
-    ndf1 = fitlm$df; rse1 = sigma(fitlm)
+    ndf1 = fitlm$df; rse1 = stats::sigma(fitlm)
     pval = cupartialF(rse1,ndf1,rsez,ndfz)
     cat("\np=",signif(pval,3)," vs model with ",charstr,sep="")
     return(pval)
@@ -345,7 +345,7 @@ cu2way = function(depvar,group1,group2, interact=TRUE, dosimpler=F, partialF=TRU
   }
   #cat("\ncaption:'",caption,"'",sep="")
   # print(depvar); print(groupvar); print(group1); print(group2)
-  dsnomiss = na.omit(data.frame(A=depvar,B=groupvar,C=group1,D=group2))
+  dsnomiss = stats::na.omit(data.frame(A=depvar,B=groupvar,C=group1,D=group2))
   if (nlevboth12 == nlevels(dsnomiss$B)) {
     if (!minimal)
      {cat(depname,"\n"); if (!is.factor(depvar)) printdfAll(df)}
@@ -388,11 +388,11 @@ cu2way = function(depvar,group1,group2, interact=TRUE, dosimpler=F, partialF=TRU
         colsum[j] = sum(df2mat[,j])
         if (colsum[j]>0) df2mat[,j] = 100*df2mat[,j]/colsum[j]
       }
-      plotobj <- barplot(df2mat, xlab=nameboth12, ylab=depname,
+      plotobj <- graphics::barplot(df2mat, xlab=nameboth12, ylab=depname,
                          main=paste(depname,"distribution at different levels of",nameboth12),
-                         col=rainbow(nlevdep), legend = rownames(df2),
+                         col=grDevices::rainbow(nlevdep), legend = rownames(df2),
                          args.legend = list(x = "topright", bty = "n"))
-      if (scale == "percent") plotobj <- text(plotobj,102,labels=colsum,xpd=T)
+      if (scale == "percent") plotobj <- graphics::text(plotobj,102,labels=colsum,xpd=T)
       plotobj # cu_plout with barplot obj prints out x vector or NULL
       #cu_plout(plotobj,"curm",emf,suff=suff)
     }
@@ -511,7 +511,7 @@ cu2way = function(depvar,group1,group2, interact=TRUE, dosimpler=F, partialF=TRU
     else if (chisq>0) pval = 0  # some group(s) with zero variance
     else if (nlevact>1) { # >1 group with at least 2
       chisq = (nmink*log(sumsq/nmink) - sumlnsq)/(1+(sumn1-1/nmink)/(3*(nlevact-1)))
-      pval = pchisq(chisq, df=nlevact-1, lower.tail=F)
+      pval = stats::pchisq(chisq, df=nlevact-1, lower.tail=F)
     }
     #bt=bartlett.test(depvar,groupvar)
     #bt$data.name = paste(depname,"across",nameboth12,"groups")
@@ -555,12 +555,12 @@ cu2way = function(depvar,group1,group2, interact=TRUE, dosimpler=F, partialF=TRU
     if (interact) {
       zeros = nlevboth12; pvminint = 1
       #      for (j in 2:nlevboth12) {coeffs = c(coeffs,g12names[j])}
-      fit = lm(depvar ~ groupvar, na.action="na.exclude")
+      fit = stats::lm(depvar ~ groupvar, na.action="na.exclude")
       fit$call = paste("lm(",depname," ~ ",g1name,"*",g2name,")",sep="")
       names(fit$coefficients) = c("(Intercept)",g12names[2:nlevboth12])
     }
     else {
-      fit = lm(depvar ~ group1 + group2)
+      fit = stats::lm(depvar ~ group1 + group2)
       fit$call = paste("lm(",depname," ~ ",g1name,"+",g2name,")",sep="")
       for (i1 in 2:nlev1) {coeffs = c(coeffs,paste(g1name,g1names[i1],sep=""))}
       for (i2 in 2:nlev2) {coeffs = c(coeffs,paste(g2name,g2names[i2],sep=""))}
@@ -756,15 +756,15 @@ cu2way = function(depvar,group1,group2, interact=TRUE, dosimpler=F, partialF=TRU
     pvalues = pairout$p.value
     if (partialF) {
       cat("Partial F-test vs simpler models:")
-      ndfz = fit$df; rsez = sigma(fit)
+      ndfz = fit$df; rsez = stats::sigma(fit)
       if (interact) {
-        fitni = lm(depvar ~ group1+group2, na.action="na.exclude")
+        fitni = stats::lm(depvar ~ group1+group2, na.action="na.exclude")
         pvalni = partfout(fitni, paste("no interaction - cu2way(",depsubdep,",",
                                        depsubg1,",",depsubg2,",interact=F)",sep=""))
       }
       else pvalni = 0
-      fitg1 = lm(depvar ~ group1, na.action="na.exclude")
-      fitg2 = lm(depvar ~ group2, na.action="na.exclude")
+      fitg1 = stats::lm(depvar ~ group1, na.action="na.exclude")
+      fitg2 = stats::lm(depvar ~ group2, na.action="na.exclude")
       pval1 = partfout(fitg1, paste("just ",g1name," - cu1way(",depsubdep,",",
                                     depsubg1,")",sep=""))
       pval2 = partfout(fitg2, paste("just ",g2name," - cu1way(",depsubdep,",",
@@ -786,7 +786,7 @@ cu2way = function(depvar,group1,group2, interact=TRUE, dosimpler=F, partialF=TRU
 #    print(pairout)
 #    options(warn = oldw)
 #    pvalues = pairout$p.value
-    suppressMessages(capture.output(dunout <- dunn.test(dsnomiss$A,dsnomiss$B, method=padj, altp=T, table=F, kw=F)))
+    suppressMessages(utils::capture.output(dunout <- dunn.test(dsnomiss$A,dsnomiss$B, method=padj, altp=T, table=F, kw=F)))
     idu=0; nm1 = nlevnom-1; pvalues = matrix(c(rep(0,nm1*nm1)),nrow=nm1,ncol=nm1)
     for (i in 2:nlevnom) {  # 2/25 check that the logic is correct
       for (j in 1:(i-1)) {idu=idu+1; pvalues[i-1,j] = dunout$altP[idu]}

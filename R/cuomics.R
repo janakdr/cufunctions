@@ -103,13 +103,13 @@ cuomics = function(funcname, dsgiven, dnamf, dnaml, fnom, ...)
   #print(repmat)
   if (ifun>=nfuncpos-1) {
     if (is.null(repout)) cat("\nNo results. Only one visit?")
-    else write.csv(repmat,file=fnom, row.names=F)
+    else utils::write.csv(repmat,file=fnom, row.names=F)
     if (normvisit > 0) {
       filenorm = paste(normway,".",fnom,sep="")
-      write.csv(rmwall,file=filenorm, row.names=F)
+      utils::write.csv(rmwall,file=filenorm, row.names=F)
       cat ("\nTransformed data in",filenorm)
     }
   }
-  else write.csv(repmat, file=fnom, row.names=F)
+  else utils::write.csv(repmat, file=fnom, row.names=F)
 
 }

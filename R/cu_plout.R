@@ -31,7 +31,7 @@ cu_plout = function(plotobj,funcname,ftype=NULL,fname=NULL,suff=NULL,seq=0,
       if (avplots) avPlots(plotobj) #avPlots returns coordinates, so can't print object
       else print(plotobj)  # this is writing to .emf; top wrote to screen
       options(warn = oldw)
-      dev.off()
+      grDevices::dev.off()
     }
     else {# produce a file, usually hires
       if (is.null(scale)) scale = 1

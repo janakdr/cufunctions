@@ -18,12 +18,12 @@ curead = function(skip=NULL, nrows=-1, maxfaclev=0, maxvarprint=20)
   cuf_apply_defaults(match.call(), environment())
   if (is.null(skip)) skip = 0
   if(Sys.info()[1]=="Windows") {
-    obj = read.table('clipboard', h=T, skip=skip, nrows=nrows, sep="\t", quote="", 
+    obj = utils::read.table('clipboard', h=T, skip=skip, nrows=nrows, sep="\t", quote="", 
                      na.strings="NA", stringsAsFactors=F)
     clippipe = "'clipboard'"
   }
   else {
-    obj = read.table(pipe('pbpaste'), h=T, skip=skip, sep="\t", quote="", 
+    obj = utils::read.table(pipe('pbpaste'), h=T, skip=skip, sep="\t", quote="", 
                      na.strings="NA", stringsAsFactors=F)
     clippipe = "pipe('pbpaste')"
   }
@@ -41,7 +41,7 @@ curead = function(skip=NULL, nrows=-1, maxfaclev=0, maxvarprint=20)
   }
   cat ("\nread.table(",clippipe,", h=T, skip=",skip,
        ", sep=\"\\t\", quote=\"\", na.strings=\"NA\")\n",sep="")
-  if (nvar <= maxvarprint) str(obj)
+  if (nvar <= maxvarprint) utils::str(obj)
   else cat ("\n",nrobj,"obs. of",nvar,"variables\n")
   #   dummystr = "To be able to work with your data: dsname = curead()"
   return(obj)

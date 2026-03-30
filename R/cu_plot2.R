@@ -21,7 +21,7 @@ cu_plot2 = function(progname,depvar,group1,group2,nlev1,nlev2, g1order, g1name, 
     ig = (barno-1)%/%nlev2; jg = (barno-1)%%nlev2 #; cat("\nig,jg:",ig,jg)
     return((barno-1)%/%nlev2 + 0.55 + ((barno-1)%%nlev2 +0.5) * 0.9/nlev2)
   }
-  df = na.omit(data.frame(depvar, group1, group2))
+  df = stats::na.omit(data.frame(depvar, group1, group2))
   depvar = df[,1]; group1 = df[,2]; group2 = df[,3]
   # print(colnames(df)); print(df)
   # colnames(df) = c(g1name,depname); print(df)

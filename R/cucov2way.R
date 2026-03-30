@@ -95,7 +95,7 @@ cucov2way = function(depvar, covar, group1, group2, xs=NULL,
      "\nWith >1 continuous covariate, use cumreg.")
   }
   partfout = function(fitlm,charstr) {
-    ndf1 = fitlm$df; rse1 = sigma(fitlm)
+    ndf1 = fitlm$df; rse1 = stats::sigma(fitlm)
     pval = cupartialF(rse1,ndf1,rsez,ndfz)
     cat("\np=",signif(pval,3)," vs model with ",charstr,sep="")
     #cat(ndf1,rse1,rse1^2*ndf1)
@@ -196,9 +196,9 @@ cucov2way = function(depvar, covar, group1, group2, xs=NULL,
     if (interact) {
       zeros = zeros + ninter; end2f = zeros
       strcall = paste(strcall,"+",g1name,"*",g2name,sep="")
-      fit = lm(depvar ~ covar+group1+group2+group1*group2, na.action="na.exclude")
+      fit = stats::lm(depvar ~ covar+group1+group2+group1*group2, na.action="na.exclude")
     }
-    else fit = lm(depvar ~ covar+group1+group2, na.action="na.exclude")
+    else fit = stats::lm(depvar ~ covar+group1+group2, na.action="na.exclude")
   }
   else {
     sets=length(xs); zeros=zeros +nlev11; endcov1f = zeros; endcov2f = zeros
@@ -215,9 +215,9 @@ cucov2way = function(depvar, covar, group1, group2, xs=NULL,
         coeffnam = paste(covname,":",g2name,g2names[j],sep="")
         coeffs = c(coeffs,coeffnam)
       } # above loads covariate*g2names
-      fit = lm(depvar ~ covar+group1+group2+covar*group1*group2, na.action="na.exclude")
+      fit = stats::lm(depvar ~ covar+group1+group2+covar*group1*group2, na.action="na.exclude")
     }
-    else fit = lm(depvar ~ covar+group1+group2+covar*group1, na.action="na.exclude")
+    else fit = stats::lm(depvar ~ covar+group1+group2+covar*group1, na.action="na.exclude")
   }
   if (interact) {
     nse = 1; if (!is.null(xs)) nse = 2
@@ -364,52 +364,52 @@ cucov2way = function(depvar, covar, group1, group2, xs=NULL,
   }
   if (partialF) {
     cat("Partial F-test vs simpler models:")
-    ndfz = fit$df; rsez = sigma(fit)
+    ndfz = fit$df; rsez = stats::sigma(fit)
     #cat("\n",ndfz,rsez,rsez^2*ndfz)
     strintg2 = paste(" interaction - cucov2way(",
                      depsubdep,",",depsubcov,",",depsubg1,",",depsubg2,sep="")
     if (!is.null(xs) && interact) {
-      fitssi = lm(depvar ~ covar+group1+group2+group1*group2, na.action="na.exclude")
+      fitssi = stats::lm(depvar ~ covar+group1+group2+group1*group2, na.action="na.exclude")
       pvalssi = partfout(fitssi,paste("same slope with",strintg2,
                                       ",interact=T)",sep=""))
-      fitvsni = lm(depvar ~ covar+group1+group2+covar*group1, na.action="na.exclude")
+      fitvsni = stats::lm(depvar ~ covar+group1+group2+covar*group1, na.action="na.exclude")
       pvalvsni = partfout(fitvsni,paste("variable slope, no",strintg2,
                                         ",c(...),interact=F)",sep=""))
     }
     else {pvalssi = 0; pvalvsni = 0}
     if (!is.null(xs) || interact) {
-      fitssni = lm(depvar ~ covar+group1+group2, na.action="na.exclude")
+      fitssni = stats::lm(depvar ~ covar+group1+group2, na.action="na.exclude")
       pvalssni = partfout(fitssni,paste("same slope, no",strintg2,
                                         ",interact=F)",sep=""))
     }
     else pvalssni = 0
     strcov = paste(" - cucov1way(",depsubdep,",",depsubcov,",",sep="")
     if (!is.null(xs)) {
-      fitg1 = lm(depvar ~ covar+group1+covar*group1, na.action="na.exclude")
+      fitg1 = stats::lm(depvar ~ covar+group1+covar*group1, na.action="na.exclude")
       pval1c = partfout(fitg1, paste("no ",depsubg2,strcov,depsubg1,",c(...))",sep=""))
     }
-    fitg1 = lm(depvar ~ covar+group1, na.action="na.exclude")
+    fitg1 = stats::lm(depvar ~ covar+group1, na.action="na.exclude")
     pvalt = partfout(fitg1, paste("no ",depsubg2,strcov,depsubg1,")",sep=""))
     if (is.null(xs)) pval1c = pvalt
     if (!is.null(xs) && interact) {
-      fitg2 = lm(depvar ~ covar+group2+covar*group2, na.action="na.exclude")
+      fitg2 = stats::lm(depvar ~ covar+group2+covar*group2, na.action="na.exclude")
       pval2c = partfout(fitg2, paste("no ",depsubg1,strcov,depsubg2,",c(...))",sep=""))
     }
     else {
-      fitg2 = lm(depvar ~ covar+group2, na.action="na.exclude")
+      fitg2 = stats::lm(depvar ~ covar+group2, na.action="na.exclude")
       pval2c = partfout(fitg2, paste("no ",depsubg1,strcov,depsubg2,")",sep=""))
     }
-    if (interact) fitnoc = lm(depvar ~ group1*group2, na.action="na.exclude")
-    else fitnoc = lm(depvar ~ group1+group2, na.action="na.exclude")
+    if (interact) fitnoc = stats::lm(depvar ~ group1*group2, na.action="na.exclude")
+    else fitnoc = stats::lm(depvar ~ group1+group2, na.action="na.exclude")
     pvalnoc = partfout(fitnoc,paste("no ",depsubcov," - cu2way(",depsubdep,",",
                                     depsubg1,",",depsubg2,",interact=",interact,")",sep=""))
-    fitg1 = lm(depvar ~ group1, na.action="na.exclude")
-    fitg2 = lm(depvar ~ group2, na.action="na.exclude")
+    fitg1 = stats::lm(depvar ~ group1, na.action="na.exclude")
+    fitg2 = stats::lm(depvar ~ group2, na.action="na.exclude")
     pval1 = partfout(fitg1, paste("just ",g1name," - cu1way(",depsubdep,",",
                                   depsubg1,")",sep=""))
     pval2 = partfout(fitg2, paste("just ",g2name," - cu1way(",depsubdep,",",
                                   depsubg2,")",sep=""))
-    fitco = lm(depvar ~ covar, na.action="na.exclude")
+    fitco = stats::lm(depvar ~ covar, na.action="na.exclude")
     pvalco = partfout(fitco, paste("just ",depsubcov," - lm(",depsubdep," ~ ",
                                    depsubcov,")",sep=""))
     if (pvalssi > 0.05 || pvalvsni > 0.05 || pvalssni > 0.05 || 
@@ -423,11 +423,11 @@ cucov2way = function(depvar, covar, group1, group2, xs=NULL,
     cat("\n")
   }
 
-  ycalc = predict(fit)
+  ycalc = stats::predict(fit)
 #  p <- ggplot(datf, aes(covar,color=groupvar)) + geom_point(aes(y=depvar),shape=shape) + geom_line(aes(y=ycalc))
 #  p <- p + labs(x=covname) + labs(colour=nameboth12) + labs(y=depname) +
 #    ggtitle(title) + theme(plot.title = element_text(hjust = 0.5))
-  datf = na.omit(data.frame(A=depvar, B=groupvar, C=covar, D=ycalc))
+  datf = stats::na.omit(data.frame(A=depvar, B=groupvar, C=covar, D=ycalc))
   if (color == "black")
     p <- ggplot(datf, aes(datf[,3],shape=datf[,2],linetype=datf[,2])) + 
     geom_point(aes(y=datf[,1]),color="black") + labs(shape=nameboth12) + 

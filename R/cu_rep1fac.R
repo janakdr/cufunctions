@@ -90,11 +90,11 @@ cu_rep1fac = function(depvar, groupvar, Subject, scale="frequency",
     colsum[j] = sum(df2mat[,j])
     if (colsum[j]>0) df2mat[,j] = 100*df2mat[,j]/colsum[j]
   }
-  plotobj <- barplot(df2mat, xlab=partitle, ylab=depname,
+  plotobj <- graphics::barplot(df2mat, xlab=partitle, ylab=depname,
                      main=paste(depname,"distribution at different",partitle),
-                     col=rainbow(nlevdep), legend = rownames(df2),
+                     col=grDevices::rainbow(nlevdep), legend = rownames(df2),
                      args.legend = list(x = "topright", bty = "n"))
-  if (scale == "percent") plotobj <- text(plotobj,102,labels=colsum,xpd=T)
+  if (scale == "percent") plotobj <- graphics::text(plotobj,102,labels=colsum,xpd=T)
   #plotobj # cu_plout with barplot obj prints out x vector or NULL
   cu_plout(plotobj,"curm", suff=suff, ftype=ftype, fname=fname, scale=fscale,
            width=fwidth, height=fheight, dpi=dpi, remove=remove)
@@ -120,7 +120,7 @@ cu_rep1fac = function(depvar, groupvar, Subject, scale="frequency",
       npos = ifelse(je>nlevdep,0,sum(df2[je:nlevdep,j]))
       nneg = ifelse(jb<1,0,sum(df2[1:jb,j])); npn = npos+nneg
       if (npn <= nposneg[j]) {pvals[j] = -1; ifsomena = T}
-      else {pvals[j] = binom.test(nneg,npn)$p.value; nposneg[j]=npn}
+      else {pvals[j] = stats::binom.test(nneg,npn)$p.value; nposneg[j]=npn}
       cat(sprintf("%-*s",ncstr[j],paste(npos,":",nneg,sep="")))
     }
     cat("\n         ")

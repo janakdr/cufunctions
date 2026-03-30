@@ -37,7 +37,7 @@ culogist = function(dsgiven, depnam, formula, xs=NULL, ordinal=NULL,
   cuf_apply_defaults(match.call(), environment())
   getstartRR = function() {
     if (is.null(start)) {
-      if (twolev) LRobj = glm(forla, family=binomial(link=logit), data=dsnomiss, na.action="na.fail", weights=wts)
+      if (twolev) LRobj = stats::glm(forla, family=stats::binomial(link=logit), data=dsnomiss, na.action="na.fail", weights=wts)
       else LRobj = polr(forla, dsnomiss, method="logistic", Hess=T, na.action="na.fail", weights=wts)
       cmat = summary(LRobj)$coefficients; ncoef = nrow(cmat)
       start = cmat[1,1] # half is close to estimate, but Error: cannot find valid starting values
@@ -111,7 +111,7 @@ culogist = function(dsgiven, depnam, formula, xs=NULL, ordinal=NULL,
     #if (dosimpler) cu1way(ds[,jv],depvar,minimal=T,depname=vnam,g1name=depnam)
   }
   colnames(dscopy) = c(depnam,varnams)
-  dsnomiss = na.omit(dscopy)
+  dsnomiss = stats::na.omit(dscopy)
   for (jv in 2:(length(varnams)+1)) {
     xvar = dsnomiss[,jv]
     nlev = ifelse(is.factor(xvar),nlevels(xvar),nlevels(as.factor(xvar)))
@@ -128,7 +128,7 @@ culogist = function(dsgiven, depnam, formula, xs=NULL, ordinal=NULL,
     cutable1(dsnodep,dsnomiss[,1],compare=T,brief=T,plot="no",doAll=F)
   }
   if (m.min>m.max) {m.min=1; m.max = 99}
-  forla = as.formula(paste(depnam, "~", formula))
+  forla = stats::as.formula(paste(depnam, "~", formula))
   if (logitlog=="log") start = getstartRR() 
   else if (logitlog!="logit")
     {cat("logitlog can only be 'logit' or 'log'. Ignored"); logitlog="logit"}
@@ -140,7 +140,7 @@ culogist = function(dsgiven, depnam, formula, xs=NULL, ordinal=NULL,
   #tryCatch(summary(polr()))...
   if (dodredge) {
     #cat ("\n",twolev); print(forla); print(dsnomiss)
-    if (twolev) LRobj = glm(forla, family=binomial(link=logitlog), start=start, data=dsnomiss, na.action="na.fail", weights=wts)
+    if (twolev) LRobj = stats::glm(forla, family=stats::binomial(link=logitlog), start=start, data=dsnomiss, na.action="na.fail", weights=wts)
     else LRobj = polr(forla, dsnomiss, method="logistic", Hess=T, na.action="na.fail", weights=wts)
     sumglm = summary(LRobj)
     coefvec = LRobj$coefficients; ncoef = length(coefvec)
@@ -174,7 +174,7 @@ culogist = function(dsgiven, depnam, formula, xs=NULL, ordinal=NULL,
                  ifelse(usemod==2,"2nd",ifelse(usemod==3,"3rd",paste(usemod,"th best",sep="")))),
                 " model #",rownames(dredobj[usemod]), " (assuming nesting of smaller models)",sep="")
           }
-          twolr = 2*(loglz-logl1); ndf = npz-np1; pvalchi = 1-pchisq(twolr,ndf)
+          twolr = 2*(loglz-logl1); ndf = npz-np1; pvalchi = 1-stats::pchisq(twolr,ndf)
           cat("\nvs ",rownames(dredobj[ir]),": LR, degf, \u03C7\u00B2 p-value ",
               signif(twolr,3),", ",ndf,", ",cu_pval9(pvalchi),sep="")
         }
@@ -186,7 +186,7 @@ culogist = function(dsgiven, depnam, formula, xs=NULL, ordinal=NULL,
       }
       if (length(dredvars)>0) { #redo given model if dredge crashes?
         formula = paste(depnam, paste(dredvars, collapse="+"), sep=" ~ ")
-        forla = as.formula(formula)
+        forla = stats::as.formula(formula)
       }
       if (length(dredvars)<nvar) {
         if (!is.null(startg)) {
@@ -200,7 +200,7 @@ culogist = function(dsgiven, depnam, formula, xs=NULL, ordinal=NULL,
   }
   oldw <- getOption("warn")
   options(warn = -1)
-  if (twolev) LRobj = glm(forla, family=binomial(link=logitlog), start=start,
+  if (twolev) LRobj = stats::glm(forla, family=stats::binomial(link=logitlog), start=start,
                           data=dscopy, na.action="na.exclude", weights=wts)
   else LRobj = polr(forla, dsnomiss, method="logistic", Hess=T, na.action="na.exclude", weights=wts)
   options(warn = oldw)
@@ -250,7 +250,7 @@ culogist = function(dsgiven, depnam, formula, xs=NULL, ordinal=NULL,
       newdf = rbind(newdf, newrow)
     }
   }
-  rownames(newdf)=names(coefficients(LRobj)[ib:ie])
+  rownames(newdf)=names(stats::coefficients(LRobj)[ib:ie])
   print(newdf)
   curoc(LRobj, depvar, twolev=twolev, xs=xs, namedep=depnam, logitlog=logitlog,
         printfit=printfit, emf=emf, xlab=xlab, ylab=ylab, 
