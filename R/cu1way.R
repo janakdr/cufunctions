@@ -80,6 +80,7 @@
 #' attach(Met)
 #' cu1way(feel, WTCAT) # contingency tables (all possible 2x2s)
 #' detach(Met)
+#' @importFrom rlang .data
 #' @export
 cu1way = function(depvar, group1, ebars=0, ordinal=NULL, plot="bar", ytrans="none",
                   scale="frequency", dots=0, barcolor="black", barfill="colors", casecontrol=F,
@@ -123,7 +124,7 @@ cu1way = function(depvar, group1, ebars=0, ordinal=NULL, plot="bar", ytrans="non
   }
   printdfAll = function(df,right=T) {
     # cat("\nprintdfAll:\n")
-    if (Allfirst) print(df %>% relocate(All), right=right)
+    if (Allfirst) print(df %>% relocate(.data$All), right=right)
     else print(df, right=right)
   }
   pval9ns = function(pval) {

@@ -8,6 +8,7 @@
 #' @param foldmin =NULL (default) for left end of log2(FoldChange) (usually set to -2)
 #' @param foldmax =NULL (default) for right end of log2(FoldChange) (usually set to 2)
 #' @param ylim =5 (default) for upper limit of graph (-log10(pval))
+#' @importFrom rlang .data
 #' @examples
 #' cuvolc(volc)
 #' @export
@@ -37,9 +38,9 @@ cuvolc = function(ds, xdash=0.5, psig = 0.05, psigmin = 0.2, pfactor=1,
   cols <- c("up" = "red", "down" = "blue", "ns" = "grey") 
   sizes <- c("up" = 2, "down" = 2, "ns" = 0.5) 
   alphas <- c("up" = 1, "down" = 1, "ns" = 1)
-  volc <- ggplot(data = ds, aes(x = log2fc, y = -log10(pval), col = Colors, 
+  volc <- ggplot(data = ds, aes(x = .data$log2fc, y = -log10(.data$pval), col = .data$Colors, 
                    #alpha = Colors, label = varnam, show.legend=F,
-     fill = Colors, size = Colors)) +
+     fill = .data$Colors, size = .data$Colors)) +
     geom_vline(xintercept = c(-xdash, xdash), col = "gray", linetype = 'dashed') +
     geom_hline(yintercept = -log10(psig), col = "gray", linetype = 'dashed') +
     geom_point(shape=21) +

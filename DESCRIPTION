@@ -24,7 +24,8 @@ Imports:
     MASS,
     MatchIt,
     ggpubr,
-    car
+        car,
+        rlang
 Suggests:
     devEMF,
     testthat (>= 3.0.0),

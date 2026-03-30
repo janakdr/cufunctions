@@ -79,6 +79,7 @@
 #' attach(Met)
 #' cu2way(feel,WTCAT,Sex) # contingency tables (all possible 2x2s)
 #' detach(Met)
+#' @importFrom rlang .data
 #' @export
 cu2way = function(depvar,group1,group2, interact=TRUE, dosimpler=F, partialF=TRUE, ordinal=NULL,
                   scale="frequency", ebars=0, dots=0, plot="bar", ytrans="none",
@@ -164,7 +165,7 @@ cu2way = function(depvar,group1,group2, interact=TRUE, dosimpler=F, partialF=TRU
     return(pval)
   }
   printdfAll = function(df,right=T) {
-    if (Allfirst) print(df %>% relocate(All), right=right)
+    if (Allfirst) print(df %>% relocate(.data$All), right=right)
     else print(df, right=right)
   }
   pvalstr = function(pval) {
