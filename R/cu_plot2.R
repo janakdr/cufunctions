@@ -1,4 +1,5 @@
 #' internal cufunction to plot data by two factors
+#' @importFrom rlang .data
 #' @keywords internal
 cu_plot2 = function(progname,depvar,group1,group2,nlev1,nlev2, g1order, g1name, depname, g2name, title,
                     plot="bar", linetype="n", linecolor="black", linesize=1,
@@ -94,7 +95,7 @@ cu_plot2 = function(progname,depvar,group1,group2,nlev1,nlev2, g1order, g1name, 
                     size=size, width=width,
                     position = position_dodge(width=posd),
                     lab.hjust=0.4) + #lab.vjust=c(1,-0.4,1,1,1,1) need to deal with -ve bars
-        geom_jitter(aes(x=group1,y=depvar,fill=group2, shape=group2),
+        geom_jitter(aes(x=.data$group1,y=.data$depvar,fill=.data$group2, shape=.data$group2),
                     size=dotsize, color = "black", stroke=1.5,
                     position = position_jitterdodge(dodge.width=posd,
                                                     jitter.width=0.4,jitter.height=0)) +
@@ -153,7 +154,7 @@ cu_plot2 = function(progname,depvar,group1,group2,nlev1,nlev2, g1order, g1name, 
   else { # "box" "violin" "rod"
     if (is.null(posd)) posd = 
         ifelse(plot=="box",0.75,ifelse(plot=="violin",0.9,0.9))
-    p <- ggplot(df,aes(x=group1,y=depvar,color=group2,fill=group2))
+    p <- ggplot(df,aes(x=.data$group1,y=.data$depvar,color=.data$group2,fill=.data$group2))
     if (plot=="box") {p <- p + geom_boxplot(width=width); vjus = -1}
     else if (plot=="violin") {p <- p + geom_violin(trim=F); vjus = -5}
     else vjus = ifelse(dots>0,-1,1)  # "rod"
@@ -166,7 +167,7 @@ cu_plot2 = function(progname,depvar,group1,group2,nlev1,nlev2, g1order, g1name, 
       }
       #print(letbar); print(letbat)
       p <- p + stat_summary(geom="text",label=letbat,
-      fun=max,vjust=vjus,aes(group=group2),hjust=0.25,position=position_dodge(posd))
+      fun=max,vjust=vjus,aes(group=.data$group2),hjust=0.25,position=position_dodge(posd))
     }
     if (plot!="box" && ebars>0) {
       funname = switch(ebars, ggpubr::mean_sd, ggplot2::mean_se,
@@ -179,22 +180,22 @@ cu_plot2 = function(progname,depvar,group1,group2,nlev1,nlev2, g1order, g1name, 
     if (is.null(dotcolor)) dotcolor = ifelse(dots==1, "white", "grey")
     if (dots>0) if (dots==1) 
       p <- p + 
-      geom_jitter(aes(x=group1,y=depvar,fill=group2, shape=group2),
+      geom_jitter(aes(x=.data$group1,y=.data$depvar,fill=.data$group2, shape=.data$group2),
                   color = "black", stroke=1.5,
                   position = position_jitterdodge(dodge.width=posd,
                                                   jitter.width=0.4,jitter.height=0)) +
       scale_shape_manual(values = dotshape)
     else if (barfill=="white")
-      p <- p + geom_jitter(aes(shape=group1,col=group1), size=2,height=0,width=0.05)
+      p <- p + geom_jitter(aes(shape=.data$group1,col=.data$group1), size=2,height=0,width=0.05)
     else p <- p + geom_jitter(color=dotcolor, size=2,height=0,width=0.05)
     # p <- p + scale_shape_manual(values=c(18,18,18))
   }
   # cu_plout(p); p
   if (linetype !="n") {
     funname = ifelse(ebars==4 || plot=="box","median","mean")
-    p <- p + stat_summary(fun=funname, geom="line", aes(group=group2,color=group2), 
+    p <- p + stat_summary(fun=funname, geom="line", aes(group=.data$group2,color=.data$group2), 
           position=position_dodge(width=posd), linetype=linetype, linewidth=linesize) +
-             stat_summary(fun=funname, geom="point", aes(group=group2),
+             stat_summary(fun=funname, geom="point", aes(group=.data$group2),
                 position=position_dodge(width=posd))
   }
   pal=barfill
