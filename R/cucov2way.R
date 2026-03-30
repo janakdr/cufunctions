@@ -45,8 +45,10 @@
 #' @return returns nothing
 #' @examples
 #' attach(NEJM)
-#' cucov2way(tcstudy, tcpre, Diet, sex)  # regression, plot, contrasts (parallel lines, Diet*sex interaction)
-#' cucov2way(tcstudy, tcpre, Diet, sex, interact=FALSE)  # regression, plot, contrasts (parallel lines, no interaction)
+#' # regression, plot, contrasts (parallel lines, Diet*sex interaction)
+#' cucov2way(tcstudy, tcpre, Diet, sex)
+#' # regression, plot, contrasts (parallel lines, no interaction)
+#' cucov2way(tcstudy, tcpre, Diet, sex, interact=FALSE)
 #' # regression, plot, contrasts at tcpre=150,220 (non-parallel lines, tcpre*Diet*sex interaction)
 #' cucov2way(tcstudy, tcpre, Diet, sex, c(150, 220))
 #' # regression, plot, contrasts at tcpre=150,220 (non-parallel lines, no interaction)

@@ -73,7 +73,8 @@
 #' @examples
 #' attach(NEJM)
 #' cu2way(tcchange, Diet, sex)  # two-factor anova with interaction (all possible contrasts)
-#' cu2way(tcchange, Diet, sex, interact=F)  # two-factor anova with no interaction (all possible contrasts)
+#' # two-factor anova with no interaction (all possible contrasts)
+#' cu2way(tcchange, Diet, sex, interact=FALSE)
 #' detach(NEJM)
 #' attach(Met)
 #' cu2way(feel,WTCAT,Sex) # contingency tables (all possible 2x2s)
