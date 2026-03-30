@@ -272,7 +272,6 @@ cu2way = function(depvar,group1,group2, interact=TRUE, dosimpler=F, partialF=TRU
     cat("\nDropping observations",cmiss,"with missing data\n")
     group1 = group1[-cmiss]; group2 = group2[-cmiss]; depvar = depvar[-cmiss]; 
   }
-  # find a way to deal with missing combinations of levels
   groupint = interaction(group1, group2, lex.order=T, sep=charamp)
   groupvar = factor(paste(group1, group2, sep=charamp))
   ginnames = levels(groupint); nlevint = nlevels(groupint) #used only in macmap
@@ -366,27 +365,8 @@ cu2way = function(depvar,group1,group2, interact=TRUE, dosimpler=F, partialF=TRU
   #cat("\ncaption:'",caption,"'",sep="")
   # print(depvar); print(groupvar); print(group1); print(group2)
   dsnomiss = stats::na.omit(data.frame(A=depvar,B=groupvar,C=group1,D=group2))
-  if (nlevboth12 == nlevels(dsnomiss$B)) {
-    if (!minimal)
-     {cat(depname,"\n"); if (!is.factor(depvar)) printdfAll(df)}
-  }
-  else { #deal with no data for some combin(s); will screw up repout
-    groupvar = dsnomiss$B
-    g12names = levels(groupvar); nlevboth12 = nlevels(groupvar)
-    # print(levels(groupint)); print(levels(groupvar))
-    macret = macmap()  # check some time why this code is repeated
-    g12names = macret$A; mapinto12 = macret$B # ; map12toin= macret$C
-    groupvar = factor(groupvar, levels=g12names)
-    # print(levels(groupvar))
-    # cat("\n"); print(mapinto12) #; cat("\n"); print(map12toin)
-    dfn = cu_table0(depvar, groupvar, brief=F, doAll=doAll, pnorm=pnorm, chariqr=chariqr)
-    df = dfn[[1]]; normTF = dfn[[2]]; pnormin = dfn[[3]]
-    colnames(df)=c(g12names,"All")
-    if (!minimal) {
-      cat(depname,"\n")
-      printdfAll(df, right = F) # code should be checked - duplication?
-    }
-  }
+  if (!minimal)
+   {cat(depname,"\n"); if (!is.factor(depvar)) printdfAll(df)}
   if (is.factor(depvar)) {
     #    desc = by(depvar, groupvar, summary.factor)
     df2 = data.frame(A = rep(0,nlevdep),stringsAsFactors = F)
