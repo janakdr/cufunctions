@@ -533,7 +533,7 @@ cu2way = function(depvar,group1,group2, interact=TRUE, dosimpler=F, partialF=TRU
     if (pool.sd) {
       pairout = cupairwise.t(dsnomiss$A,dsnomiss$B,p.adjust=padj)
       g <- factor(dsnomiss$B)
-      s <- tapply(dsnomiss$A, g, sd, na.rm = TRUE)
+      s <- tapply(dsnomiss$A, g, stats::sd, na.rm = TRUE)
       n <- tapply(!is.na(dsnomiss$A), g, sum)
       degf <- n - 1
       total.degf <- sum(degf)

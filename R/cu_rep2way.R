@@ -237,7 +237,7 @@ cu_rep2way = function(ddep,dgp1,dgp2,dsub,depvar, group1, group2, Subject,
     if (interact) {
       zeros = zeros + ninter
       fit = lme(depvar ~ group1+group2+group1*group2, random=~1|Subject/group1,
-                na.action=na.omit)
+                na.action=stats::na.omit)
       for (j in 2:gp2) {
         coeffnam2 = paste(":",g2name,g2names[j],sep="")
         for (i in 2:gp1) {
@@ -354,7 +354,7 @@ cu_rep2way = function(ddep,dgp1,dgp2,dsub,depvar, group1, group2, Subject,
       }
     }  # end of interact=T
     else {
-      fit = lme(depvar ~ group1+group2, random=~1|Subject/group1, na.action=na.omit)
+      fit = lme(depvar ~ group1+group2, random=~1|Subject/group1, na.action=stats::na.omit)
       names(fit$coefficients$fixed) = coeffs
       if (!minimal) {
         cat("Repeated measures anova: lme(",depname," ~ ",g1name,"+",g2name,
@@ -474,7 +474,7 @@ cu_rep2way = function(ddep,dgp1,dgp2,dsub,depvar, group1, group2, Subject,
     # print(fit$fixDF$terms); cat("\nndfz,rsez",ndfz,rsez)
     #fitnoi = lme(depvar ~ group1+group2, random=~1|Subject/group1)
     pvalnoi = 0 #partfout(fitnoi,"no interaction")
-    fitg1 = lme(depvar ~ group1, random=~1|Subject/group1, na.action=na.omit)
+    fitg1 = lme(depvar ~ group1, random=~1|Subject/group1, na.action=stats::na.omit)
     pval1 = partfout(fitg1, paste("no",g2name))
     if (pvalnoi > 0.05 || pval1 > 0.05) {
       cat("\nModel is overly complex. Consider dropping the second factor.")

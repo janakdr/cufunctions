@@ -2,7 +2,7 @@
 #' same arguments as pairwise.t.test, same code (Nov.20) with added:
 #' \code{for (j in 1:length(s)) \{if (is.na(s[j])) s[j] <- 0\}}
 #' @export
-cupairwise.t = function (x, g, p.adjust.method = p.adjust.methods, pool.sd = !paired, 
+cupairwise.t = function (x, g, p.adjust.method = stats::p.adjust.methods, pool.sd = !paired, 
                 paired = FALSE, alternative = c("two.sided", "less", 
                                                 "greater"), ...) 
 {
@@ -16,7 +16,7 @@ cupairwise.t = function (x, g, p.adjust.method = p.adjust.methods, pool.sd = !pa
   if (pool.sd) {
     METHOD <- "t tests with pooled SD"
     xbar <- tapply(x, g, mean, na.rm = TRUE)
-    s <- tapply(x, g, sd, na.rm = TRUE)
+    s <- tapply(x, g, stats::sd, na.rm = TRUE)
     n <- tapply(!is.na(x), g, sum)
     degf <- n - 1
     total.degf <- sum(degf)

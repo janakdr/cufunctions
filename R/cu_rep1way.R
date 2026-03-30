@@ -179,7 +179,7 @@ cu_rep1way = function(ddep,dgp,dsub,depvar, groupvar, Subject, itrans, minimal=F
   nlevm1 = nlev-1; pvalues = rep(-1,nlevm1*nlevm1); ipo = -1
   if (!minimal) cat("\n")
   if (ebars != 4) {
-    fit = lme(depvar ~ groupvar, random=~1|Subject/groupvar, na.action=na.omit)
+    fit = lme(depvar ~ groupvar, random=~1|Subject/groupvar, na.action=stats::na.omit)
     coeffs = "(Intercept)"
     for (i in 2:nlev) {coeffnam = paste(g1name,levnams[i],sep=""); coeffs = c(coeffs,coeffnam)}
     # print(fit$coefficients$fixed); print(coeffs)

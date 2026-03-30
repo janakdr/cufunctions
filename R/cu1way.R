@@ -247,7 +247,7 @@ cu1way = function(depvar, group1, ebars=0, ordinal=NULL, plot="bar", ytrans="non
     dsnomiss = stats::na.omit(data.frame(A=depvar,B=group1))
     g <- factor(dsnomiss$B)
     avv <- tapply(dsnomiss$A, g, mean, na.rm = TRUE)
-    sdv <- tapply(dsnomiss$A, g, sd, na.rm = TRUE)
+    sdv <- tapply(dsnomiss$A, g, stats::sd, na.rm = TRUE)
     nsv <- tapply(!is.na(dsnomiss$A), g, sum)
     degf <- nsv - 1
     total.degf <- sum(degf)
