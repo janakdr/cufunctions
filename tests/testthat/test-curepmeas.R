@@ -232,3 +232,32 @@ test_that("curepmeas Case 6: nonparametric mode structured output", {
   
   expect_equal(res, expected_res, tolerance = 0.01)
 })
+
+# --- curepmeas with missing data, two factors, nonparametric ---
+# Regression test: cu_rep2way used undefined variables nlev/nlevm1
+# when ebars=4 and depvar had NAs. Should be nlevboth12/nlev12m1.
+
+test_that("curepmeas two-factor nonparametric with NAs does not crash", {
+  delta <- test_setup()
+
+  # Introduce NAs into TG data to trigger the anyNA(depvar) path
+  delta_na <- delta
+  delta_na$TG.AAD[c(1, 5, 10)] <- NA
+  delta_na$TG.LowSat[c(3, 8)] <- NA
+
+  # This should not error — before the fix, it crashed with
+  # "object 'nlev' not found" or "object 'nlevm1' not found"
+  output <- wide_capture({
+    res <- curepmeas(delta_na, "TG", "Diet", "sex", ebars = 4, plot = "no")
+  })
+  full_out <- paste(output, collapse = "\n")
+
+  # Should report missing data
+  expect_match(full_out, "Some missing data")
+
+  # Should still produce Wilcoxon p-value summary
+  expect_match(full_out, "Wilcoxon")
+
+  # Should still produce the full pairwise comparison matrix
+  expect_match(full_out, "TG compared across")
+})
