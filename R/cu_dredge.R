@@ -42,7 +42,6 @@ cu_dredge = function(regobj,forlag,
     }
     ndre = length(dredvars)
     if (ndre>0) { #redo given model if dredge ends with null?
-      depnam = as.character(forlag[[2]])
       formula = paste(depnam, paste(dredvars, collapse="+"), sep=" ~ ")
       forla = stats::as.formula(formula)
     }
