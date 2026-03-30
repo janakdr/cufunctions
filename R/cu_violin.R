@@ -11,6 +11,7 @@
 #' @param boxwidth Width of the inner box (default 0.1).
 #' @param dotwidth Dot bin width (default 2).
 #' @return A ggplot object.
+#' @importFrom rlang .data
 #' @keywords internal
 cu_violin = function(depvar,groupvar, letbar=NULL, ebars=4, dots=1, fill="colors",
                      xlab=NULL, ylab=NULL, boxwidth=0.1, dotwidth=2) {
@@ -25,7 +26,7 @@ cu_violin = function(depvar,groupvar, letbar=NULL, ebars=4, dots=1, fill="colors
     labs(x=xlab) + labs(y=ylab) + labs(fill=xlab)
   if (!is.null(letbar)) p <- p + 
     stat_summary(geom="text",label=letbar,fun=max,vjust=-1,
-                 aes(group=groupvar),hjust=0.25,position=position_dodge(0.75))
+                 aes(group=.data$V1),hjust=0.25,position=position_dodge(0.75))
   if (ebars>0) {
     funname = switch(ebars, ggpubr::mean_sd, ggplot2::mean_se,
                      ggplot2::mean_cl_boot, ggpubr::median_q1q3)

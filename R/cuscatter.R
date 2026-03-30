@@ -1,4 +1,5 @@
 #' scatterplot of yvar vs xvar
+#' @importFrom rlang .data
 #' @param yvar ,xvar required
 #' @param doline =T (default) to show the regression line, F to not show
 #' @param showr2eqn ="both" (default) to show R2 and eqn,"r2" for just R2, "eqn" for just eqn, "no" for neither
@@ -95,10 +96,10 @@ cuscatter = function(yvar,xvar, doline=T, showr2eqn="both", minimal=F,
   rsq = fitlm$r.squared; pval = fitlm$coefficients[2,4]
   # par(mfrow=c(2,2))
   # mfrpre=par()$mfrow
-  ggplot(data.frame(yvar,xvar), aes(x=xvar,y=yvar)) +
+  ggplot(data.frame(yvar,xvar), aes(x=.data$xvar,y=.data$yvar)) +
     geom_point(shape=shape,color=dotcolor,size=dotsize) 
   #return(1) can't figure a way to put multiple plots in one
-  p <- ggplot(data.frame(yvar,xvar), aes(x=xvar,y=yvar)) +
+  p <- ggplot(data.frame(yvar,xvar), aes(x=.data$xvar,y=.data$yvar)) +
     geom_point(shape=shape,color=dotcolor,size=dotsize) 
   # par(mfrow=c(2,2))
   # mfrpost=par()$mfrow
