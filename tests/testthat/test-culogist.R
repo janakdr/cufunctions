@@ -116,3 +116,52 @@ test_that("culogist standard run matches golden", {
   expect_format_match(output, "AUC =  %n", c(0.878), tol = 0.02)
 
 })
+
+# --- culogist with logitlog="log" (Relative Risk model) ---
+
+test_that("culogist logitlog='log' runs and reports Relative Risk", {
+  Met <- test_setup()
+
+  output <- capture.output({
+    culogist(Met, "MetSyn", "HDL+LN_TG+BMI", logitlog = "log", dodredge = FALSE)
+  })
+  full_out <- paste(output, collapse = "\n")
+
+  # Should report "Relative Risk" not "Odds Ratio"
+  expect_match(full_out, "Relative Risk")
+  expect_no_match(full_out, "Odds Ratio")
+
+  # Coefficients
+  z_col_names <- c("Estimate", "Std. Error", "z value", "Pr(>|z|)")
+  actual_coef <- parse_coef_table(output, col_names = z_col_names)
+  golden_coef <- load_golden("culogist_log_coef")
+  expect_table_match(actual_coef, golden_coef, id_col = "term",
+                     label = "log-link coefficients", tol = 0.03)
+
+  # Relative Risk stats
+  rr_lines <- extract_section_lines(output, "Relative Risk stats")
+  expect_true(!is.null(rr_lines))
+  golden_rr <- load_golden("culogist_log_relrisk")
+  rr_col_names <- colnames(golden_rr)[-1]
+  actual_rr <- parse_fixed_width_table(rr_lines[2], rr_lines[3:length(rr_lines)],
+                                        id_col = "term", col_names = rr_col_names)
+  expect_table_match(actual_rr, golden_rr, id_col = "term",
+                     label = "Relative Risk", tol = 0.03)
+
+  # Deviance and AIC
+  expect_format_match(output,
+    "Null deviance: %n  on %n  degrees of freedom",
+    c(92.751, 84), tol = 0.02)
+  expect_format_match(output,
+    "Residual deviance: %n  on %n  degrees of freedom",
+    c(61.981, 81), tol = 0.5)
+  expect_format_match(output, "AIC: %n", c(69.981), tol = 0.5)
+
+  # 2x2 Classification Table
+  expect_format_match(output,
+    "Accuracy %n%; Sensitivity %n%; Specificity %n%",
+    c(84.7, 35, 100), tol = 0.02)
+
+  # AUC
+  expect_format_match(output, "AUC =  %n", c(0.882), tol = 0.02)
+})
