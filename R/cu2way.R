@@ -380,7 +380,7 @@ cu2way = function(depvar,group1,group2, interact=TRUE, dosimpler=F, partialF=TRU
     # print(levels(groupvar))
     # cat("\n"); print(mapinto12) #; cat("\n"); print(map12toin)
     dfn = cu_table0(depvar, groupvar, brief=F, doAll=doAll, pnorm=pnorm, chariqr=chariqr)
-    df = dfn[[1]]; normTF = ddfn[[2]]; pnormin = ddfn[[3]]
+    df = dfn[[1]]; normTF = dfn[[2]]; pnormin = dfn[[3]]
     colnames(df)=c(g12names,"All")
     if (!minimal) {
       cat(depname,"\n")

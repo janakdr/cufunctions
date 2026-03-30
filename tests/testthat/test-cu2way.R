@@ -131,4 +131,25 @@ test_that("cu2way(feel, WTCAT, Sex, ordinal, scale='percent') produces same resu
   expect_ordinal_posthoc_match(out, "cu2way_ordinal_posthoc", tol = 0.02)
 })
 
+# --- cu2way with missing factor-level combinations (regression test for ddfn typo) ---
 
+test_that("cu2way line 363 uses dfn not ddfn (regression test for variable-name typo)", {
+  # cu2way.R line ~363 (in the else-branch for missing factor combinations)
+  # had a typo: `ddfn[[2]]` and `ddfn[[3]]` instead of `dfn[[2]]` and
+  # `dfn[[3]]`. The code path is very hard to reach at runtime because
+  # na.omit doesn't drop factor levels, so the condition
+  # `nlevboth12 != nlevels(dsnomiss$B)` is almost never true with the
+  # current code flow. This test reads the source file directly to verify
+  # the typo has been fixed.
+  src_path <- file.path(testthat::test_path(), "..", "..", "R", "cu2way.R")
+  if (!file.exists(src_path)) skip("Cannot locate cu2way.R source")
+  src <- readLines(src_path)
+
+  # The buggy line was: df = dfn[[1]]; normTF = ddfn[[2]]; pnormin = ddfn[[3]]
+  # After fix:          df = dfn[[1]]; normTF = dfn[[2]];  pnormin = dfn[[3]]
+  bug_lines <- grep("ddfn\\[\\[", src)
+  expect_equal(length(bug_lines), 0,
+    info = paste("cu2way.R still references 'ddfn' on line(s):",
+                 paste(bug_lines, collapse = ", "),
+                 "— should be 'dfn'"))
+})
