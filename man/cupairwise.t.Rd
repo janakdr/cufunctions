@@ -4,7 +4,7 @@
 \alias{cupairwise.t}
 \title{pairwise.t.test to handle group(s) with just 1 observation
 same arguments as pairwise.t.test, same code (Nov.20) with added:
-for (j in 1:length(s)) {if (is.na(s[j])) s[j] <- 0}}
+\code{for (j in 1:length(s)) \{if (is.na(s[j])) s[j] <- 0\}}}
 \usage{
 cupairwise.t(x, g, p.adjust.method = p.adjust.methods, pool.sd = !paired,
   paired = FALSE, alternative = c("two.sided", "less", "greater"), ...)
@@ -12,5 +12,5 @@ cupairwise.t(x, g, p.adjust.method = p.adjust.methods, pool.sd = !paired,
 \description{
 pairwise.t.test to handle group(s) with just 1 observation
 same arguments as pairwise.t.test, same code (Nov.20) with added:
-for (j in 1:length(s)) {if (is.na(s[j])) s[j] <- 0}
+\code{for (j in 1:length(s)) \{if (is.na(s[j])) s[j] <- 0\}}
 }

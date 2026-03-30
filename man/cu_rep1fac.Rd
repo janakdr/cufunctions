@@ -86,6 +86,7 @@ returns nothing
 Does repeated measures categorical data analysis (long-format - multiple lines for each subject)
 }
 \examples{
+# Internal function, not exported; called via curepmeas()
 \dontrun{
 cu_rep1way(TG, Diet, ID)
 }

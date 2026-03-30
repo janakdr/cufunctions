@@ -23,10 +23,9 @@
 #' @param veccolor =c("red","blue","green","black") (default) for multiple curves (polr object)
 #' @return returns nothing
 #' @examples
-#' \dontrun{
-#' culogist(AJCN, "MetSyn", "TG+HDL+LN_TG+BMI+GLUC")  # for AUC and summary table with best accuracy
-#' culogist(AJCN, "MetSyn", "TG+HDL+LN_TG+BMI+GLUC",c(0.3,0.7))  # 3 summary tables (best accuracy, prob=0.3, 0.7)
-#' }
+#' culogist(Met, "MetSyn", "TG+HDL+LN_TG+BMI+GLUC")  # for AUC and summary table with best accuracy
+#' # 3 summary tables (best accuracy, prob=0.3, 0.7)
+#' culogist(Met, "MetSyn", "TG+HDL+LN_TG+BMI+GLUC", c(0.3, 0.7))
 #' @export
 culogist = function(dsgiven, depnam, formula, xs=NULL, ordinal=NULL,
                     logitlog="logit", start=NULL, wtnam=NULL, dosimpler=T, nlevmax=5,

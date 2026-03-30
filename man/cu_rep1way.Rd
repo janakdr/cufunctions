@@ -148,6 +148,7 @@ one line of summary means/SDs and p-values
 Does repeated measures one-way anova and post-hoc tests (long-format - multiple lines for each subject)
 }
 \examples{
+# Internal function, not exported; called via curepmeas()
 \dontrun{
 cu_rep1way(TG, Diet, ID)
 }

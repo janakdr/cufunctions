@@ -177,13 +177,13 @@ returns summary dataframe (if one variable, like table0)
 Table 1 with optional box or violin plots
 }
 \examples{
-\dontrun{
-cutable1(tgpre,Diet)
-cutable1(NEJM,plot="violin")  # single table all variables, violin plots
-cutable1(NEJM,Diet,plot="no")  # separate tables all variables, no plots
-cutable1(NEJM,Diet,brief=T)  # single table for all variables by Diet columns
-cutable1(NEJM,Diet,brief=T,sdsamerow=F)  # to put SD/IQR on separate line
-cutable1(NEJM,Diet,brief=T,pnorm=0)  # to get only mean&SD
-cutable1(NEJM,Diet,brief=T,pnorm=1)  # to get only median&IQR
-}
+cutable1(NEJM, plot="violin")  # single table all variables, violin plots
+attach(NEJM)
+cutable1(tgpre, Diet)
+cutable1(NEJM, Diet, plot="no")  # separate tables all variables, no plots
+cutable1(NEJM, Diet, brief=TRUE)  # single table for all variables by Diet columns
+cutable1(NEJM, Diet, brief=TRUE, sdsamerow=FALSE)  # to put SD/IQR on separate line
+cutable1(NEJM, Diet, brief=TRUE, pnorm=0)  # to get only mean&SD
+cutable1(NEJM, Diet, brief=TRUE, pnorm=1)  # to get only median&IQR
+detach(NEJM)
 }

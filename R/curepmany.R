@@ -6,10 +6,12 @@
 #' @return nothing
 #' @examples
 #' \dontrun{
-#' curepmeas(delta,"TC","TG","Diet")  # one line per subject; TG.xx TG.yy etc as names of TG data
-#' curepmeas(delta,"TC","TG","Diet", "sex")  # with sex as second factor, Diet*sex interaction in model
-#' curepmeas(delta,"TC","TG","Diet", "sex", interact=F)  # no Diet*sex interaction
-#' curepmeas(delta,"TC","TG","Diet", "sex", cov="age+sex*age")  # with covariate adjustment
+#' # These examples write CSV files to the working directory
+#' curepmany(delta, "TC", "TG", "Diet")  # one line per subject; TG.xx TG.yy etc as names of TG data
+#' # with sex as second factor, Diet*sex interaction in model
+#' curepmany(delta, "TC", "TG", "Diet", "sex")
+#' curepmany(delta, "TC", "TG", "Diet", "sex", interact=FALSE)  # no Diet*sex interaction
+#' curepmany(delta, "TC", "TG", "Diet", "sex", cov="age+sex*age")  # with covariate adjustment
 #' }
 #' @export
 curepmany = function(dsgiven, dnamf, dnaml, repnam, fac2=NULL, idnam=NULL, minimal=T,

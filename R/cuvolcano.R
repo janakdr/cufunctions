@@ -10,9 +10,7 @@
 #' @param foldmax =NULL (default) for right end of log2(FoldChange) (usually set to 2)
 #' @param ylim =5 (default) for upper limit of graph (-log10(pval))
 #' @examples
-#' \dontrun{
-#' cuvolcano(omicnejm,c("AAD","Step1","Mono","AAD"), titlend="Volc")
-#' }
+#' cuvolcano(volcomic, c("lean","obese","lean","overwt","obese","overwt"))
 #' @export
 cuvolcano = function(dsomics, gpairs, xdash=0.5, psig = 0.05, psigmin = 0.2, pfactor=1, 
                   foldmin=NULL, foldmax=NULL, ylim=5, titlend="Volcano Plot",

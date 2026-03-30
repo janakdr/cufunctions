@@ -6,9 +6,7 @@
 #' @param ndf2 degrees of freedom of full (bigger) model (required)
 #' @return returns p-value of partial F(np,ndf2) = ((rse1^2*ndf1-rse2^2*ndf2)/np)/rse2^2
 #' @examples
-#' \dontrun{
-#' cupartialF(12.39,33,7.56,30)
-#' }
+#' cupartialF(12.39, 33, 7.56, 30)
 #' @export
 cupartialF = function (rse1, ndf1, rse2, ndf2) 
 {

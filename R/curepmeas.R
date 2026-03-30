@@ -81,12 +81,10 @@
 #' @param remove choose from =c("xlab","ylab","x.text","y.text","x.ticks","y.ticks","grid","x.grid","y.grid","axis","x.axis","y.axis")
 #' @return one line of summary means/SDs and p-values, data if normvisit
 #' @examples
-#' \dontrun{
-#' curepmeas(delta,"TG","Diet")  # one line per subject; TG.xx TG.yy etc as names of TG data
-#' curepmeas(delta,"TG","Diet", "sex")  # with sex as second factor, Diet*sex interaction in model
-#' curepmeas(delta,"TG","Diet", "sex", interact=F)  # no Diet*sex interaction
-#' curepmeas(delta,"TG","Diet", "sex", cov="age+sex*age")  # with covariate adjustment
-#' }
+#' curepmeas(delta, "TG", "Diet")  # one line per subject; TG.xx TG.yy etc as names of TG data
+#' curepmeas(delta, "TG", "Diet", "sex")  # with sex as second factor, Diet*sex interaction in model
+#' curepmeas(delta, "TG", "Diet", "sex", interact=FALSE)  # no Diet*sex interaction
+#' curepmeas(delta, "TG", "Diet", "sex", cov="age+sex*age")  # with covariate adjustment
 #' @export
 curepmeas = function(dsgiven, dnam, repnam, fac2=NULL, idnam=NULL, minimal=F,
                      interact=TRUE, partialF=TRUE, cov=NULL, ytrans="none",

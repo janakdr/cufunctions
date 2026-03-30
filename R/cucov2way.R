@@ -44,12 +44,16 @@
 #' @param remove choose from =c("xlab","ylab","x.text","y.text","x.ticks","y.ticks","grid","x.grid","y.grid","axis","x.axis","y.axis")
 #' @return returns nothing
 #' @examples
-#' \dontrun{
-#' cucov2way (tcstudy, tcpre, Diet, sex)  # regression, plot, contrasts (parallel lines, Diet*sex interaction)
-#' cucov2way (tcstudy, tcpre, Diet, sex, interact=F)  # regression, plot, contrasts (parallel lines, no interaction)
-#' cucov2way (tcstudy, tcpre, Diet, sex, c(150,220))  # regression, plot, contrasts at tcpre=150,220 (non-parallel lines, tcpre*Diet*sex interaction)
-#' cucov2way (tcstudy, tcpre, Diet, sex, interact=F, c(150,220))  # regression, plot, contrasts at tcpre=150,220 (non-parallel lines, no interaction)
-#' }
+#' attach(NEJM)
+#' # regression, plot, contrasts (parallel lines, Diet*sex interaction)
+#' cucov2way(tcstudy, tcpre, Diet, sex)
+#' # regression, plot, contrasts (parallel lines, no interaction)
+#' cucov2way(tcstudy, tcpre, Diet, sex, interact=FALSE)
+#' # regression, plot, contrasts at tcpre=150,220 (non-parallel lines, tcpre*Diet*sex interaction)
+#' cucov2way(tcstudy, tcpre, Diet, sex, c(150, 220))
+#' # regression, plot, contrasts at tcpre=150,220 (non-parallel lines, no interaction)
+#' cucov2way(tcstudy, tcpre, Diet, sex, interact=FALSE, c(150, 220))
+#' detach(NEJM)
 #' @export
 cucov2way = function(depvar, covar, group1, group2, xs=NULL, 
                      interact=T, dosimpler=T, partialF=TRUE,

@@ -7,9 +7,10 @@
 #'
 #' @return dataframe object read
 #' @examples
+#' # Requires clipboard access
 #' \dontrun{
 #' HD = curead()
-#' NEJM = curead(skip=1)
+#' NEJM = curead()
 #' }
 #' @export
 curead = function(skip=NULL, nrows=-1, maxfaclev=0, maxvarprint=20)

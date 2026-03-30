@@ -178,10 +178,12 @@ returns nothing
 Does one-way anova/post-hoc tests or contingency tables, and makes a bar graph
 }
 \examples{
-\dontrun{
+attach(NEJM)
 cu1way(tcchange, Diet)  # for one-way anova and post-hoc t-tests, graphing mean+/-sd
-cu1way(tcchange, Diet, ebars=N)  # N=0 for 1 or 4, 1 for SD, 2 for SE, 3 for CL
+# cu1way(tcchange, Diet, ebars=N)  # N=0 for 1 or 4, 1 for SD, 2 for SE, 3 for CL
 cu1way(tcchange, Diet, ebars=4)  # for nonparametric Dunn
-cu1way(feel,WTCAT)  # contingency tables (all possible 2x2s)
-}
+detach(NEJM)
+attach(Met)
+cu1way(feel, WTCAT) # contingency tables (all possible 2x2s)
+detach(Met)
 }

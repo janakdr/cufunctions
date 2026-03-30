@@ -91,8 +91,10 @@ returns nothing
 Does repeated measures anova and post-hoc tests when there is a second, non-repeated factor (long-format - multiple lines for each subject)
 }
 \examples{
+# Internal function, not exported; called via curepmeas()
 \dontrun{
 cu_rep2way(TG, Diet, sex, ID)  # with interaction between the two fixed factors
-cu_rep2way(TG, Diet, sex, ID, interact=F)  # with no interaction (pointless, same result as without 2nd factor)
+# with no interaction (pointless, same result as without 2nd factor)
+cu_rep2way(TG, Diet, sex, ID, interact=FALSE)
 }
 }

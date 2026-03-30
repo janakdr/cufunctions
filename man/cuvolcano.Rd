@@ -33,7 +33,5 @@ cuvolcano(dsomics, gpairs, xdash = 0.5, psig = 0.05, psigmin = 0.2,
 Volcano plot
 }
 \examples{
-\dontrun{
-cuvolcano(omicnejm,c("AAD","Step1","Mono","AAD"), titlend="Volc")
-}
+cuvolcano(volcomic, c("lean","obese","lean","overwt","obese","overwt"))
 }

@@ -98,9 +98,9 @@ returns list with plot object, slope, intercept, pval, R^2
 scatterplot of yvar vs xvar
 }
 \examples{
-\dontrun{
+attach(NEJM)
 cuscatter(tcstudy, tcpre)
 cuscatter(tcstudy, tcpre, showr2eqn="r2")  # show just R-squared and p-value
-cuscatter(tcstudy, tcpre, c("x.ticks","y.ticks"))  # no tick marks
-}
+cuscatter(tcstudy, tcpre, remove=c("x.ticks", "y.ticks"))  # no tick marks
+detach(NEJM)
 }

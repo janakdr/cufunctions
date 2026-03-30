@@ -22,7 +22,7 @@
 #' }
 "NEJM"
 
-#' AJCN Metabolic Syndrome Dataset
+#' Metabolic Syndrome Dataset
 #'
 #' Metabolic panel data from 85 subjects with lipids, glucose, insulin,
 #' and metabolic syndrome classification.
@@ -44,7 +44,7 @@
 #'   \item{feel}{Factor: how subject feels (bad, ok, good)}
 #'   \item{MetSyn}{Factor: metabolic syndrome (Yes/No)}
 #' }
-"AJCN"
+"Met"
 
 #' Delta Diet Repeated Measures Dataset
 #'
@@ -90,3 +90,37 @@
 #'   \item{gender}{Factor: subject gender (F/M)}
 #' }
 "coxdata"
+
+#' Volcano Plot Dataset
+#'
+#' Pre-computed fold-change and p-value data for 918 variables,
+#' used to generate volcano plots with \code{cuvolc}.
+#'
+#' @format A data frame with 918 rows and 3 variables:
+#' \describe{
+#'   \item{varnam}{Character: variable/protein name}
+#'   \item{fold}{Numeric: fold change}
+#'   \item{pval}{Numeric: p-value}
+#' }
+"volc"
+
+#' Volcano Omics Summary Dataset
+#'
+#' Summary statistics from an omics analysis comparing lean, obese, and
+#' overweight groups across 10 metabolic variables. Contains group means,
+#' spread (SD or IQR), and pairwise p-values.
+#'
+#' @format A data frame with 10 rows and 10 variables:
+#' \describe{
+#'   \item{Variable}{Factor: variable name (TC, TG, HDL, etc.)}
+#'   \item{lean_M}{Numeric: mean for lean group}
+#'   \item{lean_sd/iqr}{Character: SD or IQR for lean group}
+#'   \item{obese_M}{Numeric: mean for obese group}
+#'   \item{obese_sd/iqr}{Character: SD or IQR for obese group}
+#'   \item{overwt_M}{Numeric: mean for overweight group}
+#'   \item{overwt_sd/iqr}{Character: SD or IQR for overweight group}
+#'   \item{leanvsobese}{Numeric: p-value lean vs obese}
+#'   \item{leanvsoverwt}{Numeric: p-value lean vs overweight}
+#'   \item{obesevsoverwt}{Numeric: p-value obese vs overweight}
+#' }
+"volcomic"
