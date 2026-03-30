@@ -33,5 +33,5 @@ cuvolcano(dsomics, gpairs, xdash = 0.5, psig = 0.05, psigmin = 0.2,
 Volcano plot
 }
 \examples{
-cuvolcano(volcomic, c("lean", "obese"))
+cuvolcano(volcomic, c("lean","obese","lean","overwt","obese","overwt"))
 }
