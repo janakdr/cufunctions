@@ -46,9 +46,12 @@ nothing
 Does repeated measures one- or two-way anova and post-hoc tests (format wide or long - 1/many lines for each subject)
 }
 \examples{
+\dontrun{
+# These examples write CSV files to the working directory
 curepmany(delta, "TC", "TG", "Diet")  # one line per subject; TG.xx TG.yy etc as names of TG data
 # with sex as second factor, Diet*sex interaction in model
 curepmany(delta, "TC", "TG", "Diet", "sex")
 curepmany(delta, "TC", "TG", "Diet", "sex", interact=FALSE)  # no Diet*sex interaction
 curepmany(delta, "TC", "TG", "Diet", "sex", cov="age+sex*age")  # with covariate adjustment
+}
 }
