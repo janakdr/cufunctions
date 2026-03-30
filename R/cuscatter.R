@@ -105,7 +105,7 @@ cuscatter = function(yvar,xvar, doline=T, showr2eqn="both", minimal=F,
   # mfrpost=par()$mfrow
   # cat("\nmmfrpre:"); print(mfrpre); cat("\nmmfrpost:"); print(mfrpost)
   if (doline) {
-    p <- p + geom_smooth(formula = y ~ x, method=lm, se=FALSE,
+    p <- p + geom_smooth(formula = y ~ x, method="lm", se=FALSE,
             linewidth=linesize, linetype=linetype, color=linecolor)
     if (!(showr2eqn %in% c("n","no","N","NO","No"))) {
       pvtex = ifelse(pval<0.001,", p < 0.001",
