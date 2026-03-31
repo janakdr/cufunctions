@@ -37,7 +37,7 @@ culogist = function(dsgiven, depnam, formula, xs=NULL, ordinal=NULL,
   cuf_apply_defaults(match.call(), environment())
   getstartRR = function() {
     if (is.null(start)) {
-      if (twolev) LRobj = stats::glm(forla, family=stats::binomial(link=logit), data=dsnomiss, na.action="na.fail", weights=wts)
+      if (twolev) LRobj = stats::glm(forla, family=stats::binomial(link="logit"), data=dsnomiss, na.action="na.fail", weights=wts)
       else LRobj = polr(forla, dsnomiss, method="logistic", Hess=T, na.action="na.fail", weights=wts)
       cmat = summary(LRobj)$coefficients; ncoef = nrow(cmat)
       start = cmat[1,1] # half is close to estimate, but Error: cannot find valid starting values
