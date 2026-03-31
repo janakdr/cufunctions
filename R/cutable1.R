@@ -81,6 +81,7 @@
 #' cutable1(NEJM, Diet, brief=TRUE, pnorm=0)  # to get only mean&SD
 #' cutable1(NEJM, Diet, brief=TRUE, pnorm=1)  # to get only median&IQR
 #' detach(NEJM)
+#' @importFrom rlang .data
 #' @export
 cutable1 = function(ds, group1=NULL, group2=NULL, doAll=T, brief=F, 
               pnorm=.05, sdsamerow=T, compare=F, minimal=F, docorr=F,
@@ -218,7 +219,7 @@ cutable1 = function(ds, group1=NULL, group2=NULL, doAll=T, brief=F,
     "\n    Or, did you mean to run cucov1way, cucov2way, culinreg?")
   }
   printdfAll = function(df,right=T) {
-    if (Allfirst) print(df %>% relocate(All), right=right)
+    if (Allfirst) print(df %>% relocate(.data$All), right=right)
     else print(df, right=right)
   }
   

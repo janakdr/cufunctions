@@ -1,4 +1,5 @@
 #' internal cufunction to plot data by one factor
+#' @importFrom rlang .data
 #' @keywords internal
 cu_plot1 = function(progname, depvar,group1, g1order, g1name, depname, title,
                     plot="bar", linetype="n", linecolor="black", linesize=1,
@@ -72,7 +73,7 @@ cu_plot1 = function(progname, depvar,group1, g1order, g1name, depname, title,
                     color=barcolor, fill=barfill, label=letbar, order=g1order,
                     xlab=g1name, ylab=depname, legend=legend, na.rm=F,
                     size=size, width=width) +
-        geom_jitter(aes(x=group1,y=depvar, shape=group1),size=dotsize,
+        geom_jitter(aes(x=.data$group1,y=.data$depvar, shape=.data$group1),size=dotsize,
                     color = "black", stroke=1.5, width=0.1,height=0) +
         scale_shape_manual(values = dotshape)
       #if (barfill=="white")
@@ -116,15 +117,15 @@ cu_plot1 = function(progname, depvar,group1, g1order, g1name, depname, title,
   else { # "box" "violin" "rod" #ggboxplot to use stat_pvalue_manual
     if (is.null(posd)) posd = 
         ifelse(plot=="box",0.75,ifelse(plot=="violin",0.9,0.9))
-    if (barfill=="white") p <- ggplot(df,aes(x=group1,y=depvar)) #,yscale=yscale
-    else p <- ggplot(df,aes(x=group1,y=depvar,fill=group1))
+    if (barfill=="white") p <- ggplot(df,aes(x=.data$group1,y=.data$depvar)) #,yscale=yscale
+    else p <- ggplot(df,aes(x=.data$group1,y=.data$depvar,fill=.data$group1))
       # had scale=vscale for geom_boxplot, can't tell why vscale="area"
     if (plot=="box") {p <- p + geom_boxplot(width=width); vjus = -1}
     else if (plot=="violin") {p <- p + geom_violin(trim=F); vjus = -5}
     else vjus = ifelse(dots>0,-1,1)  # "rod"
     p <- p + xlab(g1name)+ylab(depname) + labs(fill=g1name)
     if (!is.null(letbar)) p <- p + stat_summary(geom="text",label=letbar,
-      fun=max,vjust=vjus,aes(group=group1),hjust=0.25,position=position_dodge(posd))
+      fun=max,vjust=vjus,aes(group=.data$group1),hjust=0.25,position=position_dodge(posd))
     if (plot!="box" && ebars>0) {
       funname = switch(ebars, ggpubr::mean_sd, ggplot2::mean_se,
                        ggplot2::mean_cl_boot, ggpubr::median_q1q3)
@@ -136,11 +137,11 @@ cu_plot1 = function(progname, depvar,group1, g1order, g1name, depname, title,
     if (is.null(dotcolor)) dotcolor = ifelse(dots==2, "white", "grey")
     if (dots>0) if (dots==1) 
       p <- p +         
-      geom_jitter(aes(x=group1,y=depvar, shape=group1),
+      geom_jitter(aes(x=.data$group1,y=.data$depvar, shape=.data$group1),
                   color = "black", stroke=1.5, width=0.1,height=0) +
       scale_shape_manual(values = dotshape)
     else if (barfill=="white")
-      p <- p + geom_jitter(aes(shape=group1,col=group1), size=2,height=0,width=0.05)
+      p <- p + geom_jitter(aes(shape=.data$group1,col=.data$group1), size=2,height=0,width=0.05)
       else p <- p + geom_jitter(color=dotcolor, size=2,height=0,width=0.05)
     # p <- p + scale_shape_manual(values=c(18,18,18))
   }
