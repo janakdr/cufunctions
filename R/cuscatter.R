@@ -1,13 +1,13 @@
 #' scatterplot of yvar vs xvar
 #' @importFrom rlang .data
-#' @param yvar required
-#' @param xvar see yvar
+#' @param yvar required: dependent variable (y-axis)
+#' @param xvar required: independent variable (x-axis)
 #' @param doline =T (default) to show the regression line, F to not show
 #' @param showr2eqn ="both" (default) to show R2 and eqn,"r2" for just R2, "eqn" for just eqn, "no" for neither
 #' @param minimal =F (default)/T for minimal console output and no graph
-#' @param yname ="xyz" to override names of yvar, xvar, title
-#' @param xname see yname
-#' @param title see yname
+#' @param yname =NULL to override name of yvar
+#' @param xname =NULL to override name of xvar
+#' @param title =NULL to override plot title
 #' @param caption ='' (default) or set to string to show at bottom right
 #' @param shape =1 (default) (see http://www.sthda.com/english/wiki/ggplot2-point-shapes)
 #' @param dotcolor ="black" (default) for point symbol color (="red" ="blue" etc)
@@ -16,8 +16,8 @@
 #' @param linesize =1 (default)/x for line thickness
 #' @param linecolor ="red" (default)/x for line color
 #' @param theme ="bw" (default)/x for white background ("classic" (no grid lines),"linedraw" "gray" "minimal" "void")
-#' @param xscale ="none" (default), can be "log2", "log10", "sqrt"
-#' @param yscale see xscale
+#' @param xscale ="none" (default), can be "log2", "log10", "sqrt" for x-axis
+#' @param yscale ="none" (default), can be "log2", "log10", "sqrt" for y-axis
 #' @param fontfamily ="sans" (default), can be "serif" "mono" 
 #' @param r2x =1 (default)/x for x-coordinate as fraction of axis of R2/eqn 
 #' @param r2y =0.95 (default)/x for y-coordinate as fraction of axis of R2/eqn 

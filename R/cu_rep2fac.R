@@ -1,9 +1,8 @@
 #' Does repeated measures anova and post-hoc tests when there is a second, non-repeated factor (long-format - multiple lines for each subject)
-#' @param depvar (4 required)
-#' @param group1 see depvar
-#' @param group2 see depvar
-#' @param Subject see depvar
-#' @param group1 repeated grouping factor
+#' @param depvar required: dependent variable
+#' @param group1 required: repeated grouping factor
+#' @param group2 required: non-repeated grouping factor
+#' @param Subject required: subject identifier
 #' @param interact =TRUE (default), F or FALSE for no interaction
 #' @param partialF =FALSE (default), T or TRUE for partial F vs simpler models
 #' @param mainx =1 (default), 2 to interchange the two factors in bar graph
@@ -15,10 +14,10 @@
 #' @param order =NULL (default)/c("...") to reorder bars
 #' @param psigcld =0 (no letters)/x for CLD letters on bars (any shared letter means P>psigcld, 0 for no letters)
 #' @param conf.int =0.95 (default)/x/0 for confidence interval width of contrast estimates (0 for none)
-#' @param depname to override names of depvar, groupvar, title
-#' @param g1name see depname
-#' @param g2name see depname
-#' @param title see depname
+#' @param depname =NULL to override name of depvar
+#' @param g1name =NULL to override name of group1
+#' @param g2name =NULL to override name of group2
+#' @param title =NULL to override plot title
 #' @param legend ="top" (default), "bottom", "right", "left" to locate legend
 #' @param linetype ="n" (default)/x for no connecting lines ("dashed" "dotted")
 #' @param linesize =1 (default)/x for line thickness
@@ -26,8 +25,8 @@
 #' @param size numeric value (e.g. size=1), to change size of points and outlines
 #' @param width numeric value between 0 and 1 specifying box width
 #' @param yscale (default="none"), can be "log2", "log10", "sqrt"
-#' @param xangle for axis value angles: 0 (default) horizontal, 90 vertical, or any value between
-#' @param yangle see xangle
+#' @param xangle =NULL for x-axis value angle: 0 (default) horizontal, 90 vertical, or any value between
+#' @param yangle =NULL for y-axis value angle: 0 (default) horizontal, 90 vertical, or any value between
 #' @param orientation (default="vertical"), can change to "horizontal"
 #' @param posd =NULL (default) set to values around 0.9 to fine-tune group2 bar spacing
 #' @param binwfac =NULL (default 30) set to fraction of range within which points will be binned

@@ -1,12 +1,12 @@
 #' Does repeated measures categorical data analysis (long-format - multiple lines for each subject)
-#' @param depvar (3 required)
-#' @param groupvar see depvar
-#' @param Subject see depvar
+#' @param depvar required: dependent variable
+#' @param groupvar required: repeated grouping factor
+#' @param Subject required: subject identifier
 #' @param scale ="frequency" (default) or "percent"
 #' @param ebars =1 (default)/2/3 (post-hoc t, SD/SE/CL) or 4 (nonparametric, IQR)
 #' @param dots =0 (default), 1 to display data on graph
-#' @param barcolor for outline color, barfill for fill color. Use fill="colors" for colors by group.
-#' @param barfill ="colors" (default) for colors by group ("lancet" for 2 factors, other journal options "aaas", "jco", "uchicago", "npg"
+#' @param barcolor ="black" (default) for bar outline color
+#' @param barfill ="colors" (default) for bar fill color
 #' @param plot ="bar" (default) for bar graphs; "box" "violin" "rod" "no"
 #' @param order =NULL (default)/c("...") to reorder bars
 #' @param psigcld =0 (no letters)/x for CLD letters on bars (any shared letter means P>psigcld, 0 for no letters)
@@ -22,8 +22,8 @@
 #' @param size numeric value (e.g. size=1), to change size of points and outlines
 #' @param width numeric value between 0 and 1 specifying box width
 #' @param yscale (default="none"), can be "log2", "log10", "sqrt"
-#' @param xangle for axis value angles: 0 (default) horizontal, 90 vertical, or any value between
-#' @param yangle see xangle
+#' @param xangle =NULL for x-axis value angle: 0 (default) horizontal, 90 vertical, or any value between
+#' @param yangle =NULL for y-axis value angle: 0 (default) horizontal, 90 vertical, or any value between
 #' @param orientation (default="vertical"), can change to "horizontal"
 #' @param posd =NULL (default) set to values around 0.9 to fine-tune group2 bar spacing
 #' @param binwfac =NULL (default 30) set to fraction of range within which points will be binned
