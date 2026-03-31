@@ -151,7 +151,7 @@ cutable1 = function(ds, group1=NULL, group2=NULL, doAll=T, brief=F,
       }
       else {
         #cat("\nbefore cupairwise.t")
-        if (normTF) pvalues = cupairwise.t(depv, groupvar,p.adjust="none")$p.value
+        if (normTF) pvalues = cupairwise.t(depv, groupvar,p.adjust.method="none")$p.value
         else {
           #cat(", dunn")
           pvalues = matrix(nrow=nlevm1,ncol=nlevm1)

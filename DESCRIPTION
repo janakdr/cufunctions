@@ -1,6 +1,6 @@
 Package: cufunctions
-Title: Facilitate Stats with One-line Invokes Instead of Many R Commands
-Version: 22.07.24.0418
+Title: This Package Facilitates Stats with One-line Invokes Instead of Many R Commands
+Version: 22.7.24.418
 Authors@R: c(
     person("Steve", "Holleran", email = "sfh2@columbia.edu", role = "aut"),
     person("Rajasekhar", "Ramakrishnan", email = "rr6@caa.columbia.edu", role = c("aut", "cre")),
@@ -22,7 +22,6 @@ Imports:
     nlme,
     survival,
     MASS,
-    MatchIt,
     ggpubr,
     car,
     rlang
@@ -30,7 +29,7 @@ Suggests:
     devEMF,
     testthat (>= 3.0.0),
     withr
-License: What license it uses
+License: MIT
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(old_usage = TRUE)

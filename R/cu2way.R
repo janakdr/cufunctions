@@ -532,7 +532,7 @@ cu2way = function(depvar,group1,group2, interact=TRUE, dosimpler=F, partialF=TRU
            "redo cu2way adding pbart=x, where x<",signif(pval,digits=3),"\n")
     }
     if (pool.sd) {
-      pairout = cupairwise.t(dsnomiss$A,dsnomiss$B,p.adjust=padj)
+      pairout = cupairwise.t(dsnomiss$A,dsnomiss$B,p.adjust.method=padj)
       g <- factor(dsnomiss$B)
       s <- tapply(dsnomiss$A, g, stats::sd, na.rm = TRUE)
       n <- tapply(!is.na(dsnomiss$A), g, sum)
@@ -544,7 +544,7 @@ cu2way = function(depvar,group1,group2, interact=TRUE, dosimpler=F, partialF=TRU
       pairout$method = paste(pairout$method,signif(pooled.sd,3))
     }
     else {
-      pairout = cupairwise.t(dsnomiss$A,dsnomiss$B,p.adjust=padj,pool.sd=F)
+      pairout = cupairwise.t(dsnomiss$A,dsnomiss$B,p.adjust.method=padj,pool.sd=F)
       pairout$data.name = paste(depname,"compared across",nlevnom,
                                 "groups by Welch's t (unequal variances)")
     }

@@ -253,6 +253,6 @@ culogist = function(dsgiven, depnam, formula, xs=NULL, ordinal=NULL,
   rownames(newdf)=names(stats::coefficients(LRobj)[ib:ie])
   print(newdf)
   curoc(LRobj, depvar, twolev=twolev, xs=xs, namedep=depnam, logitlog=logitlog,
-        printfit=printfit, emf=emf, xlab=xlab, ylab=ylab, 
+        printfit=printfit, emf=emf, xlabroc=xlab, ylabroc=ylab, 
         label.ordering = ordinal, color=color, veccolor=veccolor)
 }
