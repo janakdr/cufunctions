@@ -1,17 +1,17 @@
 #' Does one-way analysis of covariance (ancova), all contrasts, and a graph
-#' @param depvar required: dep-var, covariate, grouping factor
-#' @param covar see depvar
-#' @param group1 see depvar
+#' @param depvar required: dependent variable
+#' @param covar required: covariate
+#' @param group1 required: grouping factor
 #' @param xs optional, c(x1,x2,..) to model with interaction and do contrasts at x1,x2,...
 #' @param breakpt =F (default) or value at which covar slope changes
 #' @param ebars =1 (default)/2/3 (post-hoc t, SD/SE/CL) or 4 (nonparametric, IQR)
 #' @param dosimpler =T (default) or F to do or not do cu1way first
 #' @param partialF =TRUE (default), F or FALSE for no partial F vs simpler models
 #' @param plotcons ="yes" (default), "plot" for just plot, "cons" for just console
-#' @param depname to override names of depvar, covar, group1, title
-#' @param covname see depname
-#' @param g1name see depname
-#' @param title see depname
+#' @param depname =NULL to override name of depvar
+#' @param covname =NULL to override name of covar
+#' @param g1name =NULL to override name of group1
+#' @param title =NULL to override plot title
 #' @param caption ='' (default) or set to string to show at bottom right
 #' @param g1order =NULL (default)/c("...") to reorder group1
 #' @param conf.int =0.95 (default) for confidence interval width of contrast estimates (0 for none)
@@ -21,8 +21,8 @@
 #' @param pnorm =0.05 (default)/x for normality test threshold
 #' @param chariqr ="," (default)/x for character to separate quartiles ("-" etc)
 #' @param legend (default="top"), can be "bottom", "right", "left"
-#' @param xangle for axis value angles: 0 (default) horizontal, 90 vertical, or any value between
-#' @param yangle see xangle
+#' @param xangle =NULL for x-axis value angle: 0 (default) horizontal, 90 vertical, or any value between
+#' @param yangle =NULL for y-axis value angle: 0 (default) horizontal, 90 vertical, or any value between
 #' @param orientation (default="vertical"), can change to "horizontal"
 #' @param shape =16 (default closed circle) (see http://www.sthda.com/english/wiki/ggplot2-point-shapes)
 #' @param dotcolor ="black" (default) for point symbol color (="red" ="blue" etc)
@@ -32,32 +32,31 @@
 #' @param linecolor ="red" (default)/x for line color
 #' @param theme ="bw" (default)/x for white background ("classic" (no grid lines),"linedraw" "gray" "minimal" "void")
 #' @param fontfamily ="sans" (default), can be "serif" "mono" 
-#' @param xmin =NA (default) or value to start/end x/y-axis
-#' @param xmax see xmin
-#' @param ymin see xmin
-#' @param ymax see xmin
-#' @param fontmain =c(14,"bold","black") default, change for title, 0 for not title 
-#' @param fontxname = c(12,"plain","black") default, 0 to suppress
-#' @param fontyname see fontxname
-#' @param fontxticks see fontxname
-#' @param fontyticks see fontxname
-#' @param axiscolor ="black" (default)/x for axis/tick color
-#' @param tickcolor see axiscolor
-#' @param axisthick =0.5 (default)/x for axis/tick thickness
-#' @param tickthick see axisthick
+#' @param xmin =NA (default) or value to start x-axis
+#' @param xmax =NA (default) or value to end x-axis
+#' @param ymin =NA (default) or value to start y-axis
+#' @param ymax =NA (default) or value to end y-axis
+#' @param fontmain =c(14,"bold","black") default, change for title, 0 for no title
+#' @param fontxname =c(12,"plain","black") (default) for x-axis name font, 0 to suppress
+#' @param fontyname =c(12,"plain","black") (default) for y-axis name font, 0 to suppress
+#' @param fontxticks =c(12,"plain","black") (default) for x-axis tick label font, 0 to suppress
+#' @param fontyticks =c(12,"plain","black") (default) for y-axis tick label font, 0 to suppress
+#' @param axiscolor ="black" (default)/x for axis color
+#' @param tickcolor ="black" (default)/x for tick color
+#' @param axisthick =0.5 (default)/x for axis thickness
+#' @param tickthick =0.5 (default)/x for tick thickness
 #' @param ticklength =1 (default)/x for tick length in mm
-#' @param xticks.by =NULL (default)/s for x/y tick spacing by s
-#' @param yticks.by see xticks.by
+#' @param xticks.by =NULL (default)/s for x tick spacing by s
+#' @param yticks.by =NULL (default)/s for y tick spacing by s
 #' @param titlejust ="center" (default) or "left" or "right"
 #' @param ftype =NULL(default)/eps/pdf/jpg/jpeg/tiff/png/emf (for hires file or name.emf for Mac)
 #' @param fname =NULL(default) or set to prefix for "funcname.ftype"
-#' @param fscale =NULL(default) or set to numerical value
-#' @param fwidth see fscale
-#' @param fheight see fscale
+#' @param fscale =NULL(default) or set to numerical value for file scale
+#' @param fwidth =NULL(default) or set to file width
+#' @param fheight =NULL(default) or set to file height
 #' @param dpi =300 (default) or set to desired resolution in dpi in file
 #' @param remove choose from =c("xlab","ylab","x.text","y.text","x.ticks","y.ticks","grid","x.grid","y.grid","axis","x.axis","y.axis")
 #' @param binwidth =NULL (default) for binwidth
-#' @param axiscolor ="black" (default)/x for axis color
 #' @param legheadsize =12 (default) for font size of legend heading
 #' @param legtextsize =10 (default) for the font size of legend text
 #' @return returns nothing
