@@ -3,6 +3,7 @@
 \docType{import}
 \name{reexports}
 \alias{reexports}
+\alias{mean_sd}
 \alias{mean_se}
 \alias{mean_ci}
 \alias{median_q1q3}
@@ -16,6 +17,6 @@ below to see their documentation.
 \describe{
   \item{ggplot2}{\code{\link[ggplot2]{mean_se}}}
 
-  \item{ggpubr}{\code{\link[ggpubr:add_summary]{mean_ci}}, \code{\link[ggpubr:add_summary]{mean_se_}}, \code{\link[ggpubr:add_summary]{median_q1q3}}}
+  \item{ggpubr}{\code{\link[ggpubr:add_summary]{mean_ci}}, \code{\link[ggpubr:add_summary]{mean_sd}}, \code{\link[ggpubr:add_summary]{mean_se_}}, \code{\link[ggpubr:add_summary]{median_q1q3}}}
 }}
 

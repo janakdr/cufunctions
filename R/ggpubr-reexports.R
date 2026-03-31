@@ -1,8 +1,7 @@
-#' Re-exported ggpubr/ggplot2 summary functions.
-#'
-#' These functions are re-exported so that \code{ggbarplot(add = "mean_sd")}
-#' can resolve them via \code{get()} when ggpubr is imported but not attached.
-#'
+# Re-exported ggpubr/ggplot2 summary functions.
+# These functions are re-exported so that ggbarplot(add = "mean_sd")
+# can resolve them via get() when ggpubr is imported but not attached.
+
 #' @importFrom ggpubr mean_sd
 #' @export
 ggpubr::mean_sd
