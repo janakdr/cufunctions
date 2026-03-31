@@ -1,30 +1,30 @@
 #' internal cufunction to print estimable results, return p-value
 #' @keywords internal
 cu_estout = function(fit, vec, conf.int=0.95,minimal=F) {
-  #' https://rdrr.io/cran/gmodels/src/R/estimable.R
-  #' included here to avoid loading gmodels -> gdata that needs Perl
-  #' Contrasts and estimable linear functions of model coefficients
-  #' 
-  #' Compute and test contrasts and other estimable linear functions of model
-  #' coefficients for for lm, glm, lme, mer, and geese objects
-  #' 
-  #' `estimable` computes an estimate, test statitic, significance test, and
-  #' (optional) confidence interval for each linear functions of the model
-  #' coefficients specified by `cm`.
-  #' 
-  #' @aliases estimable estimable.default estimable.mlm
-  #' @param obj Regression (lm, glm, lme, mer, mlm) object.
-  #' @param cm Vector, List, or Matrix specifying estimable linear functions or
-  #' contrasts.  See below for details.
-  #' @param beta0 Vector of null hypothesis values
-  #' @param conf.int Confidence level.  If provided, confidence intervals will be
-  #' computed.
-  #' https://rdrr.io/cran/gmodels/src/R/to.est.R
+  # https://rdrr.io/cran/gmodels/src/R/estimable.R
+  # included here to avoid loading gmodels -> gdata that needs Perl
+  # Contrasts and estimable linear functions of model coefficients
+  #
+  # Compute and test contrasts and other estimable linear functions of model
+  # coefficients for for lm, glm, lme, mer, and geese objects
+  #
+  # `estimable` computes an estimate, test statitic, significance test, and
+  # (optional) confidence interval for each linear functions of the model
+  # coefficients specified by `cm`.
+  #
+  # @aliases estimable estimable.default estimable.mlm
+  # @param obj Regression (lm, glm, lme, mer, mlm) object.
+  # @param cm Vector, List, or Matrix specifying estimable linear functions or
+  # contrasts.  See below for details.
+  # @param beta0 Vector of null hypothesis values
+  # @param conf.int Confidence level.  If provided, confidence intervals will be
+  # computed.
+  # https://rdrr.io/cran/gmodels/src/R/to.est.R
   
-  #' Return a vector for cm in estimable()
-  #' @param obj    estimable object
-  #' @param params character vector of names or logical vector with one element per model parameter selecting desrired parameter(s).
-  #' @author Randy Johnson, Laboratory of Genomic Diversity at NCI-Frederick
+  # Return a vector for cm in estimable()
+  # @param obj    estimable object
+  # @param params character vector of names or logical vector with one element per model parameter selecting desrired parameter(s).
+  # @author Randy Johnson, Laboratory of Genomic Diversity at NCI-Frederick
   
   .to.est <- function(obj, params)
   {
@@ -242,7 +242,7 @@ cu_estout = function(fit, vec, conf.int=0.95,minimal=F) {
       }
     }
     
-    #' @importFrom stats coef
+    # @importFrom stats coef
     .wald <- function (obj, cm,
                        beta0=rep(0, ifelse(is.null(nrow(cm)), 1, nrow(cm))))
     {

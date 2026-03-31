@@ -1,6 +1,8 @@
 #' Analyzes multiple outcomes by specified function name
-#' @param funcname: "1way","2way","cov1way","cov2way","scatter","repmeasl","repmeasw"
-#' @param dsgiven ,dnamf,dnaml required: dataset, char-strings of names of first&last variable being analyzed
+#' @param funcname "1way","2way","cov1way","cov2way","scatter","repmeasl","repmeasw"
+#' @param dsgiven required: dataset, char-strings of names of first&last variable being analyzed
+#' @param dnamf see dsgiven
+#' @param dnaml see dsgiven
 #' @param fnom = string as prefix for output file cuomics.csv
 #' @param ... remaining arguments for chosen function
 #' @return nothing

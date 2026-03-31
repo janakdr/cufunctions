@@ -58,11 +58,17 @@ cutable1(ds, group1 = NULL, group2 = NULL, doAll = T, brief = F,
 
 \item{width}{numeric value between 0 and 1 specifying box width}
 
-\item{barcolor}{for outline color, barfill for fill color. Use fill="grey" ="black" etc for single color.}
+\item{barcolor}{for outline color}
 
 \item{barfill}{="lancet" (default) for colors by group ("lancet" for 2 factors, other journal options "aaas", "jco", "uchicago", "npg"}
 
-\item{depname}{/g1name/g2name/title=NULL to override names of dependent/Factor1/Factor2/title}
+\item{depname}{=NULL to override names of dependent/Factor1/Factor2/title}
+
+\item{g1name}{see depname}
+
+\item{g2name}{see depname}
+
+\item{title}{see depname}
 
 \item{g1order}{=NULL (default) to reorder bars (1st Factor)}
 
@@ -80,6 +86,22 @@ cutable1(ds, group1 = NULL, group2 = NULL, doAll = T, brief = F,
 
 \item{nlevmax}{=9 (default) for maximum number of levels for char-variable}
 
+\item{pvpairs}{(default "std") (default)/"all"/i/c(ij,ik,...) to show std or all or vs.i or pval's of i/j, i/k ...}
+
+\item{pvypos}{(default NULL) (default)/position of pval lines}
+
+\item{pvsi}{(default 0.05) (default)/increment for pvypos from one pval line to next}
+
+\item{pvlab}{(default "p"/"*") to display numerical or asterisks}
+
+\item{pvprefix}{(default "p=") (default)/"" etc prefix to p-values}
+
+\item{pvsize}{(default 3.5) (default)/size of p-values}
+
+\item{chpvref}{(default "ref") (default) char above i-th group bar when pvpairs=i}
+
+\item{pvspill}{(default F/T) to not allow p-values to spill outside range or to allow}
+
 \item{pnosig}{=0.2 (default)/x for threshold to show p-values even if nonsigificant}
 
 \item{psignif}{=0.05 (default)/x for threshold to significance}
@@ -89,6 +111,10 @@ cutable1(ds, group1 = NULL, group2 = NULL, doAll = T, brief = F,
 \item{p3stars}{=0.001 (default)/x for threshold to three stars}
 
 \item{p4stars}{=0.0001 (default)/x for threshold to four stars}
+
+\item{pvnshide}{(default T) (default)/F to hide NS p-values or not}
+
+\item{pvtipl}{(default 0.01) (default)/length of p-value line tips}
 
 \item{linetype}{="n" (default)/x for no connecting lines ("solid" "dashed" "dotted" "blank" "longdash" "dotdash" "twodash")}
 
@@ -104,7 +130,15 @@ cutable1(ds, group1 = NULL, group2 = NULL, doAll = T, brief = F,
 
 \item{yscale}{(default="none"), can be "log2", "log10", "sqrt"}
 
-\item{xangle}{/yangle for axis value angles: 0 (default) horizontal, 90 vertical, or any value between}
+\item{letleft}{=TRUE (default) or FALSE to letter bars from left or from most similar}
+
+\item{nletbarmax}{=3 (default)/x for max consecutive letters on bar before using "-"}
+
+\item{font.x}{=NULL (default) for x-axis font}
+
+\item{xangle}{for axis value angles: 0 (default) horizontal, 90 vertical, or any value between}
+
+\item{yangle}{see xangle}
 
 \item{orientation}{(default="vertical"), can be "horizontal" or "reverse"}
 
@@ -120,19 +154,33 @@ cutable1(ds, group1 = NULL, group2 = NULL, doAll = T, brief = F,
 
 \item{fontfamily}{="sans" (default), can be "serif" "mono"}
 
-\item{ymin, }{ymax =NA (default) or value to start/end y-axis}
+\item{ymin}{=NA (default) or value to start/end y-axis}
 
-\item{fontmain}{=c(14,"bold","black") default, change for title, 0 for not title}
+\item{ymax}{see ymin}
 
-\item{fontxname}{.fontyname,fontxticks,fontyticks = c(12,"plain","black") default, 0 to suppress}
+\item{fontmain}{=c(14,"bold","black") default, change for title, 0 for no title}
 
-\item{axiscolor}{,tickcolor="black" (default)/x for axis/tick color}
+\item{fontxname}{= c(12,"plain","black") default, 0 to suppress}
 
-\item{axisthick}{,tickthick=0.5 (default)/x for axis/tick thickness}
+\item{fontyname}{see fontxname}
+
+\item{fontxticks}{see fontxname}
+
+\item{fontyticks}{see fontxname}
+
+\item{axiscolor}{="black" (default)/x for axis color}
+
+\item{tickcolor}{see axiscolor}
+
+\item{axisthick}{=0.5 (default)/x for axis/tick thickness}
+
+\item{tickthick}{see axisthick}
 
 \item{ticklength}{=1 (default)/x for tick length in mm}
 
-\item{xticks.by}{,yticks.by =NULL (default)/s for x/y tick spacing by s}
+\item{xticks.by}{=NULL (default)/s for x/y tick spacing by s}
+
+\item{yticks.by}{see xticks.by}
 
 \item{titlejust}{="center" (default) or "left" or "right"}
 
@@ -144,31 +192,15 @@ cutable1(ds, group1 = NULL, group2 = NULL, doAll = T, brief = F,
 
 \item{fname}{=NULL(default) or set to prefix for "funcname.ftype"}
 
-\item{fscale}{,fwidth,fheight =NULL(default) or set to numerical value}
+\item{fscale}{=NULL(default) or set to numerical value}
+
+\item{fwidth}{see fscale}
+
+\item{fheight}{see fscale}
 
 \item{dpi}{=300 (default) or set to desired resolution in dpi in file}
 
 \item{remove}{choose from =c("xlab","ylab","x.text","y.text","x.ticks","y.ticks","grid","x.grid","y.grid","axis","x.axis","y.axis")}
-
-\item{pvpairs="std"}{(default)/"all"/i/c(ij,ik,...) to show std or all or vs.i or pval's of i/j, i/k ...}
-
-\item{pvypos=NULL}{(default)/position of pval lines}
-
-\item{pvsi=0.05}{(default)/increment for pvypos from one pval line to next}
-
-\item{pvlab="p"/"*"}{to display numerical or asterisks}
-
-\item{pvprefix="p="}{(default)/"" etc prefix to p-values}
-
-\item{pvsize=3.5}{(default)/size of p-values}
-
-\item{chpvref="ref"}{(default) char above i-th group bar when pvpairs=i}
-
-\item{pvspill=F/T}{to not allow p-values to spill outside range or to allow}
-
-\item{pvnshide=T}{(default)/F to hide NS p-values or not}
-
-\item{pvtipl=0.01}{(default)/length of p-value line tips}
 }
 \value{
 returns summary dataframe (if one variable, like table0)

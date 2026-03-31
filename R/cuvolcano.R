@@ -9,6 +9,15 @@
 #' @param foldmin =NULL (default) for left end of log2(FoldChange) (usually set to -2)
 #' @param foldmax =NULL (default) for right end of log2(FoldChange) (usually set to 2)
 #' @param ylim =5 (default) for upper limit of graph (-log10(pval))
+#' @param titlend ending string for plot title (default "Volcano Plot")
+#' @param ftype =NULL(default)/eps/pdf/jpg/jpeg/tiff/png/emf for output file type
+#' @param fname =NULL(default) or set to prefix for output file name
+#' @param fscale =NULL(default) or set to numerical value for scale
+#' @param fwidth =NULL(default) or set to output file width
+#' @param fheight =NULL(default) or set to output file height
+#' @param dpi =300 (default) or set to desired resolution in dpi
+#' @param remove elements to remove from plot
+#' @param suff =NULL suffix for file name
 #' @examples
 #' cuvolcano(volcomic, c("lean","obese","lean","overwt","obese","overwt"))
 #' @export

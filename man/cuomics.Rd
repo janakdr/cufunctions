@@ -7,13 +7,17 @@
 cuomics(funcname, dsgiven, dnamf, dnaml, fnom, ...)
 }
 \arguments{
-\item{dsgiven}{,dnamf,dnaml required: dataset, char-strings of names of first&last variable being analyzed}
+\item{funcname}{"1way","2way","cov1way","cov2way","scatter","repmeasl","repmeasw"}
+
+\item{dsgiven}{required: dataset, char-strings of names of first&last variable being analyzed}
+
+\item{dnamf}{see dsgiven}
+
+\item{dnaml}{see dsgiven}
 
 \item{fnom}{= string as prefix for output file cuomics.csv}
 
 \item{...}{remaining arguments for chosen function}
-
-\item{funcname:}{"1way","2way","cov1way","cov2way","scatter","repmeasl","repmeasw"}
 }
 \value{
 nothing

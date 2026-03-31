@@ -1,10 +1,17 @@
 #' Does two-way analysis of covariance (ancova), all contrasts, and a graph
-#' @param depvar ,covar, group1, group2 required: dep-var, covariate, grouping factors 1 & 2
+#' @param depvar required: dep-var, covariate, grouping factors 1 & 2
+#' @param covar see depvar
+#' @param group1 see depvar
+#' @param group2 see depvar
 #' @param xs optional, c(x1,x2,..) to model with interaction and do contrasts at x1,x2,...
 #' @param interact =TRUE (default), F or FALSE for no group1*group2 interaction
 #' @param dosimpler =T (default) or F to do or not do cu2way first
 #' @param partialF =TRUE (default), F or FALSE for no partial F vs simpler models
-#' @param depname /covname/g1name/g2name/title to override names of depvar, covar, group1, group2, title
+#' @param depname to override names of depvar, covar, group1, group2, title
+#' @param covname see depname
+#' @param g1name see depname
+#' @param g2name see depname
+#' @param title see depname
 #' @param caption ='' (default) or set to string to show at bottom right
 #' @param g1order =NULL (default) to reorder group1 (1st Factor)
 #' @param g2order =NULL (default) to reorder group2 (2nd Factor)
@@ -18,10 +25,10 @@
 #' @param pnorm =0.05 (default)/x for normality test threshold
 #' @param chariqr ="," (default)/x for character to separate quartiles ("-" etc)
 #' @param legend (default="top"), can be "bottom", "right", "left"
-#' @param xangle /yangle for axis value angles: 0 (default) horizontal, 90 vertical, or any value between
+#' @param xangle for axis value angles: 0 (default) horizontal, 90 vertical, or any value between
+#' @param yangle see xangle
 #' @param orientation (default="vertical"), can change to "horizontal"
 #' @param posd NULL (default) set to values around 0.9 to fine-tune group2 bar spacing
-#' @param shape =16 (default closed circle) (see http://www.sthda.com/english/wiki/ggplot2-point-shapes)
 #' @param dotcolor ="black" (default) for point symbol color (="red" ="blue" etc)
 #' @param dotsize =2 (default) or x to set size of point symbols
 #' @param linetype ="solid"(default)/x for solid line ("solid" "dashed" "dotted" "blank" "longdash" "dotdash" "twodash")
@@ -29,19 +36,33 @@
 #' @param linecolor ="red" (default)/x for line color
 #' @param theme ="bw" (default)/x for white background ("classic" (no grid lines),"linedraw" "gray" "minimal" "void")
 #' @param fontfamily ="sans" (default), can be "serif" "mono" 
-#' @param xmin ,xmax,ymin,ymax =NA (default) or value to start/end x/y-axis 
+#' @param xmin =NA (default) or value to start/end x/y-axis
+#' @param xmax see xmin
+#' @param ymin see xmin
+#' @param ymax see xmin
 #' @param fontmain =c(14,"bold","black") default, change for title, 0 for not title 
-#' @param fontxname .fontyname,fontxticks,fontyticks = c(12,"plain","black") default, 0 to suppress
-#' @param axiscolor ,tickcolor="black" (default)/x for axis/tick color
-#' @param axisthick ,tickthick=0.5 (default)/x for axis/tick thickness
+#' @param fontxname = c(12,"plain","black") default, 0 to suppress
+#' @param fontyname see fontxname
+#' @param fontxticks see fontxname
+#' @param fontyticks see fontxname
+#' @param axiscolor ="black" (default)/x for axis/tick color
+#' @param tickcolor see axiscolor
+#' @param axisthick =0.5 (default)/x for axis/tick thickness
+#' @param tickthick see axisthick
 #' @param ticklength =1 (default)/x for tick length in mm
-#' @param xticks.by ,yticks.by =NULL (default)/s for x/y tick spacing by s
+#' @param xticks.by =NULL (default)/s for x/y tick spacing by s
+#' @param yticks.by see xticks.by
 #' @param titlejust ="center" (default) or "left" or "right"
 #' @param ftype =NULL(default)/eps/pdf/jpg/jpeg/tiff/png/emf (for hires file or name.emf for Mac)
 #' @param fname =NULL(default) or set to prefix for "funcname.ftype"
-#' @param fscale ,fwidth,fheight =NULL(default) or set to numerical value
+#' @param fscale =NULL(default) or set to numerical value
+#' @param fwidth see fscale
+#' @param fheight see fscale
 #' @param dpi =300 (default) or set to desired resolution in dpi in file
 #' @param remove choose from =c("xlab","ylab","x.text","y.text","x.ticks","y.ticks","grid","x.grid","y.grid","axis","x.axis","y.axis")
+#' @param axiscolor ="black" (default)/x for axis color
+#' @param legheadsize =12 (default) for font size of legend heading
+#' @param legtextsize =10 (default) for the font size of legend text
 #' @return returns nothing
 #' @examples
 #' attach(NEJM)

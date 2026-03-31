@@ -7,7 +7,9 @@
 cusum(object, ...)
 }
 \arguments{
-\item{call}{with object to be summarized}
+\item{object}{to be summarized}
+
+\item{...}{additional arguments passed to methods}
 }
 \value{
 returns nothing

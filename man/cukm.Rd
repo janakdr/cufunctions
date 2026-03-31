@@ -12,7 +12,11 @@ cukm(timevar, statvar, ttmtvar, kmtype = "survival", pvalue = T,
   fheight = NULL, dpi = 300, remove = NULL)
 }
 \arguments{
-\item{timevar}{, statvar, ttmtvar (3 required)}
+\item{timevar}{time-to-event variable (required)}
+
+\item{statvar}{status/outcome variable (required)}
+
+\item{ttmtvar}{treatment/grouping variable (required)}
 
 \item{kmtype}{="survival" (default) or "ci" (cumulative incidence)}
 
@@ -22,7 +26,11 @@ cukm(timevar, statvar, ttmtvar, kmtype = "survival", pvalue = T,
 
 \item{tmax}{=0 (default for no max T), numeric study end time}
 
-\item{xlab}{/ylab/title=NULL to override labels of x-axis/y-axis/title}
+\item{xlab}{=NULL to override x-axis label}
+
+\item{ylab}{=NULL to override y-axis label}
+
+\item{title}{=NULL to override plot title}
 
 \item{rho}{=0 (log-rank default) or 1 (Peto-Peto)}
 
@@ -44,7 +52,11 @@ cukm(timevar, statvar, ttmtvar, kmtype = "survival", pvalue = T,
 
 \item{fname}{=NULL(default) or set to prefix for "funcname.ftype"}
 
-\item{fscale}{,fwidth,fheight =NULL(default) or set to numerical value}
+\item{fscale}{=NULL(default) or set to numerical value for plot scaling}
+
+\item{fwidth}{=NULL(default) or set to numerical value for plot width}
+
+\item{fheight}{=NULL(default) or set to numerical value for plot height}
 
 \item{dpi}{=300 (default) or set to desired resolution in dpi in file}
 

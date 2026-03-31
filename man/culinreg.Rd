@@ -12,9 +12,13 @@ culinreg(dsgiven, depnam, formula, weights = NULL, printfit = F,
   fheight = NULL, dpi = 300, remove = NULL)
 }
 \arguments{
-\item{dsgiven}{, depnam, formula required: dataset, char-string of name of variable being analyzed,}
+\item{dsgiven}{required: dataset}
+
+\item{depnam}{char-string of name of variable being analyzed}
 
 \item{formula}{of model "preda+predb+predc*predd" etc. Add "+0" for zero intercept}
+
+\item{weights}{=NULL (default) optional vector of weights for the regression}
 
 \item{printfit}{=F (default) to get (T) or not get (F) fitted values for all subjects}
 
@@ -26,7 +30,9 @@ culinreg(dsgiven, depnam, formula, weights = NULL, printfit = F,
 
 \item{nmodshow}{=16 (default) to show top nmodshow models by dredge}
 
-\item{m.min}{and m.max= to set smallest and largest model sizes in dredge}
+\item{m.min}{to set smallest model size in dredge}
+
+\item{m.max}{to set largest model size in dredge}
 
 \item{fixed}{= c(,,,) to specify variables that must be in model}
 
@@ -38,7 +44,11 @@ culinreg(dsgiven, depnam, formula, weights = NULL, printfit = F,
 
 \item{fname}{=NULL(default) or set to prefix for "funcname.ftype"}
 
-\item{fscale}{,fwidth,fheight =NULL(default) or set to numerical value}
+\item{fscale}{=NULL(default) or set to numerical value for plot scaling}
+
+\item{fwidth}{=NULL(default) or set to numerical value for plot width}
+
+\item{fheight}{=NULL(default) or set to numerical value for plot height}
 
 \item{dpi}{=300 (default) or set to desired resolution in dpi in file}
 

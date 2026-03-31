@@ -22,7 +22,11 @@ cucov1way(depvar, covar, group1, xs = NULL, breakpt = F, ebars = 1,
   fheight = NULL, dpi = 300, remove = NULL)
 }
 \arguments{
-\item{depvar}{,covar,group1 required: dep-var, covariate, grouping factor}
+\item{depvar}{required: dep-var, covariate, grouping factor}
+
+\item{covar}{see depvar}
+
+\item{group1}{see depvar}
 
 \item{xs}{optional, c(x1,x2,..) to model with interaction and do contrasts at x1,x2,...}
 
@@ -36,7 +40,13 @@ cucov1way(depvar, covar, group1, xs = NULL, breakpt = F, ebars = 1,
 
 \item{plotcons}{="yes" (default), "plot" for just plot, "cons" for just console}
 
-\item{depname}{/covname/g1name/title to override names of depvar, covar, group1, title}
+\item{depname}{to override names of depvar, covar, group1, title}
+
+\item{covname}{see depname}
+
+\item{g1name}{see depname}
+
+\item{title}{see depname}
 
 \item{caption}{='' (default) or set to string to show at bottom right}
 
@@ -56,9 +66,13 @@ cucov1way(depvar, covar, group1, xs = NULL, breakpt = F, ebars = 1,
 
 \item{legend}{(default="top"), can be "bottom", "right", "left"}
 
-\item{xangle}{/yangle for axis value angles: 0 (default) horizontal, 90 vertical, or any value between}
+\item{xangle}{for axis value angles: 0 (default) horizontal, 90 vertical, or any value between}
+
+\item{yangle}{see xangle}
 
 \item{orientation}{(default="vertical"), can change to "horizontal"}
+
+\item{binwidth}{=NULL (default) for binwidth}
 
 \item{shape}{=16 (default closed circle) (see http://www.sthda.com/english/wiki/ggplot2-point-shapes)}
 
@@ -76,27 +90,53 @@ cucov1way(depvar, covar, group1, xs = NULL, breakpt = F, ebars = 1,
 
 \item{fontfamily}{="sans" (default), can be "serif" "mono"}
 
-\item{xmin}{,xmax,ymin,ymax =NA (default) or value to start/end x/y-axis}
+\item{xmin}{=NA (default) or value to start/end x/y-axis}
+
+\item{ymin}{see xmin}
+
+\item{xmax}{see xmin}
+
+\item{ymax}{see xmin}
 
 \item{fontmain}{=c(14,"bold","black") default, change for title, 0 for not title}
 
-\item{fontxname}{.fontyname,fontxticks,fontyticks = c(12,"plain","black") default, 0 to suppress}
+\item{fontxname}{= c(12,"plain","black") default, 0 to suppress}
 
-\item{axiscolor}{,tickcolor="black" (default)/x for axis/tick color}
+\item{fontyname}{see fontxname}
 
-\item{axisthick}{,tickthick=0.5 (default)/x for axis/tick thickness}
+\item{fontxticks}{see fontxname}
+
+\item{fontyticks}{see fontxname}
+
+\item{axiscolor}{="black" (default)/x for axis color}
+
+\item{tickcolor}{see axiscolor}
+
+\item{axisthick}{=0.5 (default)/x for axis/tick thickness}
+
+\item{tickthick}{see axisthick}
 
 \item{ticklength}{=1 (default)/x for tick length in mm}
 
-\item{xticks.by}{,yticks.by =NULL (default)/s for x/y tick spacing by s}
+\item{xticks.by}{=NULL (default)/s for x/y tick spacing by s}
+
+\item{yticks.by}{see xticks.by}
 
 \item{titlejust}{="center" (default) or "left" or "right"}
+
+\item{legheadsize}{=12 (default) for font size of legend heading}
+
+\item{legtextsize}{=10 (default) for the font size of legend text}
 
 \item{ftype}{=NULL(default)/eps/pdf/jpg/jpeg/tiff/png/emf (for hires file or name.emf for Mac)}
 
 \item{fname}{=NULL(default) or set to prefix for "funcname.ftype"}
 
-\item{fscale}{,fwidth,fheight =NULL(default) or set to numerical value}
+\item{fscale}{=NULL(default) or set to numerical value}
+
+\item{fwidth}{see fscale}
+
+\item{fheight}{see fscale}
 
 \item{dpi}{=300 (default) or set to desired resolution in dpi in file}
 

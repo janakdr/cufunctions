@@ -11,6 +11,7 @@
 #' @param label.ordering = c(two labels) to override alphabetical order
 #' @param color ="red" (default) for single ROC curve color (glm object)
 #' @param veccolor =c("red","blue","green","black") (default) for multiple curves (polr object)
+#' @param printfit =FALSE (default), TRUE to print fit details
 #' @return returns nothing
 #' @examples
 #' logfit <- glm(MetSyn ~ TG + HDL, data = Met, family = binomial)

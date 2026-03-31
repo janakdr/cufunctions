@@ -31,7 +31,11 @@ curepmeas(dsgiven, dnam, repnam, fac2 = NULL, idnam = NULL, minimal = F,
   fwidth = NULL, fheight = NULL, dpi = 300, remove = NULL)
 }
 \arguments{
-\item{dsgiven}{,dnam,repnam required: dataset, char-strings of names of variable being analyzed, repeated grouping factor}
+\item{dsgiven}{required: dataset, char-strings of names of variable being analyzed, repeated grouping factor}
+
+\item{dnam}{see dsgiven}
+
+\item{repnam}{see dsgiven}
 
 \item{fac2}{char-string of name of 2nd, non-repeated grouping factor (default NULL)}
 
@@ -61,15 +65,27 @@ curepmeas(dsgiven, dnam, repnam, fac2 = NULL, idnam = NULL, minimal = F,
 
 \item{dots}{=0 (default), 1 to display data on graph}
 
-\item{barcolor}{for outline color, barfill for fill color. Use barfill="colors" for colors by group.}
+\item{barcolor}{for outline color}
+
+\item{barfill}{for fill color. Use barfill="colors" for colors by group.}
 
 \item{plot}{="bar" (default) for bar graphs; "box" "violin" "rod" "no"}
 
 \item{ordinal}{=NULL (default)/c("...") to reorder dependent variable}
 
-\item{g1order}{,g2order, difforder=NULL (defaults)/c("...") to reorder bars (I Factor, Differences)}
+\item{g1order}{=NULL (defaults)/c("...") to reorder bars (I Factor, Differences)}
 
-\item{depname}{/g1name/g2name/title to override names of depvar, groupvar, fac2, title}
+\item{g2order}{see g1order}
+
+\item{difforder}{see g1order}
+
+\item{depname}{to override names of depvar, groupvar, fac2, title}
+
+\item{g1name}{see depname}
+
+\item{g2name}{see depname}
+
+\item{title}{see depname}
 
 \item{pnorm}{=0.05 (default) threshold for normality test}
 
@@ -83,6 +99,22 @@ curepmeas(dsgiven, dnam, repnam, fac2 = NULL, idnam = NULL, minimal = F,
 
 \item{caption}{=NULL (default)/"yes"/"caption text" to get caption ("yes" to list n's)}
 
+\item{pvpairs}{(default "std") (default)/"all"/i/c(ij,ik,...) to show std or all or vs.i or pval's of i/j, i/k ...}
+
+\item{pvypos}{(default NULL) (default)/position of pval lines}
+
+\item{pvstinc}{(default 0.05) (default)/increment for pvypos from one pval line to next}
+
+\item{pvlab}{(default "p"/"*") to display numerical or asterisks}
+
+\item{pvprefix}{(default "p=") (default)/"" etc prefix to p-values}
+
+\item{pvsize}{(default NULL) (default 3.5, 7)/size of p-values or **}
+
+\item{chpvref}{(default "ref") (default) char above i-th group bar when pvpairs=i}
+
+\item{pvspill}{(default F/T) to not allow p-values to spill outside range or to allow}
+
 \item{pnosig}{=0.2 (default)/x for threshold to show p-values even if nonsigificant}
 
 \item{psignif}{=0.05 (default)/x for threshold to significance}
@@ -92,6 +124,10 @@ curepmeas(dsgiven, dnam, repnam, fac2 = NULL, idnam = NULL, minimal = F,
 \item{p3stars}{=0.001 (default)/x for threshold to three stars}
 
 \item{p4stars}{=0.0001 (default)/x for threshold to four stars}
+
+\item{pvnshide}{(default T) (default)/F to hide NS p-values or not}
+
+\item{pvtipl}{(default 0.01) (default)/length of p-value line tips}
 
 \item{ifdeb}{=F (default)/T to suppress debug output or not}
 
@@ -121,7 +157,9 @@ curepmeas(dsgiven, dnam, repnam, fac2 = NULL, idnam = NULL, minimal = F,
 
 \item{yscale}{(default="none"), can be "log2", "log10", "sqrt"}
 
-\item{xangle}{/yangle for axis value angles: 0 (default) horizontal, 90 vertical, or any value between}
+\item{xangle}{for axis value angles: 0 (default) horizontal, 90 vertical, or any value between}
+
+\item{yangle}{see xangle}
 
 \item{orientation}{(default="vertical"), can be "horizontal" or "reverse"}
 
@@ -137,15 +175,27 @@ curepmeas(dsgiven, dnam, repnam, fac2 = NULL, idnam = NULL, minimal = F,
 
 \item{fontmain}{=c(14,"bold","black") default, change for title, 0 for not title}
 
-\item{fontxname}{.fontyname,fontxticks,fontyticks = c(12,"plain","black") default, 0 to suppress}
+\item{fontxname}{= c(12,"plain","black") default, 0 to suppress}
 
-\item{axiscolor}{,tickcolor="black" (default)/x for axis/tick color}
+\item{fontyname}{see fontxname}
 
-\item{axisthick}{,tickthick=0.5 (default)/x for axis/tick thickness}
+\item{fontxticks}{see fontxname}
+
+\item{fontyticks}{see fontxname}
+
+\item{axiscolor}{="black" (default)/x for axis/tick color}
+
+\item{tickcolor}{see axiscolor}
+
+\item{axisthick}{=0.5 (default)/x for axis/tick thickness}
+
+\item{tickthick}{see axisthick}
 
 \item{ticklength}{=1 (default)/x for tick length in mm}
 
-\item{xticks.by}{,yticks.by =NULL (default)/s for x/y tick spacing by s}
+\item{xticks.by}{=NULL (default)/s for x/y tick spacing by s}
+
+\item{yticks.by}{see xticks.by}
 
 \item{dodredge}{=T (default) to get (T) or not get (F) all possible models}
 
@@ -153,9 +203,13 @@ curepmeas(dsgiven, dnam, repnam, fac2 = NULL, idnam = NULL, minimal = F,
 
 \item{nmodshow}{=16 (default) to show top nmodshow models by dredge}
 
-\item{nverscat, nhorscat}{=2 (default) #scatterplots vert,horiz}
+\item{nverscat}{=2 (default) #scatterplots vert,horiz}
 
-\item{m.min}{and m.max= to set smallest and largest model sizes in dreedge}
+\item{nhorscat}{=2 (default) #scatterplots vert,horiz}
+
+\item{m.min}{to set smallest and largest model sizes in dreedge}
+
+\item{m.max}{see m.min}
 
 \item{fixed}{to specify variables that must be in model}
 
@@ -165,31 +219,15 @@ curepmeas(dsgiven, dnam, repnam, fac2 = NULL, idnam = NULL, minimal = F,
 
 \item{fname}{=NULL(default) or set to prefix for "funcname.ftype"}
 
-\item{fscale}{,fwidth,fheight =NULL(default) or set to numerical value}
+\item{fscale}{=NULL(default) or set to numerical value}
+
+\item{fwidth}{see fscale}
+
+\item{fheight}{see fscale}
 
 \item{dpi}{=300 (default) or set to desired resolution in dpi in file}
 
 \item{remove}{choose from =c("xlab","ylab","x.text","y.text","x.ticks","y.ticks","grid","x.grid","y.grid","axis","x.axis","y.axis")}
-
-\item{pvpairs="std"}{(default)/"all"/i/c(ij,ik,...) to show std or all or vs.i or pval's of i/j, i/k ...}
-
-\item{pvypos=NULL}{(default)/position of pval lines}
-
-\item{pvstinc=0.05}{(default)/increment for pvypos from one pval line to next}
-
-\item{pvlab="p"/"*"}{to display numerical or asterisks}
-
-\item{pvprefix="p="}{(default)/"" etc prefix to p-values}
-
-\item{pvsize=NULL}{(default 3.5, 7)/size of p-values or **}
-
-\item{chpvref="ref"}{(default) char above i-th group bar when pvpairs=i}
-
-\item{pvspill=F/T}{to not allow p-values to spill outside range or to allow}
-
-\item{pvnshide=T}{(default)/F to hide NS p-values or not}
-
-\item{pvtipl=0.01}{(default)/length of p-value line tips}
 }
 \value{
 one line of summary means/SDs and p-values, data if normvisit

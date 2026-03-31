@@ -1,5 +1,7 @@
 #' Does two-way anova and post-hoc tests or contingency tables, and makes a bar graph
-#' @param depvar ,group1,group2 required: variable being analyzed, grouping factors 1 & 2
+#' @param depvar required: variable being analyzed, grouping factors 1 & 2
+#' @param group1 see depvar
+#' @param group2 see depvar
 #' @param interact =TRUE (default), F or FALSE for no interaction
 #' @param dosimpler =F (default) or T not to do or to do 2 1ways first
 #' @param partialF =TRUE (default), F or FALSE for no partial F vs simpler models
@@ -16,7 +18,10 @@
 #' @param g2order =NULL (default) to reorder bars (2nd Factor)
 #' @param psigcld =0 (no letters)/x for CLD letters on bars (any shared letter means P>psigcld, 0 for no letters)
 #' @param conf.int =0.95 (default)/x/0 for confidence interval width of contrast estimates (0 for none)
-#' @param depname /g1name/g2name/title=NULL to override names of dependent/Factor1/Factor2/title
+#' @param depname =NULL to override names of dependent/Factor1/Factor2/title
+#' @param g1name see depname
+#' @param g2name see depname
+#' @param title see depname
 #' @param caption =NULL (default)/"yes"/"caption text" to get caption ("yes" to list n's)
 #' @param minimal =F (default)/T for minimal console output and no graph
 #' @param padj ="none"(default), p-value adjustment for multiple comparisons, can be "bonferroni", "holm")
@@ -24,20 +29,20 @@
 #' @param pnorm =0.01 (default)/x for normality test threshold
 #' @param chariqr =":" (default)/x for character to separate quartiles ("-" "," etc)
 #' @param charamp ="&" (default)/x for character to separate group1&2 levels ("-" etc)
-#' @param pvpairs="std" (default)/"all"/i/c(ij,ik,...) to show std or all or vs.i or pval's of i/j, i/k ...
-#' @param pvypos=NULL (default)/position of pval lines
-#' @param pvstinc=0.05 (default)/increment for pvypos from one pval line to next
-#' @param pvlab="p"/"*" to display numerical or asterisks
-#' @param pvprefix="p=" (default)/"" etc prefix to p-values
-#' @param pvsize=NULL (default 3.5,7)/size of p-values or **
-#' @param chpvref="ref" (default) char above i-th group bar when pvpairs=i
-#' @param pvspill=F/T to not allow p-values to spill outside range or to allow
+#' @param pvpairs (default "std") (default)/"all"/i/c(ij,ik,...) to show std or all or vs.i or pval's of i/j, i/k ...
+#' @param pvypos (default NULL) (default)/position of pval lines
+#' @param pvstinc (default 0.05) (default)/increment for pvypos from one pval line to next
+#' @param pvlab (default "p"/"*") to display numerical or asterisks
+#' @param pvprefix (default "p=") (default)/"" etc prefix to p-values
+#' @param pvsize (default NULL) (default 3.5,7)/size of p-values or **
+#' @param chpvref (default "ref") (default) char above i-th group bar when pvpairs=i
+#' @param pvspill (default F/T) to not allow p-values to spill outside range or to allow
 #' @param pnosig =0.2 (default)/x for threshold to show p-values even if nonsigificant
 #' @param psignif =0.05 (default)/x for threshold to significance
 #' @param p2stars =0.01 (default)/x for threshold to two stars
 #' @param p3stars =0.001 (default)/x for threshold to three stars
-#' @param pvnshide=T (default)/F to hide NS p-values or not
-#' @param pvtipl=0.01 (default)/length of p-value line tips
+#' @param pvnshide (default T) (default)/F to hide NS p-values or not
+#' @param pvtipl (default 0.01) (default)/length of p-value line tips
 #' @param doAll =T (default) for "All" column; F for no; "I" in quotes for All first.
 #' @param linetype ="n" (default)/x for no connecting lines ("solid" "dashed" "dotted" "blank" "longdash" "dotdash" "twodash")
 #' @param linesize =1 (default)/x for line thickness
@@ -47,28 +52,44 @@
 #' @param yscale (default="none"), can be "log2", "log10", "sqrt"
 #' @param letleft =T (default) or F to letter the bars from the left (T) or from most similar (F)
 #' @param nletbarmax =3 (default)/x for max consecutive letters on bar before using "-"
-#' @param xangle /yangle for axis value angles: 0 (default) horizontal, 90 vertical, or any value between
+#' @param xangle for axis value angles: 0 (default) horizontal, 90 vertical, or any value between
+#' @param yangle see xangle
 #' @param orientation (default="vertical"), can be "horizontal" or "reverse"
 #' @param posd =NULL (default) set to values around 0.9 to fine-tune group2 bar spacing
 #' @param binwfac =30 (default) set to fraction of range within which points will be binned
 #' @param dotsize =NULL (default 1) set to fraction of binwidth for dot size
 #' @param theme ="bw" (default)/x for white background ("classic" (no grid lines),"linedraw" "gray" "minimal" "void")
 #' @param fontfamily ="sans" (default), can be "serif" "mono" 
-#' @param ymin, ymax =NA (default) or value to start/end y-axis 
+#' @param ymin =NA (default) or value to start/end y-axis
+#' @param ymax see ymin
 #' @param fontmain =c(14,"bold","black") default, change for title, 0 for not title 
-#' @param fontxname .fontyname,fontxticks,fontyticks = c(12,"plain","black") default, 0 to suppress
-#' @param axiscolor ,tickcolor="black" (default)/x for axis/tick color
-#' @param axisthick ,tickthick=0.5 (default)/x for axis/tick thickness
+#' @param fontxname = c(12,"plain","black") default, 0 to suppress
+#' @param fontyname see fontxname
+#' @param fontxticks see fontxname
+#' @param fontyticks see fontxname
+#' @param axiscolor ="black" (default)/x for axis/tick color
+#' @param tickcolor see axiscolor
+#' @param axisthick =0.5 (default)/x for axis/tick thickness
+#' @param tickthick see axisthick
 #' @param ticklength =1 (default)/x for tick length in mm
-#' @param xticks.by ,yticks.by =NULL (default)/s for x/y tick spacing by s
+#' @param xticks.by =NULL (default)/s for x/y tick spacing by s
+#' @param yticks.by see xticks.by
 #' @param titlejust ="center" (default) or "left" or "right"
 #' @param legheadsize =12 (default) for font size of legend heading
 #' @param legtextsize =10 (default) for the font size of legend text
 #' @param ftype =NULL(default)/eps/pdf/jpg/jpeg/tiff/png/emf (for hires file or name.emf for Mac)
 #' @param fname =NULL(default) or set to prefix for "funcname.ftype"
-#' @param fscale ,fwidth,fheight =NULL(default) or set to numerical value
+#' @param fscale =NULL(default) or set to numerical value
+#' @param fwidth see fscale
+#' @param fheight see fscale
 #' @param dpi =300 (default) or set to desired resolution in dpi in file
 #' @param remove choose from =c("xlab","ylab","x.text","y.text","x.ticks","y.ticks","grid","x.grid","y.grid","axis","x.axis","y.axis")
+#' @param barcolor ="black" (default) for bar outline color
+#' @param p4stars =0.0001 (default)/x for threshold to four stars
+#' @param linecolor ="black" (default)/x for line color
+#' @param dotshape =NULL (default) for dot shape
+#' @param fontmain =c(14,"bold","black") default, change for title, 0 for no title
+#' @param axiscolor ="black" (default)/x for axis color
 #' @return returns nothing
 #' @examples
 #' attach(NEJM)

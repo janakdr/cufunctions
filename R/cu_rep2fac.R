@@ -1,5 +1,8 @@
 #' Does repeated measures anova and post-hoc tests when there is a second, non-repeated factor (long-format - multiple lines for each subject)
-#' @param depvar , group1, group2, Subject  (4 required)
+#' @param depvar (4 required)
+#' @param group1 see depvar
+#' @param group2 see depvar
+#' @param Subject see depvar
 #' @param group1 repeated grouping factor
 #' @param interact =TRUE (default), F or FALSE for no interaction
 #' @param partialF =FALSE (default), T or TRUE for partial F vs simpler models
@@ -12,7 +15,10 @@
 #' @param order =NULL (default)/c("...") to reorder bars
 #' @param psigcld =0 (no letters)/x for CLD letters on bars (any shared letter means P>psigcld, 0 for no letters)
 #' @param conf.int =0.95 (default)/x/0 for confidence interval width of contrast estimates (0 for none)
-#' @param depname /g1name/g2name/title to override names of depvar, groupvar, title
+#' @param depname to override names of depvar, groupvar, title
+#' @param g1name see depname
+#' @param g2name see depname
+#' @param title see depname
 #' @param legend ="top" (default), "bottom", "right", "left" to locate legend
 #' @param linetype ="n" (default)/x for no connecting lines ("dashed" "dotted")
 #' @param linesize =1 (default)/x for line thickness
@@ -20,7 +26,8 @@
 #' @param size numeric value (e.g. size=1), to change size of points and outlines
 #' @param width numeric value between 0 and 1 specifying box width
 #' @param yscale (default="none"), can be "log2", "log10", "sqrt"
-#' @param xangle /yangle for axis value angles: 0 (default) horizontal, 90 vertical, or any value between
+#' @param xangle for axis value angles: 0 (default) horizontal, 90 vertical, or any value between
+#' @param yangle see xangle
 #' @param orientation (default="vertical"), can change to "horizontal"
 #' @param posd =NULL (default) set to values around 0.9 to fine-tune group2 bar spacing
 #' @param binwfac =NULL (default 30) set to fraction of range within which points will be binned
@@ -28,9 +35,26 @@
 #' @param dotcolor =NULL (default "white") set to dot color
 #' @param ftype =NULL(default)/eps/pdf/jpg/jpeg/tiff/png/emf (for hires file or name.emf for Mac)
 #' @param fname =NULL(default) or set to prefix for "funcname.ftype"
-#' @param fscale ,fwidth,fheight =NULL(default) or set to numerical value
+#' @param fscale =NULL(default) or set to numerical value
+#' @param fwidth see fscale
+#' @param fheight see fscale
 #' @param dpi =300 (default) or set to desired resolution in dpi in file
 #' @param remove choose from =c("xlab","ylab","x.text","y.text","x.ticks","y.ticks","grid","x.grid","y.grid","axis","x.axis","y.axis")
+#' @param barcolor ="black" (default) for bar outline color
+#' @param pvpairs ="all" (default) p-value pairs to show
+#' @param pvypos =NULL (default) position of p-value lines
+#' @param pvsi =0.05 (default) increment for p-value lines
+#' @param pvlab ="p" (default) label format for p-values
+#' @param pvprefix ="p=" (default) prefix to p-values
+#' @param chpvref ="ref" (default) char above reference group bar
+#' @param pvcuts =c(0.2,0.05,0.01,0.001) p-value cutpoints
+#' @param pvnshide =TRUE (default) to hide non-significant p-values
+#' @param pvtipl =0.01 (default) length of p-value line tips
+#' @param suff =NULL suffix for file name
+#' @param caption =NULL (default) caption text
+#' @param linecolor ="black" (default) line color
+#' @param font.x =NULL (default) for x-axis font
+#' @param dotshape =NULL (default) for dot shape
 #' @return returns nothing
 #' @examples
 #' # Internal function, not exported; called via curepmeas()

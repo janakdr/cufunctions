@@ -21,7 +21,9 @@ cuscatter(yvar, xvar, doline = T, showr2eqn = "both", minimal = F,
   fheight = NULL, dpi = 300, remove = NULL)
 }
 \arguments{
-\item{yvar}{,xvar required}
+\item{yvar}{required}
+
+\item{xvar}{see yvar}
 
 \item{doline}{=T (default) to show the regression line, F to not show}
 
@@ -29,11 +31,17 @@ cuscatter(yvar, xvar, doline = T, showr2eqn = "both", minimal = F,
 
 \item{minimal}{=F (default)/T for minimal console output and no graph}
 
-\item{yname}{,xname,title ="xyz" to override names of yvar, xvar, title}
+\item{yname}{="xyz" to override names of yvar, xvar, title}
+
+\item{xname}{see yname}
+
+\item{title}{see yname}
 
 \item{caption}{='' (default) or set to string to show at bottom right}
 
-\item{xangle}{,yangle for axis value angles: 0 (default) horizontal, 90 vertical, or any value between}
+\item{xangle}{for axis value angles: 0 (default) horizontal, 90 vertical, or any value between}
+
+\item{yangle}{see xangle}
 
 \item{orientation}{(default="vertical"), can be "horizontal" or "reverse"}
 
@@ -51,7 +59,9 @@ cuscatter(yvar, xvar, doline = T, showr2eqn = "both", minimal = F,
 
 \item{theme}{="bw" (default)/x for white background ("classic" (no grid lines),"linedraw" "gray" "minimal" "void")}
 
-\item{xscale}{,yscale ="none" (default), can be "log2", "log10", "sqrt"}
+\item{xscale}{="none" (default), can be "log2", "log10", "sqrt"}
+
+\item{yscale}{see xscale}
 
 \item{fontfamily}{="sans" (default), can be "serif" "mono"}
 
@@ -65,27 +75,53 @@ cuscatter(yvar, xvar, doline = T, showr2eqn = "both", minimal = F,
 
 \item{r2font}{="plain" (default)/x for R2/eqn font ("bold","italic","bold.italic")}
 
-\item{xmin}{,xmax,ymin,ymax =NA (default) or value to start/end x/y-axis}
+\item{xmin}{=NA (default) or value to start/end x/y-axis}
+
+\item{ymin}{see xmin}
+
+\item{xmax}{see xmin}
+
+\item{ymax}{see xmin}
 
 \item{fontmain}{=c(14,"bold","black") default, change for title, 0 for not title}
 
-\item{fontxname}{.fontyname,fontxticks,fontyticks = c(12,"plain","black") default, 0 to suppress}
+\item{fontxname}{= c(12,"plain","black") default, 0 to suppress}
 
-\item{axiscolor}{,tickcolor="black" (default)/x for axis/tick color}
+\item{fontyname}{see fontxname}
 
-\item{axisthick}{,tickthick=0.5 (default)/x for axis/tick thickness}
+\item{fontxticks}{see fontxname}
+
+\item{fontyticks}{see fontxname}
+
+\item{axiscolor}{="black" (default)/x for axis/tick color}
+
+\item{tickcolor}{see axiscolor}
+
+\item{axisthick}{=0.5 (default)/x for axis/tick thickness}
+
+\item{tickthick}{see axisthick}
 
 \item{ticklength}{=1 (default)/x for tick length in mm}
 
-\item{xticks.by}{,yticks.by =NULL (default)/s for x/y tick spacing by s}
+\item{xticks.by}{=NULL (default)/s for x/y tick spacing by s}
+
+\item{yticks.by}{see xticks.by}
 
 \item{titlejust}{="center" (default) or "left" or "right"}
+
+\item{legheadsize}{=12 (default) for font size of legend heading}
+
+\item{legtextsize}{=10 (default) for the font size of legend text}
 
 \item{ftype}{=NULL(default)/eps/pdf/jpg/jpeg/tiff/png/emf (for hires file or name.emf for Mac)}
 
 \item{fname}{=NULL(default) or set to prefix for "funcname.ftype"}
 
-\item{fscale}{,fwidth,fheight =NULL(default) or set to numerical value}
+\item{fscale}{=NULL(default) or set to numerical value}
+
+\item{fwidth}{see fscale}
+
+\item{fheight}{see fscale}
 
 \item{dpi}{=300 (default) or set to desired resolution in dpi in file}
 

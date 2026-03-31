@@ -1,5 +1,7 @@
 #' Does repeated measures one- or two-way anova and post-hoc tests (format wide or long - 1/many lines for each subject)
-#' @param dsgiven ,dnam,repnam required: dataset, char-strings of names of variable being analyzed, repeated grouping factor
+#' @param dsgiven required: dataset, char-strings of names of variable being analyzed, repeated grouping factor
+#' @param dnam see dsgiven
+#' @param repnam see dsgiven
 #' @param fac2 char-string of name of 2nd, non-repeated grouping factor (default NULL)
 #' @param idnam (to indicate long format) =char-string of name of ID/Subject variable (default NULL)
 #' @param minimal = FALSE (default), T or TRUE to suppress all output (for cuomics)
@@ -14,32 +16,38 @@
 #' @param scatter = "yes" (default) for scatter plots of repeated measures, "no" for none
 #' @param ebars =0 (default to be 1 or 4)/1/2/3 (post-hoc t, SD/SE/CL) or 4 (nonparametric, IQR) or -N (nonparm if any norm fail)
 #' @param dots =0 (default), 1 to display data on graph
-#' @param barcolor for outline color, barfill for fill color. Use barfill="colors" for colors by group.
+#' @param barcolor for outline color
+#' @param barfill for fill color. Use barfill="colors" for colors by group.
 #' @param plot ="bar" (default) for bar graphs; "box" "violin" "rod" "no"
 #' @param ordinal =NULL (default)/c("...") to reorder dependent variable
-#' @param g1order ,g2order, difforder=NULL (defaults)/c("...") to reorder bars (I Factor, Differences)
-#' @param depname /g1name/g2name/title to override names of depvar, groupvar, fac2, title
+#' @param g1order =NULL (defaults)/c("...") to reorder bars (I Factor, Differences)
+#' @param g2order see g1order
+#' @param difforder see g1order
+#' @param depname to override names of depvar, groupvar, fac2, title
+#' @param g1name see depname
+#' @param g2name see depname
+#' @param title see depname
 #' @param pnorm =0.05 (default) threshold for normality test
 #' @param psigcld =0 (no letters)/x for CLD letters on bars (any shared letter means P>psigcld, 0 for no letters)
 #' @param conf.int =0.95 (default)/x/0 for confidence interval width of contrast estimates (0 for none)
 #' @param ddepn =NULL (default) for name of dependent variable difference
 #' @param shape =16 (default)/n for shape of dots in regression plot
 #' @param caption =NULL (default)/"yes"/"caption text" to get caption ("yes" to list n's)
-#' @param pvpairs="std" (default)/"all"/i/c(ij,ik,...) to show std or all or vs.i or pval's of i/j, i/k ...
-#' @param pvypos=NULL (default)/position of pval lines
-#' @param pvstinc=0.05 (default)/increment for pvypos from one pval line to next
-#' @param pvlab="p"/"*" to display numerical or asterisks
-#' @param pvprefix="p=" (default)/"" etc prefix to p-values
-#' @param pvsize=NULL (default 3.5, 7)/size of p-values or **
-#' @param chpvref="ref" (default) char above i-th group bar when pvpairs=i
-#' @param pvspill=F/T to not allow p-values to spill outside range or to allow
+#' @param pvpairs (default "std") (default)/"all"/i/c(ij,ik,...) to show std or all or vs.i or pval's of i/j, i/k ...
+#' @param pvypos (default NULL) (default)/position of pval lines
+#' @param pvstinc (default 0.05) (default)/increment for pvypos from one pval line to next
+#' @param pvlab (default "p"/"*") to display numerical or asterisks
+#' @param pvprefix (default "p=") (default)/"" etc prefix to p-values
+#' @param pvsize (default NULL) (default 3.5, 7)/size of p-values or **
+#' @param chpvref (default "ref") (default) char above i-th group bar when pvpairs=i
+#' @param pvspill (default F/T) to not allow p-values to spill outside range or to allow
 #' @param pnosig =0.2 (default)/x for threshold to show p-values even if nonsigificant
 #' @param psignif =0.05 (default)/x for threshold to significance
 #' @param p2stars =0.01 (default)/x for threshold to two stars
 #' @param p3stars =0.001 (default)/x for threshold to three stars
 #' @param p4stars =0.0001 (default)/x for threshold to four stars
-#' @param pvnshide=T (default)/F to hide NS p-values or not
-#' @param pvtipl=0.01 (default)/length of p-value line tips
+#' @param pvnshide (default T) (default)/F to hide NS p-values or not
+#' @param pvtipl (default 0.01) (default)/length of p-value line tips
 #' @param ifdeb =F (default)/T to suppress debug output or not
 #' @param refmean =NA (default)/ref.val to compare each group mean with
 #' @param normvisit =0 (default)/i to specify the i-th visit as the reference
@@ -54,7 +62,8 @@
 #' @param size numeric value (e.g. size=1), to change size of points and outlines
 #' @param width numeric value between 0 and 1 specifying box width
 #' @param yscale (default="none"), can be "log2", "log10", "sqrt"
-#' @param xangle /yangle for axis value angles: 0 (default) horizontal, 90 vertical, or any value between
+#' @param xangle for axis value angles: 0 (default) horizontal, 90 vertical, or any value between
+#' @param yangle see xangle
 #' @param orientation (default="vertical"), can be "horizontal" or "reverse"
 #' @param posd =NULL (default) set to values around 0.9 to fine-tune group2 bar spacing
 #' @param binwfac =NULL (default 30) set to fraction of range within which points will be binned
@@ -62,21 +71,31 @@
 #' @param dotshape =NULL (default)
 #' @param dotcolor =NULL (default "white") set to dot color
 #' @param fontmain =c(14,"bold","black") default, change for title, 0 for not title 
-#' @param fontxname .fontyname,fontxticks,fontyticks = c(12,"plain","black") default, 0 to suppress
-#' @param axiscolor ,tickcolor="black" (default)/x for axis/tick color
-#' @param axisthick ,tickthick=0.5 (default)/x for axis/tick thickness
+#' @param fontxname = c(12,"plain","black") default, 0 to suppress
+#' @param fontyname see fontxname
+#' @param fontxticks see fontxname
+#' @param fontyticks see fontxname
+#' @param axiscolor ="black" (default)/x for axis/tick color
+#' @param tickcolor see axiscolor
+#' @param axisthick =0.5 (default)/x for axis/tick thickness
+#' @param tickthick see axisthick
 #' @param ticklength =1 (default)/x for tick length in mm
-#' @param xticks.by ,yticks.by =NULL (default)/s for x/y tick spacing by s
+#' @param xticks.by =NULL (default)/s for x/y tick spacing by s
+#' @param yticks.by see xticks.by
 #' @param dodredge =T (default) to get (T) or not get (F) all possible models
 #' @param usemod =1 (default) to use the usemod-th best found by dredge
 #' @param nmodshow =16 (default) to show top nmodshow models by dredge
-#' @param nverscat,nhorscat =2 (default) #scatterplots vert,horiz
-#' @param m.min and m.max= to set smallest and largest model sizes in dreedge
+#' @param nverscat =2 (default) #scatterplots vert,horiz
+#' @param nhorscat =2 (default) #scatterplots vert,horiz
+#' @param m.min to set smallest and largest model sizes in dreedge
+#' @param m.max see m.min
 #' @param fixed to specify variables that must be in model
 #' @param subset logical expression describing models to keep in dredge
 #' @param ftype =NULL(default)/eps/pdf/jpg/jpeg/tiff/png/emf (for hires file or name.emf for Mac)
 #' @param fname =NULL(default) or set to prefix for "funcname.ftype"
-#' @param fscale ,fwidth,fheight =NULL(default) or set to numerical value
+#' @param fscale =NULL(default) or set to numerical value
+#' @param fwidth see fscale
+#' @param fheight see fscale
 #' @param dpi =300 (default) or set to desired resolution in dpi in file
 #' @param remove choose from =c("xlab","ylab","x.text","y.text","x.ticks","y.ticks","grid","x.grid","y.grid","axis","x.axis","y.axis")
 #' @return one line of summary means/SDs and p-values, data if normvisit

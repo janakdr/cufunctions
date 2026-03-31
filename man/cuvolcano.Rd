@@ -28,6 +28,24 @@ cuvolcano(dsomics, gpairs, xdash = 0.5, psig = 0.05, psigmin = 0.2,
 \item{foldmax}{=NULL (default) for right end of log2(FoldChange) (usually set to 2)}
 
 \item{ylim}{=5 (default) for upper limit of graph (-log10(pval))}
+
+\item{titlend}{ending string for plot title (default "Volcano Plot")}
+
+\item{ftype}{=NULL(default)/eps/pdf/jpg/jpeg/tiff/png/emf for output file type}
+
+\item{fname}{=NULL(default) or set to prefix for output file name}
+
+\item{fscale}{=NULL(default) or set to numerical value for scale}
+
+\item{fwidth}{=NULL(default) or set to output file width}
+
+\item{fheight}{=NULL(default) or set to output file height}
+
+\item{dpi}{=300 (default) or set to desired resolution in dpi}
+
+\item{remove}{elements to remove from plot}
+
+\item{suff}{=NULL suffix for file name}
 }
 \description{
 Volcano plot
