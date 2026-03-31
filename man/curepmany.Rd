@@ -31,13 +31,13 @@ curepmany(dsgiven, dnamf, dnaml, repnam, fac2 = NULL, idnam = NULL,
   dpi = 300, remove = NULL)
 }
 \arguments{
-\item{dsgiven}{required: dataset, char-strings of names of first&last variable being analyzed, repeated grouping factor}
+\item{dsgiven}{required: dataset}
 
-\item{dnamf}{see dsgiven}
+\item{dnamf}{required: char-string name of first variable being analyzed}
 
-\item{dnaml}{see dsgiven}
+\item{dnaml}{required: char-string name of last variable being analyzed}
 
-\item{repnam}{see dsgiven}
+\item{repnam}{required: char-string name of repeated grouping factor}
 
 \item{fac2}{char-string of name of 2nd, non-repeated grouping factor (default NULL)}
 

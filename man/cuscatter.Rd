@@ -21,9 +21,9 @@ cuscatter(yvar, xvar, doline = T, showr2eqn = "both", minimal = F,
   fheight = NULL, dpi = 300, remove = NULL)
 }
 \arguments{
-\item{yvar}{required}
+\item{yvar}{required: dependent variable (y-axis)}
 
-\item{xvar}{see yvar}
+\item{xvar}{required: independent variable (x-axis)}
 
 \item{doline}{=T (default) to show the regression line, F to not show}
 
@@ -31,17 +31,17 @@ cuscatter(yvar, xvar, doline = T, showr2eqn = "both", minimal = F,
 
 \item{minimal}{=F (default)/T for minimal console output and no graph}
 
-\item{yname}{="xyz" to override names of yvar, xvar, title}
+\item{yname}{=NULL to override name of yvar}
 
-\item{xname}{see yname}
+\item{xname}{=NULL to override name of xvar}
 
-\item{title}{see yname}
+\item{title}{=NULL to override plot title}
 
 \item{caption}{='' (default) or set to string to show at bottom right}
 
-\item{xangle}{for axis value angles: 0 (default) horizontal, 90 vertical, or any value between}
+\item{xangle}{=NULL for x-axis value angle: 0 (default) horizontal, 90 vertical, or any value between}
 
-\item{yangle}{see xangle}
+\item{yangle}{=NULL for y-axis value angle: 0 (default) horizontal, 90 vertical, or any value between}
 
 \item{orientation}{(default="vertical"), can be "horizontal" or "reverse"}
 
@@ -59,9 +59,9 @@ cuscatter(yvar, xvar, doline = T, showr2eqn = "both", minimal = F,
 
 \item{theme}{="bw" (default)/x for white background ("classic" (no grid lines),"linedraw" "gray" "minimal" "void")}
 
-\item{xscale}{="none" (default), can be "log2", "log10", "sqrt"}
+\item{xscale}{="none" (default), can be "log2", "log10", "sqrt" for x-axis}
 
-\item{yscale}{see xscale}
+\item{yscale}{="none" (default), can be "log2", "log10", "sqrt" for y-axis}
 
 \item{fontfamily}{="sans" (default), can be "serif" "mono"}
 
@@ -75,37 +75,37 @@ cuscatter(yvar, xvar, doline = T, showr2eqn = "both", minimal = F,
 
 \item{r2font}{="plain" (default)/x for R2/eqn font ("bold","italic","bold.italic")}
 
-\item{xmin}{=NA (default) or value to start/end x/y-axis}
+\item{xmin}{=NA (default) or value to start x-axis}
 
-\item{ymin}{see xmin}
+\item{ymin}{=NA (default) or value to start y-axis}
 
-\item{xmax}{see xmin}
+\item{xmax}{=NA (default) or value to end x-axis}
 
-\item{ymax}{see xmin}
+\item{ymax}{=NA (default) or value to end y-axis}
 
-\item{fontmain}{=c(14,"bold","black") default, change for title, 0 for not title}
+\item{fontmain}{=c(14,"bold","black") default, change for title, 0 for no title}
 
-\item{fontxname}{= c(12,"plain","black") default, 0 to suppress}
+\item{fontxname}{=c(12,"plain","black") (default) for x-axis name font, 0 to suppress}
 
-\item{fontyname}{see fontxname}
+\item{fontyname}{=c(12,"plain","black") (default) for y-axis name font, 0 to suppress}
 
-\item{fontxticks}{see fontxname}
+\item{fontxticks}{=c(12,"plain","black") (default) for x-axis tick label font, 0 to suppress}
 
-\item{fontyticks}{see fontxname}
+\item{fontyticks}{=c(12,"plain","black") (default) for y-axis tick label font, 0 to suppress}
 
-\item{axiscolor}{="black" (default)/x for axis/tick color}
+\item{axiscolor}{="black" (default)/x for axis color}
 
-\item{tickcolor}{see axiscolor}
+\item{tickcolor}{="black" (default)/x for tick color}
 
-\item{axisthick}{=0.5 (default)/x for axis/tick thickness}
+\item{axisthick}{=0.5 (default)/x for axis thickness}
 
-\item{tickthick}{see axisthick}
+\item{tickthick}{=0.5 (default)/x for tick thickness}
 
 \item{ticklength}{=1 (default)/x for tick length in mm}
 
-\item{xticks.by}{=NULL (default)/s for x/y tick spacing by s}
+\item{xticks.by}{=NULL (default)/s for x tick spacing by s}
 
-\item{yticks.by}{see xticks.by}
+\item{yticks.by}{=NULL (default)/s for y tick spacing by s}
 
 \item{titlejust}{="center" (default) or "left" or "right"}
 
@@ -117,11 +117,11 @@ cuscatter(yvar, xvar, doline = T, showr2eqn = "both", minimal = F,
 
 \item{fname}{=NULL(default) or set to prefix for "funcname.ftype"}
 
-\item{fscale}{=NULL(default) or set to numerical value}
+\item{fscale}{=NULL(default) or set to numerical value for file scale}
 
-\item{fwidth}{see fscale}
+\item{fwidth}{=NULL(default) or set to file width}
 
-\item{fheight}{see fscale}
+\item{fheight}{=NULL(default) or set to file height}
 
 \item{dpi}{=300 (default) or set to desired resolution in dpi in file}
 

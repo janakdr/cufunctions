@@ -19,11 +19,11 @@ cu_rep1fac(depvar, groupvar, Subject, scale = "frequency", ebars = 1,
   remove = NULL)
 }
 \arguments{
-\item{depvar}{(3 required)}
+\item{depvar}{required: dependent variable}
 
-\item{groupvar}{see depvar}
+\item{groupvar}{required: repeated grouping factor}
 
-\item{Subject}{see depvar}
+\item{Subject}{required: subject identifier}
 
 \item{scale}{="frequency" (default) or "percent"}
 
@@ -31,9 +31,9 @@ cu_rep1fac(depvar, groupvar, Subject, scale = "frequency", ebars = 1,
 
 \item{dots}{=0 (default), 1 to display data on graph}
 
-\item{barcolor}{for outline color, barfill for fill color. Use fill="colors" for colors by group.}
+\item{barcolor}{="black" (default) for bar outline color}
 
-\item{barfill}{="colors" (default) for colors by group ("lancet" for 2 factors, other journal options "aaas", "jco", "uchicago", "npg"}
+\item{barfill}{="colors" (default) for bar fill color}
 
 \item{plot}{="bar" (default) for bar graphs; "box" "violin" "rod" "no"}
 
@@ -43,11 +43,11 @@ cu_rep1fac(depvar, groupvar, Subject, scale = "frequency", ebars = 1,
 
 \item{conf.int}{=0.95 (default)/x/0 for confidence interval width of contrast estimates (0 for none)}
 
-\item{depname}{to override names of depvar, groupvar, title}
+\item{depname}{=NULL to override name of depvar}
 
-\item{g1name}{see depname}
+\item{g1name}{=NULL to override name of groupvar}
 
-\item{title}{see depname}
+\item{title}{=NULL to override plot title}
 
 \item{legend}{="top" (default), "bottom", "right", "left" to locate legend}
 
@@ -87,9 +87,9 @@ cu_rep1fac(depvar, groupvar, Subject, scale = "frequency", ebars = 1,
 
 \item{yscale}{(default="none"), can be "log2", "log10", "sqrt"}
 
-\item{xangle}{for axis value angles: 0 (default) horizontal, 90 vertical, or any value between}
+\item{xangle}{=NULL for x-axis value angle: 0 (default) horizontal, 90 vertical, or any value between}
 
-\item{yangle}{see xangle}
+\item{yangle}{=NULL for y-axis value angle: 0 (default) horizontal, 90 vertical, or any value between}
 
 \item{orientation}{(default="vertical"), can change to "horizontal"}
 
@@ -107,11 +107,11 @@ cu_rep1fac(depvar, groupvar, Subject, scale = "frequency", ebars = 1,
 
 \item{fname}{=NULL(default) or set to prefix for "funcname.ftype"}
 
-\item{fscale}{=NULL(default) or set to numerical value}
+\item{fscale}{=NULL(default) or set to numerical value for file scale}
 
-\item{fwidth}{see fscale}
+\item{fwidth}{=NULL(default) or set to file width}
 
-\item{fheight}{see fscale}
+\item{fheight}{=NULL(default) or set to file height}
 
 \item{dpi}{=300 (default) or set to desired resolution in dpi in file}
 

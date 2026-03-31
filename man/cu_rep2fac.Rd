@@ -20,13 +20,13 @@ cu_rep2fac(depvar, group1, group2, Subject, interact = TRUE,
   fheight = NULL, dpi = 300, remove = NULL)
 }
 \arguments{
-\item{depvar}{(4 required)}
+\item{depvar}{required: dependent variable}
 
-\item{group1}{repeated grouping factor}
+\item{group1}{required: repeated grouping factor}
 
-\item{group2}{see depvar}
+\item{group2}{required: non-repeated grouping factor}
 
-\item{Subject}{see depvar}
+\item{Subject}{required: subject identifier}
 
 \item{interact}{=TRUE (default), F or FALSE for no interaction}
 
@@ -52,11 +52,11 @@ cu_rep2fac(depvar, group1, group2, Subject, interact = TRUE,
 
 \item{conf.int}{=0.95 (default)/x/0 for confidence interval width of contrast estimates (0 for none)}
 
-\item{depname}{to override names of depvar, groupvar, title}
+\item{depname}{=NULL to override name of depvar}
 
-\item{g1name}{see depname}
+\item{g1name}{=NULL to override name of group1}
 
-\item{g2name}{see depname}
+\item{g2name}{=NULL to override name of group2}
 
 \item{pvpairs}{="all" (default) p-value pairs to show}
 
@@ -76,7 +76,7 @@ cu_rep2fac(depvar, group1, group2, Subject, interact = TRUE,
 
 \item{pvtipl}{=0.01 (default) length of p-value line tips}
 
-\item{title}{see depname}
+\item{title}{=NULL to override plot title}
 
 \item{legend}{="top" (default), "bottom", "right", "left" to locate legend}
 
@@ -100,9 +100,9 @@ cu_rep2fac(depvar, group1, group2, Subject, interact = TRUE,
 
 \item{font.x}{=NULL (default) for x-axis font}
 
-\item{xangle}{for axis value angles: 0 (default) horizontal, 90 vertical, or any value between}
+\item{xangle}{=NULL for x-axis value angle: 0 (default) horizontal, 90 vertical, or any value between}
 
-\item{yangle}{see xangle}
+\item{yangle}{=NULL for y-axis value angle: 0 (default) horizontal, 90 vertical, or any value between}
 
 \item{orientation}{(default="vertical"), can change to "horizontal"}
 
@@ -120,11 +120,11 @@ cu_rep2fac(depvar, group1, group2, Subject, interact = TRUE,
 
 \item{fname}{=NULL(default) or set to prefix for "funcname.ftype"}
 
-\item{fscale}{=NULL(default) or set to numerical value}
+\item{fscale}{=NULL(default) or set to numerical value for file scale}
 
-\item{fwidth}{see fscale}
+\item{fwidth}{=NULL(default) or set to file width}
 
-\item{fheight}{see fscale}
+\item{fheight}{=NULL(default) or set to file height}
 
 \item{dpi}{=300 (default) or set to desired resolution in dpi in file}
 

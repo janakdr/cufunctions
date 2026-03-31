@@ -26,21 +26,21 @@ cu_rep2way(ddep, dgp1, dgp2, dsub, depvar, group1, group2, Subject,
   dpi = 300, remove = NULL)
 }
 \arguments{
-\item{ddep}{char-string of name of dependent variable}
+\item{ddep}{dependent variable values}
 
-\item{dgp1}{char-string of name of first grouping factor}
+\item{dgp1}{first (repeated) grouping factor values}
 
-\item{dgp2}{char-string of name of second grouping factor}
+\item{dgp2}{second (non-repeated) grouping factor values}
 
-\item{dsub}{char-string of name of subject identifier}
+\item{dsub}{subject identifier values}
 
-\item{depvar}{(4 required)}
+\item{depvar}{required: variable being analyzed}
 
-\item{group1}{repeated grouping factor}
+\item{group1}{required: repeated grouping factor}
 
-\item{group2}{see depvar}
+\item{group2}{required: non-repeated grouping factor}
 
-\item{Subject}{see depvar}
+\item{Subject}{required: subject identifier}
 
 \item{interact}{=TRUE (default), F or FALSE for no interaction}
 
@@ -56,9 +56,9 @@ cu_rep2way(ddep, dgp1, dgp2, dsub, depvar, group1, group2, Subject,
 
 \item{dots}{=0 (default), 1 to display data on graph}
 
-\item{barcolor}{for outline color}
+\item{barcolor}{="black" (default) for bar outline color}
 
-\item{barfill}{for fill color. Use barfill="colors" for colors by group.}
+\item{barfill}{="colors" (default) for bar fill color}
 
 \item{plot}{="bar" (default) for bar graphs; "box" "violin" "rod" "no"}
 
@@ -70,29 +70,29 @@ cu_rep2way(ddep, dgp1, dgp2, dsub, depvar, group1, group2, Subject,
 
 \item{ddepn}{=NULL (default) for name of dependent variable difference}
 
-\item{depname}{to override names of depvar, groupvar, title}
+\item{depname}{=NULL to override name of depvar}
 
-\item{g1name}{see depname}
+\item{g1name}{=NULL to override name of group1}
 
-\item{g2name}{see depname}
+\item{g2name}{=NULL to override name of group2}
 
 \item{pnorm}{=0.05 (default) threshold for normality test}
 
-\item{pvpairs}{(default "std") (default)/"all"/i/c(ij,ik,...) to show std or all or vs.i or pval's of i/j, i/k ...}
+\item{pvpairs}{="std" (default)/"all"/i/c(ij,ik,...) to show std or all or vs.i or pval's of i/j, i/k ...}
 
-\item{pvypos}{(default NULL) (default)/position of pval lines}
+\item{pvypos}{=NULL (default)/position of pval lines}
 
-\item{pvstinc}{(default 0.05) (default)/increment for pvypos from one pval line to next}
+\item{pvstinc}{=0.05 (default)/increment for pvypos from one pval line to next}
 
-\item{pvlab}{(default "p"/"*") to display numerical or asterisks}
+\item{pvlab}{="p" (default)/"*" to display numerical or asterisks}
 
-\item{pvprefix}{(default "p=") (default)/"" etc prefix to p-values}
+\item{pvprefix}{="p=" (default)/"" etc prefix to p-values}
 
-\item{pvsize}{(default NULL) (default 3.5, 7)/size of p-values or **}
+\item{pvsize}{=NULL (default 3.5, 7)/size of p-values or **}
 
-\item{chpvref}{(default "ref") (default) char above i-th group bar when pvpairs=i}
+\item{chpvref}{="ref" (default) char above i-th group bar when pvpairs=i}
 
-\item{pvspill}{(default F/T) to not allow p-values to spill outside range or to allow}
+\item{pvspill}{=F (default)/T to not allow p-values to spill outside range or to allow}
 
 \item{pnosig}{=0.2 (default)/x for threshold to show p-values even if nonsigificant}
 
@@ -104,13 +104,13 @@ cu_rep2way(ddep, dgp1, dgp2, dsub, depvar, group1, group2, Subject,
 
 \item{p4stars}{=0.0001 (default)/x for threshold to four stars}
 
-\item{pvnshide}{(default T) (default)/F to hide NS p-values or not}
+\item{pvnshide}{=T (default)/F to hide NS p-values or not}
 
-\item{pvtipl}{(default 0.01) (default)/length of p-value line tips}
+\item{pvtipl}{=0.01 (default)/length of p-value line tips}
 
 \item{refmean}{=NA (default)/ref.val to compare each group mean with}
 
-\item{title}{see depname}
+\item{title}{=NULL to override plot title}
 
 \item{legend}{="top" (default), "bottom", "right", "left" to locate legend}
 
@@ -132,9 +132,9 @@ cu_rep2way(ddep, dgp1, dgp2, dsub, depvar, group1, group2, Subject,
 
 \item{yscale}{(default="none"), can be "log2", "log10", "sqrt"}
 
-\item{xangle}{for axis value angles: 0 (default) horizontal, 90 vertical, or any value between}
+\item{xangle}{=NULL for x-axis value angle: 0 (default) horizontal, 90 vertical, or any value between}
 
-\item{yangle}{see xangle}
+\item{yangle}{=NULL for y-axis value angle: 0 (default) horizontal, 90 vertical, or any value between}
 
 \item{orientation}{(default="vertical"), can change to "horizontal"}
 
@@ -148,39 +148,39 @@ cu_rep2way(ddep, dgp1, dgp2, dsub, depvar, group1, group2, Subject,
 
 \item{dotcolor}{=NULL (default "white") set to dot color}
 
-\item{fontmain}{=c(14,"bold","black") default, change for title, 0 for not title}
+\item{fontmain}{=c(14,"bold","black") default, change for title, 0 for no title}
 
-\item{fontxname}{= c(12,"plain","black") default, 0 to suppress}
+\item{fontxname}{=c(12,"plain","black") (default) for x-axis name font, 0 to suppress}
 
-\item{fontyname}{see fontxname}
+\item{fontyname}{=c(12,"plain","black") (default) for y-axis name font, 0 to suppress}
 
-\item{fontxticks}{see fontxname}
+\item{fontxticks}{=c(12,"plain","black") (default) for x-axis tick label font, 0 to suppress}
 
-\item{fontyticks}{see fontxname}
+\item{fontyticks}{=c(12,"plain","black") (default) for y-axis tick label font, 0 to suppress}
 
 \item{axiscolor}{="black" (default)/x for axis color}
 
-\item{tickcolor}{see axiscolor}
+\item{tickcolor}{="black" (default)/x for tick color}
 
-\item{axisthick}{=0.5 (default)/x for axis/tick thickness}
+\item{axisthick}{=0.5 (default)/x for axis thickness}
 
-\item{tickthick}{see axisthick}
+\item{tickthick}{=0.5 (default)/x for tick thickness}
 
 \item{ticklength}{=1 (default)/x for tick length in mm}
 
-\item{xticks.by}{=NULL (default)/s for x/y tick spacing by s}
+\item{xticks.by}{=NULL (default)/s for x tick spacing by s}
 
-\item{yticks.by}{see xticks.by}
+\item{yticks.by}{=NULL (default)/s for y tick spacing by s}
 
 \item{ftype}{=NULL(default)/eps/pdf/jpg/jpeg/tiff/png/emf (for hires file or name.emf for Mac)}
 
 \item{fname}{=NULL(default) or set to prefix for "funcname.ftype"}
 
-\item{fscale}{=NULL(default) or set to numerical value}
+\item{fscale}{=NULL(default) or set to numerical value for file scale}
 
-\item{fwidth}{see fscale}
+\item{fwidth}{=NULL(default) or set to file width}
 
-\item{fheight}{see fscale}
+\item{fheight}{=NULL(default) or set to file height}
 
 \item{dpi}{=300 (default) or set to desired resolution in dpi in file}
 
