@@ -62,7 +62,7 @@
 #' @param fontfamily ="sans" (default), can be "serif" "mono" 
 #' @param ymin =NA (default) or value to start y-axis
 #' @param ymax =NA (default) or value to end y-axis
-#' @param fontmain =c(14,"bold","black") default, change for title, 0 for not title 
+#' @param fontmain =c(14,"bold","black") default, change for title, 0 for no title 
 #' @param fontxname =c(12,"plain","black") (default) for x-axis name font, 0 to suppress
 #' @param fontyname =c(12,"plain","black") (default) for y-axis name font, 0 to suppress
 #' @param fontxticks =c(12,"plain","black") (default) for x-axis tick label font, 0 to suppress

@@ -1,8 +1,8 @@
 #' Does repeated measures one- or two-way anova and post-hoc tests (format wide or long - 1/many lines for each subject)
-#' @param dsgiven required: dataset, char-strings of names of first&last variable being analyzed, repeated grouping factor
-#' @param dnamf see dsgiven
-#' @param dnaml see dsgiven
-#' @param repnam see dsgiven
+#' @param dsgiven required: dataset
+#' @param dnamf required: char-string name of first variable being analyzed
+#' @param dnaml required: char-string name of last variable being analyzed
+#' @param repnam required: char-string name of repeated grouping factor
 #' @param fac2 char-string of name of 2nd, non-repeated grouping factor (default NULL)
 #' @param idnam (to indicate long format) =char-string of name of ID/Subject variable (default NULL)
 #' @param minimal = TRUE (default), F or FALSE to get all console output and graphs

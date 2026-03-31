@@ -11,9 +11,9 @@
 #' @param order =NULL (default)/c("...") to reorder bars
 #' @param psigcld =0 (no letters)/x for CLD letters on bars (any shared letter means P>psigcld, 0 for no letters)
 #' @param conf.int =0.95 (default)/x/0 for confidence interval width of contrast estimates (0 for none)
-#' @param depname to override names of depvar, groupvar, title
-#' @param g1name see depname
-#' @param title see depname
+#' @param depname =NULL to override name of depvar
+#' @param g1name =NULL to override name of groupvar
+#' @param title =NULL to override plot title
 #' @param legend ="top" (default), "bottom", "right", "left" to locate legend
 #' @param linetype ="n" (default)/x for no connecting lines ("dashed" "dotted")
 #' @param linecolor ="black" (default)/x for black lines ("red" etc)
@@ -31,9 +31,9 @@
 #' @param dotcolor =NULL (default "white") set to dot color
 #' @param ftype =NULL(default)/eps/pdf/jpg/jpeg/tiff/png/emf (for hires file or name.emf for Mac)
 #' @param fname =NULL(default) or set to prefix for "funcname.ftype"
-#' @param fscale =NULL(default) or set to numerical value
-#' @param fwidth see fscale
-#' @param fheight see fscale
+#' @param fscale =NULL(default) or set to numerical value for file scale
+#' @param fwidth =NULL(default) or set to file width
+#' @param fheight =NULL(default) or set to file height
 #' @param dpi =300 (default) or set to desired resolution in dpi in file
 #' @param remove choose from =c("xlab","ylab","x.text","y.text","x.ticks","y.ticks","grid","x.grid","y.grid","axis","x.axis","y.axis")
 #' @param suff =NULL suffix for file name

@@ -24,31 +24,31 @@
 #' @param r2size =4 (default)/x for size of R2/eqn
 #' @param r2color ="blue" (default)/x for R2/eqn color
 #' @param r2font ="plain" (default)/x for R2/eqn font ("bold","italic","bold.italic")
-#' @param xmin =NA (default) or value to start/end x/y-axis
-#' @param xmax see xmin
-#' @param ymin see xmin
-#' @param ymax see xmin
-#' @param fontmain =c(14,"bold","black") default, change for title, 0 for not title 
-#' @param fontxname = c(12,"plain","black") default, 0 to suppress
-#' @param fontyname see fontxname
-#' @param fontxticks see fontxname
-#' @param fontyticks see fontxname
-#' @param axiscolor ="black" (default)/x for axis/tick color
-#' @param tickcolor see axiscolor
-#' @param axisthick =0.5 (default)/x for axis/tick thickness
-#' @param tickthick see axisthick
+#' @param xmin =NA (default) or value to start x-axis
+#' @param xmax =NA (default) or value to end x-axis
+#' @param ymin =NA (default) or value to start y-axis
+#' @param ymax =NA (default) or value to end y-axis
+#' @param fontmain =c(14,"bold","black") default, change for title, 0 for no title 
+#' @param fontxname =c(12,"plain","black") (default) for x-axis name font, 0 to suppress
+#' @param fontyname =c(12,"plain","black") (default) for y-axis name font, 0 to suppress
+#' @param fontxticks =c(12,"plain","black") (default) for x-axis tick label font, 0 to suppress
+#' @param fontyticks =c(12,"plain","black") (default) for y-axis tick label font, 0 to suppress
+#' @param axiscolor ="black" (default)/x for axis color
+#' @param tickcolor ="black" (default)/x for tick color
+#' @param axisthick =0.5 (default)/x for axis thickness
+#' @param tickthick =0.5 (default)/x for tick thickness
 #' @param ticklength =1 (default)/x for tick length in mm
-#' @param xticks.by =NULL (default)/s for x/y tick spacing by s
-#' @param yticks.by see xticks.by
-#' @param xangle for axis value angles: 0 (default) horizontal, 90 vertical, or any value between
-#' @param yangle see xangle
+#' @param xticks.by =NULL (default)/s for x tick spacing by s
+#' @param yticks.by =NULL (default)/s for y tick spacing by s
+#' @param xangle =NULL for x-axis value angle: 0 (default) horizontal, 90 vertical, or any value between
+#' @param yangle =NULL for y-axis value angle: 0 (default) horizontal, 90 vertical, or any value between
 #' @param orientation (default="vertical"), can be "horizontal" or "reverse"
 #' @param titlejust ="center" (default) or "left" or "right"
 #' @param ftype =NULL(default)/eps/pdf/jpg/jpeg/tiff/png/emf (for hires file or name.emf for Mac)
 #' @param fname =NULL(default) or set to prefix for "funcname.ftype"
-#' @param fscale =NULL(default) or set to numerical value
-#' @param fwidth see fscale
-#' @param fheight see fscale
+#' @param fscale =NULL(default) or set to numerical value for file scale
+#' @param fwidth =NULL(default) or set to file width
+#' @param fheight =NULL(default) or set to file height
 #' @param dpi =300 (default) or set to desired resolution in dpi in file
 #' @param remove choose from =c("xlab","ylab","x.text","y.text","x.ticks","y.ticks","grid","x.grid","y.grid","axis","x.axis","y.axis")
 #' @param legheadsize =12 (default) for font size of legend heading

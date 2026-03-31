@@ -35,9 +35,9 @@
 #' @param dotcolor =NULL (default "white") set to dot color
 #' @param ftype =NULL(default)/eps/pdf/jpg/jpeg/tiff/png/emf (for hires file or name.emf for Mac)
 #' @param fname =NULL(default) or set to prefix for "funcname.ftype"
-#' @param fscale =NULL(default) or set to numerical value
-#' @param fwidth see fscale
-#' @param fheight see fscale
+#' @param fscale =NULL(default) or set to numerical value for file scale
+#' @param fwidth =NULL(default) or set to file width
+#' @param fheight =NULL(default) or set to file height
 #' @param dpi =300 (default) or set to desired resolution in dpi in file
 #' @param remove choose from =c("xlab","ylab","x.text","y.text","x.ticks","y.ticks","grid","x.grid","y.grid","axis","x.axis","y.axis")
 #' @param barcolor ="black" (default) for bar outline color
