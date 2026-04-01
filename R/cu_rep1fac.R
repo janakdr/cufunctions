@@ -6,7 +6,7 @@
 #' @param ebars =1 (default)/2/3 (post-hoc t, SD/SE/CL) or 4 (nonparametric, IQR)
 #' @param dots =0 (default), 1 to display data on graph
 #' @param barcolor ="black" (default) for bar outline color
-#' @param barfill ="colors" (default) for bar fill color
+#' @param barfill ="colors" (default) for fill color. "colors" for colors by group ("lancet" for 2 factors, other journal options "aaas", "jco", "uchicago", "npg"
 #' @param plot ="bar" (default) for bar graphs; "box" "violin" "rod" "no"
 #' @param order =NULL (default)/c("...") to reorder bars
 #' @param psigcld =0 (no letters)/x for CLD letters on bars (any shared letter means P>psigcld, 0 for no letters)
@@ -28,6 +28,7 @@
 #' @param posd =NULL (default) set to values around 0.9 to fine-tune group2 bar spacing
 #' @param binwfac =NULL (default 30) set to fraction of range within which points will be binned
 #' @param dotsize =NULL (default 1) set to fraction of binwidth for dot size
+#' @param dotshape =NULL (default) for dot shape
 #' @param dotcolor =NULL (default "white") set to dot color
 #' @param ftype =NULL(default)/eps/pdf/jpg/jpeg/tiff/png/emf (for hires file or name.emf for Mac)
 #' @param fname =NULL(default) or set to prefix for "funcname.ftype"
@@ -47,7 +48,6 @@
 #' @param pvnshide =TRUE (default) to hide non-significant p-values
 #' @param pvtipl =0.01 (default) length of p-value line tips
 #' @param caption =NULL (default) caption text
-#' @param dotshape =NULL (default) for dot shape
 #' @return returns nothing
 #' @examples
 #' # Internal function, not exported; called via curepmeas()

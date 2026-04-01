@@ -4,8 +4,8 @@
 #' @param gpairs list of group pairs to be compared
 #' @param xdash =0.5 (default) to locate dashed vertical lines
 #' @param psig =0.05 (default) for p-value threshold of interest
-#' @param pfactor =1 (default) for factor to divide psig by for multiple comparison correction
 #' @param psigmin =0.2 (default) for upper limit of p-values to display
+#' @param pfactor =1 (default) for factor to divide psig by for multiple comparison correction
 #' @param foldmin =NULL (default) for left end of log2(FoldChange) (usually set to -2)
 #' @param foldmax =NULL (default) for right end of log2(FoldChange) (usually set to 2)
 #' @param ylim =5 (default) for upper limit of graph (-log10(pval))

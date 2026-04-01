@@ -451,7 +451,7 @@ cu1way = function(depvar, group1, ebars=0, ordinal=NULL, plot="bar", ytrans="non
            "redo cu1way adding pbart=x, where x<",signif(pval,digits=3),"\n")
     }
     if (pool.sd) { # consider printing pval matrix first, as in 2way
-      pairout = cupairwise.t(dsnomiss$A,dsnomiss$B,p.adjust=padj)
+      pairout = cupairwise.t(dsnomiss$A,dsnomiss$B,p.adjust.method=padj)
       #junk = pairout$p.value; cat("\njunk:"); print(junk)
       pairout$data.name = paste(depname,"compared across",nlem,g1name,
                           "groups",ifelse(padj=="none","using Fisher's LSD",""))

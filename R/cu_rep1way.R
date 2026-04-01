@@ -2,12 +2,15 @@
 #' @param ddep required: dependent variable values
 #' @param dgp required: grouping factor values
 #' @param dsub required: subject identifier values
+#' @param depvar char-string name of dependent variable
+#' @param groupvar char-string name of grouping factor
+#' @param Subject char-string name of subject identifier
 #' @param itrans type of transformation if any
 #' @param minimal = FALSE (default), T or TRUE to suppress all output (for cuomics)
 #' @param ebars =0 (default to be 1 or 4)/1/2/3 (post-hoc t, SD/SE/CL) or 4 (nonparametric, IQR) or -N (nonparm if any norm fail)
 #' @param dots =0 (default), 1 to display data on graph
 #' @param barcolor ="black" (default) for bar outline color
-#' @param barfill ="colors" (default) for bar fill color
+#' @param barfill ="colors" (default) for fill color. "colors" for colors by group ("lancet" for 2 factors, other journal options "aaas", "jco", "uchicago", "npg"
 #' @param plot ="bar" (default) for bar graphs; "box" "violin" "rod" "no"
 #' @param order =NULL (default)/c("...") to reorder bars
 #' @param psigcld =0 (no letters)/x for CLD letters on bars (any shared letter means P>psigcld, 0 for no letters)
@@ -70,9 +73,6 @@
 #' @param fheight =NULL(default) or set to file height
 #' @param dpi =300 (default) or set to desired resolution in dpi in file
 #' @param remove choose from =c("xlab","ylab","x.text","y.text","x.ticks","y.ticks","grid","x.grid","y.grid","axis","x.axis","y.axis")
-#' @param depvar char-string name of dependent variable
-#' @param groupvar char-string name of grouping factor
-#' @param Subject char-string name of subject identifier
 #' @return one line of summary means/SDs and p-values
 #' @examples
 #' # Internal function, not exported; called via curepmeas()
