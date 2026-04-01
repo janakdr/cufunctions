@@ -1,10 +1,17 @@
 #' Does two-way analysis of covariance (ancova), all contrasts, and a graph
-#' @param depvar ,covar, group1, group2 required: dep-var, covariate, grouping factors 1 & 2
+#' @param depvar required: dependent variable
+#' @param covar required: covariate
+#' @param group1 required: first grouping factor
+#' @param group2 required: second grouping factor
 #' @param xs optional, c(x1,x2,..) to model with interaction and do contrasts at x1,x2,...
 #' @param interact =TRUE (default), F or FALSE for no group1*group2 interaction
 #' @param dosimpler =T (default) or F to do or not do cu2way first
 #' @param partialF =TRUE (default), F or FALSE for no partial F vs simpler models
-#' @param depname /covname/g1name/g2name/title to override names of depvar, covar, group1, group2, title
+#' @param depname =NULL to override name of depvar
+#' @param covname =NULL to override name of covar
+#' @param g1name =NULL to override name of group1
+#' @param g2name =NULL to override name of group2
+#' @param title =NULL to override plot title
 #' @param caption ='' (default) or set to string to show at bottom right
 #' @param g1order =NULL (default) to reorder group1 (1st Factor)
 #' @param g2order =NULL (default) to reorder group2 (2nd Factor)
@@ -18,10 +25,10 @@
 #' @param pnorm =0.05 (default)/x for normality test threshold
 #' @param chariqr ="," (default)/x for character to separate quartiles ("-" etc)
 #' @param legend (default="top"), can be "bottom", "right", "left"
-#' @param xangle /yangle for axis value angles: 0 (default) horizontal, 90 vertical, or any value between
+#' @param xangle =NULL for x-axis value angle: 0 (default) horizontal, 90 vertical, or any value between
+#' @param yangle =NULL for y-axis value angle: 0 (default) horizontal, 90 vertical, or any value between
 #' @param orientation (default="vertical"), can change to "horizontal"
 #' @param posd NULL (default) set to values around 0.9 to fine-tune group2 bar spacing
-#' @param shape =16 (default closed circle) (see http://www.sthda.com/english/wiki/ggplot2-point-shapes)
 #' @param dotcolor ="black" (default) for point symbol color (="red" ="blue" etc)
 #' @param dotsize =2 (default) or x to set size of point symbols
 #' @param linetype ="solid"(default)/x for solid line ("solid" "dashed" "dotted" "blank" "longdash" "dotdash" "twodash")
@@ -33,18 +40,26 @@
 #' @param ymin =NA (default) or value to start y-axis
 #' @param xmax =NA (default) or value to end x-axis
 #' @param ymax =NA (default) or value to end y-axis
-#' @param fontmain =c(14,"bold","black") default, change for title, 0 for not title 
-#' @param fontxname .fontyname,fontxticks,fontyticks = c(12,"plain","black") default, 0 to suppress
-#' @param axiscolor ,tickcolor="black" (default)/x for axis/tick color
-#' @param axisthick ,tickthick=0.5 (default)/x for axis/tick thickness
+#' @param fontmain =c(14,"bold","black") default, change for title, 0 for no title 
+#' @param fontxname =c(12,"plain","black") (default) for x-axis name font, 0 to suppress
+#' @param fontyname =c(12,"plain","black") (default) for y-axis name font, 0 to suppress
+#' @param fontxticks =c(12,"plain","black") (default) for x-axis tick label font, 0 to suppress
+#' @param fontyticks =c(12,"plain","black") (default) for y-axis tick label font, 0 to suppress
+#' @param axiscolor ="black" (default)/x for axis color
+#' @param tickcolor ="black" (default)/x for tick color
+#' @param axisthick =0.5 (default)/x for axis thickness
+#' @param tickthick =0.5 (default)/x for tick thickness
 #' @param ticklength =1 (default)/x for tick length in mm
-#' @param xticks.by ,yticks.by =NULL (default)/s for x/y tick spacing by s
+#' @param xticks.by =NULL (default)/s for x tick spacing by s
+#' @param yticks.by =NULL (default)/s for y tick spacing by s
 #' @param titlejust ="center" (default) or "left" or "right"
 #' @param legheadsize =12 (default) for font size of legend heading
 #' @param legtextsize =10 (default) for the font size of legend text
 #' @param ftype =NULL(default)/eps/pdf/jpg/jpeg/tiff/png/emf (for hires file or name.emf for Mac)
 #' @param fname =NULL(default) or set to prefix for "funcname.ftype"
-#' @param fscale ,fwidth,fheight =NULL(default) or set to numerical value
+#' @param fscale =NULL(default) or set to numerical value for file scale
+#' @param fwidth =NULL(default) or set to file width
+#' @param fheight =NULL(default) or set to file height
 #' @param dpi =300 (default) or set to desired resolution in dpi in file
 #' @param remove choose from =c("xlab","ylab","x.text","y.text","x.ticks","y.ticks","grid","x.grid","y.grid","axis","x.axis","y.axis")
 #' @return returns nothing
