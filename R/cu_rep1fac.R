@@ -15,6 +15,17 @@
 #' @param g1name =NULL to override name of groupvar
 #' @param title =NULL to override plot title
 #' @param legend ="top" (default), "bottom", "right", "left" to locate legend
+#' @param suff =NULL suffix for file name
+#' @param pvpairs ="all" (default) p-value pairs to show
+#' @param pvypos =NULL (default) position of p-value lines
+#' @param pvsi =0.05 (default) increment for p-value lines
+#' @param pvlab ="p" (default) label format for p-values ("p" or "*")
+#' @param pvprefix ="p=" (default) prefix to p-values
+#' @param chpvref ="ref" (default) char above reference group bar
+#' @param pvcuts =c(0.2,0.05,0.01,0.001) p-value cutpoints
+#' @param pvnshide =TRUE (default) to hide non-significant p-values
+#' @param pvtipl =0.01 (default) length of p-value line tips
+#' @param caption =NULL (default) caption text
 #' @param linetype ="n" (default)/x for no connecting lines ("dashed" "dotted")
 #' @param linecolor ="black" (default)/x for black lines ("red" etc)
 #' @param linesize =1 (default)/x for line thickness
@@ -37,17 +48,6 @@
 #' @param fheight =NULL(default) or set to file height
 #' @param dpi =300 (default) or set to desired resolution in dpi in file
 #' @param remove choose from =c("xlab","ylab","x.text","y.text","x.ticks","y.ticks","grid","x.grid","y.grid","axis","x.axis","y.axis")
-#' @param suff =NULL suffix for file name
-#' @param pvpairs ="all" (default) p-value pairs to show
-#' @param pvypos =NULL (default) position of p-value lines
-#' @param pvsi =0.05 (default) increment for p-value lines
-#' @param pvlab ="p" (default) label format for p-values ("p" or "*")
-#' @param pvprefix ="p=" (default) prefix to p-values
-#' @param chpvref ="ref" (default) char above reference group bar
-#' @param pvcuts =c(0.2,0.05,0.01,0.001) p-value cutpoints
-#' @param pvnshide =TRUE (default) to hide non-significant p-values
-#' @param pvtipl =0.01 (default) length of p-value line tips
-#' @param caption =NULL (default) caption text
 #' @return returns nothing
 #' @examples
 #' # Internal function, not exported; called via curepmeas()

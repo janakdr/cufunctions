@@ -15,7 +15,7 @@
 #' @param ebars =0 (default to be 1 or 4)/1/2/3 (post-hoc t, SD/SE/CL) or 4 (nonparametric, IQR) or -N (nonparm if any norm fail)
 #' @param dots =0 (default), 1 to display data on graph
 #' @param barcolor ="black" (default) for bar outline color
-#' @param barfill ="colors" (default) for bar fill color
+#' @param barfill ="colors" (default) for fill color. "colors" for colors by group
 #' @param plot ="bar" (default) for bar graphs; "box" "violin" "rod" "no"
 #' @param order =NULL (default)/c("...") to reorder bars
 #' @param psigcld =0 (no letters)/x for CLD letters on bars (any shared letter means P>psigcld, 0 for no letters)
@@ -25,7 +25,6 @@
 #' @param g1name =NULL to override name of group1
 #' @param g2name =NULL to override name of group2
 #' @param title =NULL to override plot title
-#' @param legend ="top" (default), "bottom", "right", "left" to locate legend
 #' @param pnorm =0.05 (default) threshold for normality test
 #' @param pvpairs ="std" (default)/"all"/i/c(ij,ik,...) to show std or all or vs.i or pval's of i/j, i/k ...
 #' @param pvypos =NULL (default)/position of pval lines
@@ -43,6 +42,7 @@
 #' @param pvnshide =T (default)/F to hide NS p-values or not
 #' @param pvtipl =0.01 (default)/length of p-value line tips
 #' @param refmean =NA (default)/ref.val to compare each group mean with
+#' @param legend ="top" (default), "bottom", "right", "left" to locate legend
 #' @param suff =NULL (default) set to desired suffix
 #' @param caption =NULL (default)/"yes"/"caption text" to get caption ("yes" to list n's)
 #' @param linetype ="n" (default)/x for no connecting lines ("dashed" "dotted")
@@ -79,10 +79,6 @@
 #' @param fheight =NULL(default) or set to file height
 #' @param dpi =300 (default) or set to desired resolution in dpi in file
 #' @param remove choose from =c("xlab","ylab","x.text","y.text","x.ticks","y.ticks","grid","x.grid","y.grid","axis","x.axis","y.axis")
-#' @param ddep dependent variable values
-#' @param dgp1 first (repeated) grouping factor values
-#' @param dgp2 second (non-repeated) grouping factor values
-#' @param dsub subject identifier values
 #' @return one line of summary means/SDs and p-values
 #' @examples
 #' # Internal function, not exported; called via curepmeas()

@@ -5,13 +5,13 @@
 #' @param xs list of probability cut points for 2x2 tables (besides 0.5)
 #' @param namedep outcome variable name labeling graph
 #' @param logitlog ="logit" (default) to model odds ("logit") or risk ("log")
-#' @param printfit =FALSE (default), TRUE to print fit details
 #' @param emf =F(default)/T/name (to create culogist.emf or name.emf needed on Mac)
 #' @param xlabroc ="x axis label" (default "1 - Specificity")
 #' @param ylabroc ="y axis label" (default "Sensitivity")
 #' @param label.ordering = c(two labels) to override alphabetical order
 #' @param color ="red" (default) for single ROC curve color (glm object)
 #' @param veccolor =c("red","blue","green","black") (default) for multiple curves (polr object)
+#' @param printfit =FALSE (default), TRUE to print fit details
 #' @return returns nothing
 #' @examples
 #' logfit <- glm(MetSyn ~ TG + HDL, data = Met, family = binomial)
@@ -124,7 +124,8 @@ curoc = function(LRobj, depvar, twolev=TRUE, xs=NULL, namedep=NULL, logitlog="lo
     options(warn = -1)
     perfPlot = performance(PredObj, "tpr", "fpr")
     graphics::par(font.lab=2)
-    ROCR::plot(perfPlot, add=F, main=AUCtitle, xlab=xlab, ylab=ylab, col=color)
+    # TODO(janakr): Add a test that hits this line.
+    ROCR::plot(perfPlot, add=F, main=AUCtitle, xlab=xlabroc, ylab=ylabroc, col=color)
     options(warn = oldw)
     grDevices::dev.off()
   }

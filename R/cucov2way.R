@@ -29,6 +29,7 @@
 #' @param yangle =NULL for y-axis value angle: 0 (default) horizontal, 90 vertical, or any value between
 #' @param orientation (default="vertical"), can change to "horizontal"
 #' @param posd NULL (default) set to values around 0.9 to fine-tune group2 bar spacing
+#' @param shape =16 (default closed circle) (see http://www.sthda.com/english/wiki/ggplot2-point-shapes)
 #' @param dotcolor ="black" (default) for point symbol color (="red" ="blue" etc)
 #' @param dotsize =2 (default) or x to set size of point symbols
 #' @param linetype ="solid"(default)/x for solid line ("solid" "dashed" "dotted" "blank" "longdash" "dotdash" "twodash")
