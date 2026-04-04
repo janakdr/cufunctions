@@ -29,7 +29,9 @@ cu1way(depvar, group1, ebars = 0, ordinal = NULL, plot = "bar",
   remove = NULL)
 }
 \arguments{
-\item{depvar}{,group1 required: variable being analyzed, grouping factor}
+\item{depvar}{required: variable being analyzed}
+
+\item{group1}{required: grouping factor}
 
 \item{ebars}{=0 (default to be 1 or 4)/1/2/3 (post-hoc t, SD/SE/CL) or 4 (nonparametric, IQR) or -N (nonparm if any norm fail)}
 
@@ -43,7 +45,9 @@ cu1way(depvar, group1, ebars = 0, ordinal = NULL, plot = "bar",
 
 \item{dots}{=0 (default), 1 to display data on graph}
 
-\item{barcolor}{for outline color, barfill for fill color. Use fill="grey" ="black" etc for single color.}
+\item{barcolor}{="black" (default) for bar outline color}
+
+\item{barfill}{="colors" (default) for bar fill color. Use fill="grey" ="black" etc for single color.}
 
 \item{casecontrol}{=F (default)/T if depvar has 2 levels control and case}
 
@@ -57,7 +61,11 @@ cu1way(depvar, group1, ebars = 0, ordinal = NULL, plot = "bar",
 
 \item{refmean}{=NA (default)/ref.val to compare each group mean with}
 
-\item{depname}{/g1name/title to override names of depvar, group1, title}
+\item{depname}{=NULL to override name of depvar}
+
+\item{g1name}{=NULL to override name of group1}
+
+\item{title}{=NULL to override plot title}
 
 \item{caption}{=NULL (default)/"yes"/"caption text" to get caption ("yes" to list n's)}
 
@@ -71,6 +79,22 @@ cu1way(depvar, group1, ebars = 0, ordinal = NULL, plot = "bar",
 
 \item{chariqr}{=":" (default)/x for character to separate quartiles ("-" "," etc)}
 
+\item{pvpairs}{="std" (default)/"all"/i/c(ij,ik,...) to show std or all or vs.i or pval's of i/j, i/k ...}
+
+\item{pvypos}{=NULL (default)/position of pval lines}
+
+\item{pvstinc}{=0.05 (default)/increment for pvypos from one pval line to next}
+
+\item{pvlab}{="p" (default)/"*" to display numerical or asterisks}
+
+\item{pvprefix}{="p=" (default)/"" etc prefix to p-values}
+
+\item{pvsize}{=NULL (default 3.5, 7)/size of p-values or **}
+
+\item{chpvref}{="ref" (default) char above i-th group bar when pvpairs=i}
+
+\item{pvspill}{=F (default)/T to not allow p-values to spill outside range or to allow}
+
 \item{pnosig}{=0.2 (default)/x for threshold to show p-values even if nonsigificant}
 
 \item{psignif}{=0.05 (default)/x for threshold to significance}
@@ -80,6 +104,10 @@ cu1way(depvar, group1, ebars = 0, ordinal = NULL, plot = "bar",
 \item{p3stars}{=0.001 (default)/x for threshold to three stars}
 
 \item{p4stars}{=0.0001 (default)/x for threshold to four stars}
+
+\item{pvnshide}{=T (default)/F to hide NS p-values or not}
+
+\item{pvtipl}{=0.01 (default)/length of p-value line tips}
 
 \item{doAll}{=T (default) for "All" column; F for no; "I" in quotes for All first.}
 
@@ -105,7 +133,9 @@ cu1way(depvar, group1, ebars = 0, ordinal = NULL, plot = "bar",
 
 \item{font.x}{=NULL (default)}
 
-\item{xangle}{/yangle for axis value angles: 0 (default) horizontal, 90 vertical, or any value between}
+\item{xangle}{=NULL for x-axis value angle: 0 (default) horizontal, 90 vertical, or any value between}
+
+\item{yangle}{=NULL for y-axis value angle: 0 (default) horizontal, 90 vertical, or any value between}
 
 \item{orientation}{(default="vertical"), can be "horizontal" or "reverse"}
 
@@ -121,19 +151,33 @@ cu1way(depvar, group1, ebars = 0, ordinal = NULL, plot = "bar",
 
 \item{fontfamily}{="sans" (default), can be "serif" "mono"}
 
-\item{ymin, }{ymax =NA (default) or value to start/end y-axis}
+\item{ymin}{=NA (default) or value to start y-axis}
 
-\item{fontmain}{=c(14,"bold","black") default, change for title, 0 for not title}
+\item{ymax}{=NA (default) or value to end y-axis}
 
-\item{fontxname}{.fontyname,fontxticks,fontyticks = c(12,"plain","black") default, 0 to suppress}
+\item{fontmain}{=c(14,"bold","black") default, change for title, 0 for no title}
 
-\item{axiscolor}{,tickcolor="black" (default)/x for axis/tick color}
+\item{fontxname}{=c(12,"plain","black") (default) for x-axis name font, 0 to suppress}
 
-\item{axisthick}{,tickthick=0.5 (default)/x for axis/tick thickness}
+\item{fontyname}{=c(12,"plain","black") (default) for y-axis name font, 0 to suppress}
+
+\item{fontxticks}{=c(12,"plain","black") (default) for x-axis tick label font, 0 to suppress}
+
+\item{fontyticks}{=c(12,"plain","black") (default) for y-axis tick label font, 0 to suppress}
+
+\item{axiscolor}{="black" (default)/x for axis color}
+
+\item{tickcolor}{="black" (default)/x for tick color}
+
+\item{axisthick}{=0.5 (default)/x for axis thickness}
+
+\item{tickthick}{=0.5 (default)/x for tick thickness}
 
 \item{ticklength}{=1 (default)/x for tick length in mm}
 
-\item{xticks.by}{,yticks.by =NULL (default)/s for x/y tick spacing by s}
+\item{xticks.by}{=NULL (default)/s for x tick spacing by s}
+
+\item{yticks.by}{=NULL (default)/s for y tick spacing by s}
 
 \item{titlejust}{="center" (default) or "left" or "right"}
 
@@ -145,31 +189,15 @@ cu1way(depvar, group1, ebars = 0, ordinal = NULL, plot = "bar",
 
 \item{fname}{=NULL(default) or set to prefix for "funcname.ftype"}
 
-\item{fscale}{,fwidth,fheight =NULL(default) or set to numerical value}
+\item{fscale}{=NULL(default) or set to numerical value for file scale}
+
+\item{fwidth}{=NULL(default) or set to file width}
+
+\item{fheight}{=NULL(default) or set to file height}
 
 \item{dpi}{=300 (default) or set to desired resolution in dpi in file}
 
 \item{remove}{choose from =c("xlab","ylab","x.text","y.text","x.ticks","y.ticks","grid","x.grid","y.grid","axis","x.axis","y.axis")}
-
-\item{pvpairs="std"}{(default)/"all"/i/c(ij,ik,...) to show std or all or vs.i or pval's of i/j, i/k ...}
-
-\item{pvypos=NULL}{(default)/position of pval lines}
-
-\item{pvstinc=0.05}{(default)/increment for pvypos from one pval line to next}
-
-\item{pvlab="p"/"*"}{to display numerical or asterisks}
-
-\item{pvprefix="p="}{(default)/"" etc prefix to p-values}
-
-\item{pvsize=NULL}{(default 3.5, 7)/size of p-values or **}
-
-\item{chpvref="ref"}{(default) char above i-th group bar when pvpairs=i}
-
-\item{pvspill=F/T}{to not allow p-values to spill outside range or to allow}
-
-\item{pvnshide=T}{(default)/F to hide NS p-values or not}
-
-\item{pvtipl=0.01}{(default)/length of p-value line tips}
 }
 \value{
 returns nothing

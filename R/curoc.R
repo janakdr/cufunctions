@@ -11,6 +11,7 @@
 #' @param label.ordering = c(two labels) to override alphabetical order
 #' @param color ="red" (default) for single ROC curve color (glm object)
 #' @param veccolor =c("red","blue","green","black") (default) for multiple curves (polr object)
+#' @param printfit =FALSE (default), TRUE to print fit details
 #' @return returns nothing
 #' @examples
 #' logfit <- glm(MetSyn ~ TG + HDL, data = Met, family = binomial)
@@ -123,7 +124,8 @@ curoc = function(LRobj, depvar, twolev=TRUE, xs=NULL, namedep=NULL, logitlog="lo
     options(warn = -1)
     perfPlot = performance(PredObj, "tpr", "fpr")
     graphics::par(font.lab=2)
-    ROCR::plot(perfPlot, add=F, main=AUCtitle, xlab=xlab, ylab=ylab, col=color)
+    # TODO(janakr): Add a test that hits this line.
+    ROCR::plot(perfPlot, add=F, main=AUCtitle, xlab=xlabroc, ylab=ylabroc, col=color)
     options(warn = oldw)
     grDevices::dev.off()
   }

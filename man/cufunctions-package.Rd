@@ -4,9 +4,9 @@
 \name{cufunctions-package}
 \alias{cufunctions}
 \alias{cufunctions-package}
-\title{cufunctions: Facilitate Stats with One-line Invokes Instead of Many R Commands}
+\title{cufunctions: Facilitates Stats with One-Line Invokes Instead of Many R Commands}
 \description{
-Look at help for each function for functionality: cu1way, cu2way, cucov1way, cucov2way, cucox, cukm, culinreg, culogist, cuomics, cupairwise.t, cupartialF, curead, curepmeas, curoc, cuscatter, cutable1, cuvolcano
+Look at the help for each function. The functions are cu1way, cu2way, cucov1way, cucov2way, cucox, cukm, culinreg, culogist, cuomics, cupairwise.t, cupartialF, curead, curepmeas, curoc, cuscatter, cutable1, cuvolc, and cuvolcano.
 }
 \author{
 \strong{Maintainer}: Rajasekhar Ramakrishnan \email{rr6@caa.columbia.edu}

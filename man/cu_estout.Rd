@@ -2,78 +2,11 @@
 % Please edit documentation in R/cu_estout.R
 \name{cu_estout}
 \alias{cu_estout}
-\alias{estimable}
-\alias{estimable.default}
-\alias{estimable.mlm}
 \title{internal cufunction to print estimable results, return p-value}
 \usage{
 cu_estout(fit, vec, conf.int = 0.95, minimal = F)
 }
-\arguments{
-\item{conf.int}{Confidence level.  If provided, confidence intervals will be
-computed.
-https://rdrr.io/cran/gmodels/src/R/to.est.R
-Return a vector for cm in estimable()}
-
-\item{cm}{Vector, List, or Matrix specifying estimable linear functions or
-contrasts.  See below for details.}
-
-\item{beta0}{Vector of null hypothesis values}
-
-\item{obj}{estimable object}
-
-\item{params}{character vector of names or logical vector with one element per model parameter selecting desrired parameter(s).}
-}
 \description{
 internal cufunction to print estimable results, return p-value
 }
-\author{
-Randy Johnson, Laboratory of Genomic Diversity at NCI-Frederick
-}
-\keyword{(optional)}
-\keyword{->}
-\keyword{Compute}
-\keyword{Contrasts}
-\keyword{Perl}
-\keyword{`cm`.}
-\keyword{`estimable`}
-\keyword{an}
-\keyword{and}
-\keyword{avoid}
-\keyword{by}
-\keyword{coefficients}
-\keyword{computes}
-\keyword{confidence}
-\keyword{contrasts}
-\keyword{each}
-\keyword{estimable}
-\keyword{estimate,}
-\keyword{for}
-\keyword{functions}
-\keyword{gdata}
-\keyword{geese}
-\keyword{glm,}
-\keyword{gmodels}
-\keyword{here}
-\keyword{https://rdrr.io/cran/gmodels/src/R/estimable.R}
-\keyword{included}
 \keyword{internal}
-\keyword{interval}
-\keyword{linear}
-\keyword{lm,}
-\keyword{lme,}
-\keyword{loading}
-\keyword{mer,}
-\keyword{model}
-\keyword{needs}
-\keyword{objects}
-\keyword{of}
-\keyword{other}
-\keyword{significance}
-\keyword{specified}
-\keyword{statitic,}
-\keyword{test}
-\keyword{test,}
-\keyword{that}
-\keyword{the}
-\keyword{to}

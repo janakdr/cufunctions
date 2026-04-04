@@ -22,7 +22,13 @@ cucov2way(depvar, covar, group1, group2, xs = NULL, interact = T,
   fwidth = NULL, fheight = NULL, dpi = 300, remove = NULL)
 }
 \arguments{
-\item{depvar}{,covar, group1, group2 required: dep-var, covariate, grouping factors 1 & 2}
+\item{depvar}{required: dependent variable}
+
+\item{covar}{required: covariate}
+
+\item{group1}{required: first grouping factor}
+
+\item{group2}{required: second grouping factor}
 
 \item{xs}{optional, c(x1,x2,..) to model with interaction and do contrasts at x1,x2,...}
 
@@ -32,7 +38,15 @@ cucov2way(depvar, covar, group1, group2, xs = NULL, interact = T,
 
 \item{partialF}{=TRUE (default), F or FALSE for no partial F vs simpler models}
 
-\item{depname}{/covname/g1name/g2name/title to override names of depvar, covar, group1, group2, title}
+\item{depname}{=NULL to override name of depvar}
+
+\item{covname}{=NULL to override name of covar}
+
+\item{g1name}{=NULL to override name of group1}
+
+\item{g2name}{=NULL to override name of group2}
+
+\item{title}{=NULL to override plot title}
 
 \item{caption}{='' (default) or set to string to show at bottom right}
 
@@ -58,13 +72,15 @@ cucov2way(depvar, covar, group1, group2, xs = NULL, interact = T,
 
 \item{legend}{(default="top"), can be "bottom", "right", "left"}
 
-\item{xangle}{/yangle for axis value angles: 0 (default) horizontal, 90 vertical, or any value between}
+\item{xangle}{=NULL for x-axis value angle: 0 (default) horizontal, 90 vertical, or any value between}
+
+\item{yangle}{=NULL for y-axis value angle: 0 (default) horizontal, 90 vertical, or any value between}
 
 \item{orientation}{(default="vertical"), can change to "horizontal"}
 
 \item{posd}{NULL (default) set to values around 0.9 to fine-tune group2 bar spacing}
 
-\item{shape}{=16 (default closed circle) (see http://www.sthda.com/english/wiki/ggplot2-point-shapes)}
+\item{shape}{(default=closed circle): numeric value from 0 to 25 [rest below for cu2way]}
 
 \item{dotcolor}{="black" (default) for point symbol color (="red" ="blue" etc)}
 
@@ -80,27 +96,53 @@ cucov2way(depvar, covar, group1, group2, xs = NULL, interact = T,
 
 \item{fontfamily}{="sans" (default), can be "serif" "mono"}
 
-\item{xmin}{,xmax,ymin,ymax =NA (default) or value to start/end x/y-axis}
+\item{xmin}{=NA (default) or value to start x-axis}
 
-\item{fontmain}{=c(14,"bold","black") default, change for title, 0 for not title}
+\item{ymin}{=NA (default) or value to start y-axis}
 
-\item{fontxname}{.fontyname,fontxticks,fontyticks = c(12,"plain","black") default, 0 to suppress}
+\item{xmax}{=NA (default) or value to end x-axis}
 
-\item{axiscolor}{,tickcolor="black" (default)/x for axis/tick color}
+\item{ymax}{=NA (default) or value to end y-axis}
 
-\item{axisthick}{,tickthick=0.5 (default)/x for axis/tick thickness}
+\item{fontmain}{=c(14,"bold","black") default, change for title, 0 for no title}
+
+\item{fontxname}{=c(12,"plain","black") (default) for x-axis name font, 0 to suppress}
+
+\item{fontyname}{=c(12,"plain","black") (default) for y-axis name font, 0 to suppress}
+
+\item{fontxticks}{=c(12,"plain","black") (default) for x-axis tick label font, 0 to suppress}
+
+\item{fontyticks}{=c(12,"plain","black") (default) for y-axis tick label font, 0 to suppress}
+
+\item{axiscolor}{="black" (default)/x for axis color}
+
+\item{tickcolor}{="black" (default)/x for tick color}
+
+\item{axisthick}{=0.5 (default)/x for axis thickness}
+
+\item{tickthick}{=0.5 (default)/x for tick thickness}
 
 \item{ticklength}{=1 (default)/x for tick length in mm}
 
-\item{xticks.by}{,yticks.by =NULL (default)/s for x/y tick spacing by s}
+\item{xticks.by}{=NULL (default)/s for x tick spacing by s}
+
+\item{yticks.by}{=NULL (default)/s for y tick spacing by s}
 
 \item{titlejust}{="center" (default) or "left" or "right"}
+
+\item{legheadsize}{=12 (default) for font size of legend heading}
+
+\item{legtextsize}{=10 (default) for the font size of legend text}
 
 \item{ftype}{=NULL(default)/eps/pdf/jpg/jpeg/tiff/png/emf (for hires file or name.emf for Mac)}
 
 \item{fname}{=NULL(default) or set to prefix for "funcname.ftype"}
 
-\item{fscale}{,fwidth,fheight =NULL(default) or set to numerical value}
+\item{fscale}{=NULL(default) or set to numerical value for file scale}
+
+\item{fwidth}{=NULL(default) or set to file width}
+
+\item{fheight}{=NULL(default) or set to file height}
 
 \item{dpi}{=300 (default) or set to desired resolution in dpi in file}
 

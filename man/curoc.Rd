@@ -23,6 +23,8 @@ curoc(LRobj, depvar, twolev = TRUE, xs = NULL, namedep = NULL,
 
 \item{logitlog}{="logit" (default) to model odds ("logit") or risk ("log")}
 
+\item{printfit}{=FALSE (default), TRUE to print fit details}
+
 \item{emf}{=F(default)/T/name (to create culogist.emf or name.emf needed on Mac)}
 
 \item{xlabroc}{="x axis label" (default "1 - Specificity")}

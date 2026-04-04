@@ -18,7 +18,13 @@ cucox(dsgiven, timnam, depnam, formula, dopredkm = T, doroc = T,
   remove = NULL)
 }
 \arguments{
-\item{dsgiven}{, timnam, depnam, formula  required: dataset, char-strings of names of time-var and variable being analyzed, and model formula}
+\item{dsgiven}{required: dataset}
+
+\item{timnam}{char-string of name of time-to-event variable}
+
+\item{depnam}{char-string of name of outcome variable being analyzed}
+
+\item{formula}{model formula}
 
 \item{dopredkm}{=T (default) to get (T) or not get (F) predicted Kaplan-Meier curves}
 
@@ -36,7 +42,9 @@ cucox(dsgiven, timnam, depnam, formula, dopredkm = T, doroc = T,
 
 \item{nmodshow}{=16 (default) to show top nmodshow models by dredge}
 
-\item{m.min}{and m.max= to set smallest and largest model sizes in dredge}
+\item{m.min}{to set smallest model size in dredge}
+
+\item{m.max}{to set largest model size in dredge}
 
 \item{fixed}{= c(,,) list to specify variables that must be in model}
 
@@ -68,13 +76,23 @@ cucox(dsgiven, timnam, depnam, formula, dopredkm = T, doroc = T,
 
 \item{titlekm}{=NULL (default) for K-M title}
 
-\item{nverkm, nhorkm, nverroc, nhorroc}{=2 (default) #km,rocplots vert,horiz}
+\item{nverkm}{=2 (default) number of K-M plots vertically}
+
+\item{nhorkm}{=2 (default) number of K-M plots horizontally}
+
+\item{nverroc}{=2 (default) number of ROC plots vertically}
+
+\item{nhorroc}{=2 (default) number of ROC plots horizontally}
 
 \item{ftype}{=NULL(default)/eps/pdf/jpg/jpeg/tiff/png/emf (for hires file or name.emf for Mac)}
 
 \item{fname}{=NULL(default) or set to prefix for "funcname.ftype"}
 
-\item{fscale}{,fwidth,fheight =NULL(default) or set to numerical value}
+\item{fscale}{=NULL(default) or set to numerical value for plot scaling}
+
+\item{fwidth}{=NULL(default) or set to numerical value for plot width}
+
+\item{fheight}{=NULL(default) or set to numerical value for plot height}
 
 \item{dpi}{=300 (default) or set to desired resolution in dpi in file}
 

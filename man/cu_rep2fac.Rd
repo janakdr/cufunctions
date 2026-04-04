@@ -20,9 +20,13 @@ cu_rep2fac(depvar, group1, group2, Subject, interact = TRUE,
   fheight = NULL, dpi = 300, remove = NULL)
 }
 \arguments{
-\item{depvar}{, group1, group2, Subject  (4 required)}
+\item{depvar}{required: dependent variable}
 
-\item{group1}{repeated grouping factor}
+\item{group1}{required: repeated grouping factor}
+
+\item{group2}{required: non-repeated grouping factor}
+
+\item{Subject}{required: subject identifier}
 
 \item{interact}{=TRUE (default), F or FALSE for no interaction}
 
@@ -36,6 +40,8 @@ cu_rep2fac(depvar, group1, group2, Subject, interact = TRUE,
 
 \item{dots}{=0 (default), 1 to display data on graph}
 
+\item{barcolor}{="black" (default) for bar outline color}
+
 \item{barfill}{="colors" (default) for colors by group ("lancet" for 2 factors, other journal options "aaas", "jco", "uchicago", "npg"}
 
 \item{plot}{="bar" (default) for bar graphs; "box" "violin" "rod" "no"}
@@ -46,11 +52,41 @@ cu_rep2fac(depvar, group1, group2, Subject, interact = TRUE,
 
 \item{conf.int}{=0.95 (default)/x/0 for confidence interval width of contrast estimates (0 for none)}
 
-\item{depname}{/g1name/g2name/title to override names of depvar, groupvar, title}
+\item{depname}{=NULL to override name of depvar}
+
+\item{g1name}{=NULL to override name of group1}
+
+\item{g2name}{=NULL to override name of group2}
+
+\item{pvpairs}{="all" (default) p-value pairs to show}
+
+\item{pvypos}{=NULL (default) position of p-value lines}
+
+\item{pvsi}{=0.05 (default) increment for p-value lines}
+
+\item{pvlab}{="p" (default) label format for p-values}
+
+\item{pvprefix}{="p=" (default) prefix to p-values}
+
+\item{chpvref}{="ref" (default) char above reference group bar}
+
+\item{pvcuts}{=c(0.2,0.05,0.01,0.001) p-value cutpoints}
+
+\item{pvnshide}{=TRUE (default) to hide non-significant p-values}
+
+\item{pvtipl}{=0.01 (default) length of p-value line tips}
+
+\item{title}{=NULL to override plot title}
 
 \item{legend}{="top" (default), "bottom", "right", "left" to locate legend}
 
+\item{suff}{=NULL suffix for file name}
+
+\item{caption}{=NULL (default) caption text}
+
 \item{linetype}{="n" (default)/x for no connecting lines ("dashed" "dotted")}
+
+\item{linecolor}{="black" (default) line color}
 
 \item{linesize}{=1 (default)/x for line thickness}
 
@@ -62,7 +98,11 @@ cu_rep2fac(depvar, group1, group2, Subject, interact = TRUE,
 
 \item{yscale}{(default="none"), can be "log2", "log10", "sqrt"}
 
-\item{xangle}{/yangle for axis value angles: 0 (default) horizontal, 90 vertical, or any value between}
+\item{font.x}{=NULL (default) for x-axis font}
+
+\item{xangle}{=NULL for x-axis value angle: 0 (default) horizontal, 90 vertical, or any value between}
+
+\item{yangle}{=NULL for y-axis value angle: 0 (default) horizontal, 90 vertical, or any value between}
 
 \item{orientation}{(default="vertical"), can change to "horizontal"}
 
@@ -72,13 +112,19 @@ cu_rep2fac(depvar, group1, group2, Subject, interact = TRUE,
 
 \item{dotsize}{=NULL (default 1) set to fraction of binwidth for dot size}
 
+\item{dotshape}{=NULL (default) for dot shape}
+
 \item{dotcolor}{=NULL (default "white") set to dot color}
 
 \item{ftype}{=NULL(default)/eps/pdf/jpg/jpeg/tiff/png/emf (for hires file or name.emf for Mac)}
 
 \item{fname}{=NULL(default) or set to prefix for "funcname.ftype"}
 
-\item{fscale}{,fwidth,fheight =NULL(default) or set to numerical value}
+\item{fscale}{=NULL(default) or set to numerical value for file scale}
+
+\item{fwidth}{=NULL(default) or set to file width}
+
+\item{fheight}{=NULL(default) or set to file height}
 
 \item{dpi}{=300 (default) or set to desired resolution in dpi in file}
 

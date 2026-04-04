@@ -23,6 +23,8 @@ cuvolc(ds, xdash = 0.5, psig = 0.05, psigmin = 0.2, pfactor = 1,
 \item{foldmax}{=NULL (default) for right end of log2(FoldChange) (usually set to 2)}
 
 \item{ylim}{=5 (default) for upper limit of graph (-log10(pval))}
+
+\item{title}{title for the volcano plot (default "Volcano Plot")}
 }
 \description{
 Volcano plot

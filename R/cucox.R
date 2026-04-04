@@ -1,6 +1,9 @@
 #' Cox modeling, all possible models, summarize best (or specified) model,
 #' LR tests, ROCs, K-M of Cox score strata, predicted K-M for each factor
-#' @param dsgiven , timnam, depnam, formula  required: dataset, char-strings of names of time-var and variable being analyzed, and model formula
+#' @param dsgiven required: dataset
+#' @param timnam char-string of name of time-to-event variable
+#' @param depnam char-string of name of outcome variable being analyzed
+#' @param formula model formula
 #' @param dopredkm =T (default) to get (T) or not get (F) predicted Kaplan-Meier curves
 #' @param doroc =T (default, at 50,75,100\% events) for ROC curves [c(,,) list to specify times]
 #' @param docoxkm =T (default, quartiles) for K-M vs Cox risk score [c(,,) list to specify cut-pts]
@@ -9,7 +12,8 @@
 #' @param dodredge =T (default) to get (T) or not get (F) all possible models
 #' @param usemod =1 (default) to use the usemod-th best found by dredge
 #' @param nmodshow =16 (default) to show top nmodshow models by dredge
-#' @param m.min and m.max= to set smallest and largest model sizes in dredge
+#' @param m.min to set smallest model size in dredge
+#' @param m.max to set largest model size in dredge
 #' @param fixed = c(,,) list to specify variables that must be in model
 #' @param subset =logical expression describing models to keep in dredge
 #' @param tmax =0 (default for no max T), numeric study end time
@@ -25,10 +29,15 @@
 #' @param xlabkm =NULL (default) for K-M x-axis label
 #' @param ylabkm =NULL (default) for K-M y-axis label
 #' @param titlekm =NULL (default) for K-M title
-#' @param nverkm,nhorkm,nverroc,nhorroc =2 (default) #km,rocplots vert,horiz
+#' @param nverkm =2 (default) number of K-M plots vertically
+#' @param nhorkm =2 (default) number of K-M plots horizontally
+#' @param nverroc =2 (default) number of ROC plots vertically
+#' @param nhorroc =2 (default) number of ROC plots horizontally
 #' @param ftype =NULL(default)/eps/pdf/jpg/jpeg/tiff/png/emf (for hires file or name.emf for Mac)
 #' @param fname =NULL(default) or set to prefix for "funcname.ftype"
-#' @param fscale ,fwidth,fheight =NULL(default) or set to numerical value
+#' @param fscale =NULL(default) or set to numerical value for plot scaling
+#' @param fwidth =NULL(default) or set to numerical value for plot width
+#' @param fheight =NULL(default) or set to numerical value for plot height
 #' @param dpi =300 (default) or set to desired resolution in dpi in file
 #' @param remove choose from =c("xlab","ylab","x.text","y.text","x.ticks","y.ticks","grid","x.grid","y.grid","axis","x.axis","y.axis")
 #' @return returns nothing

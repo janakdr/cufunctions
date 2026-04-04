@@ -6,8 +6,24 @@
 same arguments as pairwise.t.test, same code (Nov.20) with added:
 \code{for (j in 1:length(s)) \{if (is.na(s[j])) s[j] <- 0\}}}
 \usage{
-cupairwise.t(x, g, p.adjust.method = p.adjust.methods, pool.sd = !paired,
-  paired = FALSE, alternative = c("two.sided", "less", "greater"), ...)
+cupairwise.t(x, g, p.adjust.method = stats::p.adjust.methods,
+  pool.sd = !paired, paired = FALSE, alternative = c("two.sided", "less",
+  "greater"), ...)
+}
+\arguments{
+\item{x}{a numeric vector of data values}
+
+\item{g}{a factor or character vector specifying groups}
+
+\item{p.adjust.method}{method for adjusting p-values (see stats::p.adjust.methods)}
+
+\item{pool.sd}{logical, if TRUE (default when not paired) use pooled SD}
+
+\item{paired}{logical, if TRUE perform paired tests}
+
+\item{alternative}{character specifying the alternative ("two.sided", "less", "greater")}
+
+\item{...}{additional arguments passed to t.test}
 }
 \description{
 pairwise.t.test to handle group(s) with just 1 observation

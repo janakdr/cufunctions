@@ -3,12 +3,16 @@
 #' Does K-M curves of 2nd argument vs 1st for different levels of 3rd argument.
 #' Displays table of # at risk, and p-value. Does survival (default) or cumulative incidence.
 #' Plus sign indicates loss to follow-up (right-censoring).
-#' @param timevar , statvar, ttmtvar (3 required)
+#' @param timevar time-to-event variable (required)
+#' @param statvar status/outcome variable (required)
+#' @param ttmtvar treatment/grouping variable (required)
 #' @param kmtype ="survival" (default) or "ci" (cumulative incidence)
 #' @param pvalue =T (default) or F (for no p-value)
 #' @param allkmpairs =T (default) or F (to not compare each pair of curves)
 #' @param tmax =0 (default for no max T), numeric study end time
-#' @param xlab /ylab/title=NULL to override labels of x-axis/y-axis/title
+#' @param xlab =NULL to override x-axis label
+#' @param ylab =NULL to override y-axis label
+#' @param title =NULL to override plot title
 #' @param rho =0 (log-rank default) or 1 (Peto-Peto)
 #' @param legend ="top" (default), "bottom", "right", "left" to locate legend
 #' @param legend.labs =NULL(default)/c(...) to override risk factor level names
@@ -19,7 +23,9 @@
 #' @param censor.shape ="+" (default) or any character to indicate censoring
 #' @param ftype =NULL(default)/eps/pdf/jpg/jpeg/tiff/png/emf (for hires file or name.emf for Mac)
 #' @param fname =NULL(default) or set to prefix for "funcname.ftype"
-#' @param fscale ,fwidth,fheight =NULL(default) or set to numerical value
+#' @param fscale =NULL(default) or set to numerical value for plot scaling
+#' @param fwidth =NULL(default) or set to numerical value for plot width
+#' @param fheight =NULL(default) or set to numerical value for plot height
 #' @param dpi =300 (default) or set to desired resolution in dpi in file
 #' @param remove choose from =c("xlab","ylab","x.text","y.text","x.ticks","y.ticks","grid","x.grid","y.grid","axis","x.axis","y.axis")
 #' @return returns nothing

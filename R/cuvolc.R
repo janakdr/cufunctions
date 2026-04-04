@@ -8,6 +8,7 @@
 #' @param foldmin =NULL (default) for left end of log2(FoldChange) (usually set to -2)
 #' @param foldmax =NULL (default) for right end of log2(FoldChange) (usually set to 2)
 #' @param ylim =5 (default) for upper limit of graph (-log10(pval))
+#' @param title title for the volcano plot (default "Volcano Plot")
 #' @importFrom rlang .data
 #' @examples
 #' cuvolc(volc)

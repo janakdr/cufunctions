@@ -1,6 +1,8 @@
 #' Logistic regression, all possible models, summarize best (or specified) model,
 #' do ROC curve(s), AUC, and summary table with best accuracy
-#' @param dsgiven , depnam, formula required: dataset, char-strings of name of variable being analyzed, and model formula
+#' @param dsgiven required: dataset
+#' @param depnam char-string of name of variable being analyzed
+#' @param formula model formula
 #' @param xs list of probability cut points for 2x2 tables (besides 0.5)
 #' @param ordinal =NULL (default)/c("...") to specify ordering of variable being analyzed
 #' @param logitlog ="logit" (default) to model odds ("logit") or risk ("log")
@@ -13,7 +15,8 @@
 #' @param dodredge =T (default) to get (T) or not get (F) all possible models
 #' @param usemod =1 (default) to use the usemod-th best found by dredge
 #' @param nmodshow =16 (default) to show top nmodshow models by dredge
-#' @param m.min and m.max= to set smallest and largest model sizes in dredge
+#' @param m.min to set smallest model size in dredge
+#' @param m.max to set largest model size in dredge
 #' @param fixed =c(,,,) to specify variables that must be in model
 #' @param subset logical expression describing models to keep in dredge
 #' @param emf =F(default)/T/name (to create culogist.emf or name.emf needed on Mac)
@@ -253,6 +256,6 @@ culogist = function(dsgiven, depnam, formula, xs=NULL, ordinal=NULL,
   rownames(newdf)=names(stats::coefficients(LRobj)[ib:ie])
   print(newdf)
   curoc(LRobj, depvar, twolev=twolev, xs=xs, namedep=depnam, logitlog=logitlog,
-        printfit=printfit, emf=emf, xlab=xlab, ylab=ylab, 
+        printfit=printfit, emf=emf, xlabroc=xlab, ylabroc=ylab, 
         label.ordering = ordinal, color=color, veccolor=veccolor)
 }

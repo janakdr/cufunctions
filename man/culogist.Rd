@@ -14,7 +14,11 @@ culogist(dsgiven, depnam, formula, xs = NULL, ordinal = NULL,
   "green", "black"))
 }
 \arguments{
-\item{dsgiven}{, depnam, formula required: dataset, char-strings of name of variable being analyzed, and model formula}
+\item{dsgiven}{required: dataset}
+
+\item{depnam}{char-string of name of variable being analyzed}
+
+\item{formula}{model formula}
 
 \item{xs}{list of probability cut points for 2x2 tables (besides 0.5)}
 
@@ -40,7 +44,9 @@ culogist(dsgiven, depnam, formula, xs = NULL, ordinal = NULL,
 
 \item{nmodshow}{=16 (default) to show top nmodshow models by dredge}
 
-\item{m.min}{and m.max= to set smallest and largest model sizes in dredge}
+\item{m.min}{to set smallest model size in dredge}
+
+\item{m.max}{to set largest model size in dredge}
 
 \item{fixed}{=c(,,,) to specify variables that must be in model}
 

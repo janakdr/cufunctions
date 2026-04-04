@@ -31,13 +31,201 @@ curepmany(dsgiven, dnamf, dnaml, repnam, fac2 = NULL, idnam = NULL,
   dpi = 300, remove = NULL)
 }
 \arguments{
-\item{dsgiven}{,dnamf,dnaml,repnam required: dataset, char-strings of names of first&last variable being analyzed, repeated grouping factor}
+\item{dsgiven}{required: dataset}
+
+\item{dnamf}{required: char-string name of first variable being analyzed}
+
+\item{dnaml}{required: char-string name of last variable being analyzed}
+
+\item{repnam}{required: char-string name of repeated grouping factor}
 
 \item{fac2}{char-string of name of 2nd, non-repeated grouping factor (default NULL)}
 
 \item{idnam}{(to indicate long format) =char-string of name of ID/Subject variable (default NULL)}
 
 \item{minimal}{= TRUE (default), F or FALSE to get all console output and graphs}
+
+\item{interact}{=TRUE (default), FALSE for no interaction}
+
+\item{partialF}{=TRUE (default), FALSE for no partial F test}
+
+\item{cov}{=NULL (default) covariate model string}
+
+\item{ytrans}{="none" (default) to transform depvar: "sqrt" "log"}
+
+\item{maxlines}{=0 (default) for no line plot, 1 for line plots}
+
+\item{mainx}{=1 (default), 2 to interchange the two factors}
+
+\item{sumdiff}{=1 (default) or -1 for difference summary}
+
+\item{scale}{="frequency" (default) or "percent"}
+
+\item{scatter}{="yes" (default) for scatter plots}
+
+\item{ebars}{=1 (default)/2/3/4 for error bar type}
+
+\item{dots}{=0 (default), 1 to display data on graph}
+
+\item{barcolor}{="black" (default) for bar outline color}
+
+\item{barfill}{=NULL (default) for bar fill color}
+
+\item{plot}{="bar" (default) for bar graphs}
+
+\item{ordinal}{=NULL (default) to treat as ordinal}
+
+\item{g1order}{=NULL (default) to reorder bars}
+
+\item{g2order}{=NULL (default) to reorder second factor}
+
+\item{difforder}{=NULL (default) to reorder differences}
+
+\item{depname}{=NULL to override dependent variable name}
+
+\item{g1name}{=NULL to override first factor name}
+
+\item{g2name}{=NULL to override second factor name}
+
+\item{title}{=NULL to override title}
+
+\item{chariqr}{=":" character to separate quartiles}
+
+\item{psigcld}{=0 (no letters)/x for CLD letters on bars}
+
+\item{conf.int}{=0.95 (default) confidence interval width}
+
+\item{ddepn}{=NULL dependent variable difference name}
+
+\item{shape}{=16 (default) dot shape in regression}
+
+\item{caption}{=NULL (default) caption text}
+
+\item{pvpairs}{="std" (default) p-value pairs to show}
+
+\item{pvypos}{=NULL (default) position of p-value lines}
+
+\item{pvstinc}{=0.05 (default) p-value line increment}
+
+\item{pvlab}{="p" (default) p-value label format}
+
+\item{pvprefix}{="p=" (default) prefix to p-values}
+
+\item{pvsize}{=NULL (default) size of p-values}
+
+\item{chpvref}{="ref" (default) reference char}
+
+\item{pvspill}{=FALSE (default) allow p-value spill}
+
+\item{pnosig}{=0.2 (default) threshold for non-significant}
+
+\item{psignif}{=0.05 (default) significance threshold}
+
+\item{p2stars}{=0.01 (default) two stars threshold}
+
+\item{p3stars}{=0.001 (default) three stars threshold}
+
+\item{p4stars}{=0.0001 (default) four stars threshold}
+
+\item{pvnshide}{=TRUE (default) hide non-significant p-values}
+
+\item{pvtipl}{=0.01 (default) p-value line tip length}
+
+\item{normvisit}{=0 (default) reference visit for normalization}
+
+\item{normway}{="fold" (default) normalization method}
+
+\item{needvar}{=1 (default) number of other variables for rmwall}
+
+\item{linetype}{="n" (default) line type}
+
+\item{linecolor}{="black" (default) line color}
+
+\item{linesize}{=1 (default) line thickness}
+
+\item{theme}{="bw" (default) plot theme}
+
+\item{legend}{="top" (default) legend position}
+
+\item{size}{=NULL point/outline size}
+
+\item{width}{=NULL box width}
+
+\item{yscale}{="none" (default) y-axis scale}
+
+\item{xangle}{=NULL x-axis label angle}
+
+\item{yangle}{=NULL y-axis label angle}
+
+\item{orientation}{="vertical" (default) plot orientation}
+
+\item{posd}{=NULL bar spacing adjustment}
+
+\item{binwfac}{=30 (default) bin width factor}
+
+\item{dotsize}{=NULL dot size}
+
+\item{dotshape}{=NULL dot shape}
+
+\item{dotcolor}{=NULL dot color}
+
+\item{fontmain}{=NULL main (title) font}
+
+\item{fontxname}{=NULL x-axis name font}
+
+\item{fontyname}{=NULL y-axis name font}
+
+\item{fontxticks}{=NULL x-axis tick label font}
+
+\item{fontyticks}{=NULL y-axis tick label font}
+
+\item{axiscolor}{=NULL axis color}
+
+\item{tickcolor}{=NULL tick color}
+
+\item{axisthick}{=NULL axis thickness}
+
+\item{tickthick}{=NULL tick thickness}
+
+\item{ticklength}{=NULL tick length}
+
+\item{xticks.by}{=NULL x-tick spacing}
+
+\item{yticks.by}{=NULL y-tick spacing}
+
+\item{dodredge}{=TRUE (default) run dredge}
+
+\item{usemod}{=1 (default) use nth best dredge model}
+
+\item{nmodshow}{=16 (default) number of top models to show}
+
+\item{nverscat}{=2 (default) vertical scatter panels}
+
+\item{nhorscat}{=2 (default) horizontal scatter panels}
+
+\item{ifdeb}{=FALSE (default) debug output}
+
+\item{m.min}{=1 (default) smallest model size in dredge}
+
+\item{m.max}{=99 (default) largest model size in dredge}
+
+\item{fixed}{=NULL variables that must be in model}
+
+\item{subset}{=as.expression(1) model subset expression}
+
+\item{ftype}{=NULL output file type}
+
+\item{fname}{=NULL output file name prefix}
+
+\item{fscale}{=NULL output file scale}
+
+\item{fwidth}{=NULL output file width}
+
+\item{fheight}{=NULL output file height}
+
+\item{dpi}{=300 (default) resolution in dpi}
+
+\item{remove}{=NULL elements to remove from plot}
 }
 \value{
 nothing
