@@ -421,12 +421,14 @@ cu_rep2way = function(ddep,dgp1,dgp2,dsub,depvar, group1, group2, Subject,
       #print(dss)
       rmw = stats::reshape(dss, direction="wide", idvar="Subject",timevar="group1", v.names="depvar")
       if (!minimal) print(rmw)
-      for (i in 1:nlevm1) {
-        for (j in (i+1):(nlev)) {
+      ncol_prefix <- ncol(rmw) - gp1  # skip Subject, group2, etc.
+      gp1m1 <- gp1 - 1
+      for (i in 1:gp1m1) {
+        for (j in (i+1):gp1) {
           #print(dss[,i+1]); cat("\nj"); print(dss[,j+1])
-          pvalues[ipo+j] = stats::wilcox.test(rmw[,i+1], rmw[,j+1], paired=T, exact=F)$p.value
+          pvalues[ipo+j] = stats::wilcox.test(rmw[,i+ncol_prefix], rmw[,j+ncol_prefix], paired=T, exact=F)$p.value
         }
-        ipo = ipo+nlevm1
+        ipo = ipo+gp1m1
       }
     }
     else {
