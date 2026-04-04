@@ -1,5 +1,5 @@
 #' Does summary stats
-#' @param object to be summarized
+#' @param object to be summarized
 #' @param ... additional arguments passed to methods
 #' @return returns nothing
 #' @export
