@@ -58,7 +58,7 @@ cu_rep2way(ddep, dgp1, dgp2, dsub, depvar, group1, group2, Subject,
 
 \item{barcolor}{="black" (default) for bar outline color}
 
-\item{barfill}{="colors" (default) for bar fill color}
+\item{barfill}{="colors" (default) for fill color. "colors" for colors by group}
 
 \item{plot}{="bar" (default) for bar graphs; "box" "violin" "rod" "no"}
 

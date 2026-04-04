@@ -26,6 +26,9 @@ cuvolc(ds, xdash = 0.5, psig = 0.05, psigmin = 0.2, pfactor = 1,
 
 \item{title}{title for the volcano plot (default "Volcano Plot")}
 }
+\value{
+A \code{\link[ggplot2]{ggplot}} object for the volcano plot.
+}
 \description{
 Volcano plot
 }

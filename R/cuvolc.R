@@ -12,6 +12,7 @@
 #' @importFrom rlang .data
 #' @examples
 #' cuvolc(volc)
+#' @returns A \code{\link[ggplot2]{ggplot}} object for the volcano plot.
 #' @export
 cuvolc = function(ds, xdash=0.5, psig = 0.05, psigmin = 0.2, pfactor=1, 
                   foldmin=NULL, foldmax=NULL, ylim=5, title="Volcano Plot")
