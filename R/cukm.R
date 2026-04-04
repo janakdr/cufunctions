@@ -101,7 +101,7 @@ cukm = function(timevar, statvar, ttmtvar, kmtype="survival", pvalue=T,
     names(SurvTst$n) = tablenams; SurvTst$call = kapmodesc 
     print(SurvTst)
   }
-  cat("'+' on K-M curves indicates censoring (loss to follow-up)")
+  message("'+' on K-M curves indicates censoring (loss to follow-up)")
   PlotObj = survfit(Surv(Time,Status) ~ Factor, data=ds)
   oldw <- getOption("warn")
   options(warn = -1)   #  

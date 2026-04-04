@@ -137,12 +137,12 @@ cu_rep1way = function(ddep,dgp,dsub,depvar, groupvar, Subject, itrans, minimal=F
         }
       }
       if (nfail > 0) { # concerned only with normality of within-subj changes
-        cat("\nDATA FAIL NORMALITY TEST IN",nfail,"OF",ndiff,"GROUP Differences.",
-            "SMALLEST P-VALUE",ifelse(pnormin==0,"<0.001",pnormin))
-        if (ebars<=0) {ebars=4; cat("\nNONPARAMETRIC ANALYSIS WILL BE DONE.\n")}
-        else cat("\nLOOK FOR DATA ERRORS IN 'Min' AND 'Max' VALUES.",
+        message("DATA FAIL NORMALITY TEST IN ",nfail," OF ",ndiff," GROUP Differences. ",
+            "SMALLEST P-VALUE ",ifelse(pnormin==0,"<0.001",pnormin))
+        if (ebars<=0) {ebars=4; message("NONPARAMETRIC ANALYSIS WILL BE DONE.")}
+        else message("LOOK FOR DATA ERRORS IN 'Min' AND 'Max' VALUES.",
                  "\nIF DATA ARE NOT NORMAL,",
-                 "\nYOU SHOULD USE THE NONPARAMETRIC DUNN TEST (ebars=4)\n")
+                 "\nYOU SHOULD USE THE NONPARAMETRIC DUNN TEST (ebars=4)")
       }
       else if (ebars<=0) ebars = min(3,max(1,-ebars))
     }
@@ -230,7 +230,7 @@ cu_rep1way = function(ddep,dgp,dsub,depvar, groupvar, Subject, itrans, minimal=F
   }
   else {
     if (anyNA(depvar)) {
-      cat("\nSome missing data, so no overall p-value by Friedman.")
+      message("Some missing data, so no overall p-value by Friedman.")
       dss = data.frame(Subject, depvar,groupvar)
       # print(dss)
       rmw = stats::reshape(dss, direction="wide", idvar="Subject",timevar="groupvar", v.names="depvar")

@@ -86,12 +86,12 @@ culogist = function(dsgiven, depnam, formula, xs=NULL, ordinal=NULL,
   twolev = nlevdep<3
   if (!is.null(ordinal)) if (length(ordinal) != nlevdep) {
     i = 0; 
-    cat("\nordinal must have exactly",nlevdep,depnam,"names. ordinal ignored\n")
+    warning("ordinal must have exactly ",nlevdep," ",depnam," names. ordinal ignored", call. = FALSE)
   }
   else {
     for (i in (1:nlevdep)) {
       if (!(levels(depvar)[i] %in% ordinal)) {
-        cat("\n",depnam," '",levels(depvar)[i],"' not in ordinal. ordinal ignored\n",sep="")
+        warning(depnam," '",levels(depvar)[i],"' not in ordinal. ordinal ignored", call. = FALSE)
         i = 0; break
       }
     }
@@ -134,7 +134,7 @@ culogist = function(dsgiven, depnam, formula, xs=NULL, ordinal=NULL,
   forla = stats::as.formula(paste(depnam, "~", formula))
   if (logitlog=="log") start = getstartRR() 
   else if (logitlog!="logit")
-    {cat("logitlog can only be 'logit' or 'log'. Ignored"); logitlog="logit"}
+    {warning("logitlog can only be 'logit' or 'log'. Ignored", call. = FALSE); logitlog="logit"}
   #cat(idep,levnames,nlevdep,names(dscopy)); print(forla)
   
   # if (twolev) tryCatch(summary(glm(f, family=binomial(link=logitlog), start=start)),
@@ -158,8 +158,8 @@ culogist = function(dsgiven, depnam, formula, xs=NULL, ordinal=NULL,
       if (!is.null(varlist))
         stop("\n\nUnestimable predictor(s) (due to perfect correlation with some others):\n",
              varlist,"\nRe-run without the variable(s).\n\n")
-      if (ncoef > 15) cat("\nPROGRAM MAY DISAPPEAR AND NOT RETURN IF TOO MANY PREDICTORS",
-                          "\nIF THIS HAPPENS, USE FEWER THAN 16 PREDICTORS\n")
+      if (ncoef > 15) warning("PROGRAM MAY DISAPPEAR AND NOT RETURN IF TOO MANY PREDICTORS",
+                          "\nIF THIS HAPPENS, USE FEWER THAN 16 PREDICTORS", call. = FALSE)
       if (m.min>m.max) m.min=1
       dredobj = dredge(LRobj, m.lim=c(m.min, m.max), fixed=fixed, subset=subset)
       nvar = length(dredobj)-6 #always 6?
@@ -193,7 +193,7 @@ culogist = function(dsgiven, depnam, formula, xs=NULL, ordinal=NULL,
       }
       if (length(dredvars)<nvar) {
         if (!is.null(startg)) {
-          cat("\nGiven start values ignored for final model. If no convergence,",
+          message("Given start values ignored for final model. If no convergence,",
               "\n   rerun with just final model and appropriate start values.")
           start = NULL; 
         }

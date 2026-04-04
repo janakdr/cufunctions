@@ -14,7 +14,7 @@ cu_letbar = function(pvalue,psigcldnif,mapord,nlev,letleft=F,nletbarmax=3) {
 # pvalue is (nlev-1)x(nlev-1) matrix with p-values diagonal and below
 # first column has first level compared to all other levels, 2nd has 2nd vs nlev-2, etc
 #    print(pvalue)
-    if (nlev > 30) cat("\nWorking on CLD letters for bars. With",nlev,"groups, this may take a while.",
+    if (nlev > 30) message("Working on CLD letters for bars. With ",nlev," groups, this may take a while.",
        "\n   Each group and cliques to then will be shown to indicate progress")
     ipo = -1; nsmat = matrix(c(rep(0,nlev*nlev)),nrow=nlev,ncol=nlev)
     whichcl = nsmat; nclbar = c(rep(0,nlev)) # nletb set to whichcl just to declare
@@ -96,8 +96,8 @@ cu_letbar = function(pvalue,psigcldnif,mapord,nlev,letleft=F,nletbarmax=3) {
         }
       }
       if (nlev > 30) {
-        cat("cliques at group",im)
-        for (jc in 1:nclique) cat("\n",jc,":",which(whichin[,jc]>0))
+        message("cliques at group ",im)
+        for (jc in 1:nclique) message(jc,":",paste(which(whichin[,jc]>0), collapse=" "))
       }
     }
     letbar = c(rep("",nlev))

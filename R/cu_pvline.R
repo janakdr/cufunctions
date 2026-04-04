@@ -9,7 +9,7 @@ cu_pvline = function(df,pvpairs,pvalues,nlev1,nlev2,pvlab,pnosig,psignif,p2stars
   # no good if nlevnom < nlev1*nlev2 due to missing combinations
   if (pvlab != "p") if (pvlab == "*") pvlab = "p.signif"
   else {
-    cat("\npvlab ",pvlab," no good - must be p or *. Taken to be p")
+    warning("pvlab ",pvlab," no good - must be p or *. Taken to be p", call. = FALSE)
     pvlab = "p"
   }
   # pvalues can be (nlev-1)*(nlev-1) matrix or a vector with the same elements
@@ -26,17 +26,17 @@ cu_pvline = function(df,pvpairs,pvalues,nlev1,nlev2,pvlab,pnosig,psignif,p2stars
     for (ir in 1:npairs) {
       dostdpairs = F # do npairs lines
       if (!getij(pvpairs[ir])) {
-        cat("\npvpairs",ir," no good:",pvpairs[ir],". Doing std")
+        warning("pvpairs ",ir," no good: ",pvpairs[ir],". Doing std", call. = FALSE)
         dostdpairs = T; break
       }
     }
   }
   else if (is.numeric(pvpairs)) if (pvpairs>nlev) 
     if (getij(pvpairs)) {pvpairs = c(pvpairs); dostdpairs = F}
-    else cat("\npvpairs no good:",pvpairs,". Doing std")
+    else warning("pvpairs no good: ",pvpairs,". Doing std", call. = FALSE)
   else { # all groups compared to pvpairs
     if (pvpairs <= 0)
-      {cat("\npvpairs bad value:",pvpairs,". taken to be 1"); pvpairs = 1}
+      {warning("pvpairs bad value: ",pvpairs,". taken to be 1", call. = FALSE); pvpairs = 1}
     for (i in 1:nlev) {
       if (i != pvpairs) {
         if (i < pvpairs) {ig2 = pvpairs; jg1 = i}
@@ -53,7 +53,7 @@ cu_pvline = function(df,pvpairs,pvalues,nlev1,nlev2,pvlab,pnosig,psignif,p2stars
     lref = as.numeric(substring(pvpairs,2))
     #cat ("\nlref:",lref)
     if (is.na(lref) || lref > nlev2) {
-      cat("\npvpairs bad:",pvpairs,". taken to be #1")
+      warning("pvpairs bad: ",pvpairs,". taken to be #1", call. = FALSE)
       lref = 1
     }
     ib = 0
@@ -75,7 +75,7 @@ cu_pvline = function(df,pvpairs,pvalues,nlev1,nlev2,pvlab,pnosig,psignif,p2stars
   }
   else if (pvpairs == "all") doallpairs = T
   else if (pvpairs != "std") 
-    cat("\npvpairs bad:",pvpairs,". taken to be std")
+    warning("pvpairs bad: ",pvpairs,". taken to be std", call. = FALSE)
   if (dostdpairs) if (doallpairs) npairs = (nlev*(nlev-1))/2
   else npairs = (nlev1 * nlev2 * (nlev1+nlev2-2))/2
   pvdf = data.frame(matrix(ncol=4),stringsAsFactors = F)
