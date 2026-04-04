@@ -20,6 +20,8 @@
 #' @param suff =NULL suffix for file name
 #' @examples
 #' cuvolcano(volcomic, c("lean","obese","lean","overwt","obese","overwt"))
+#' @returns Called for its side effect of producing volcano plots. Returns
+#'   invisible \code{NULL}.
 #' @export
 cuvolcano = function(dsomics, gpairs, xdash=0.5, psig = 0.05, psigmin = 0.2, pfactor=1, 
                   foldmin=NULL, foldmax=NULL, ylim=5, titlend="Volcano Plot",

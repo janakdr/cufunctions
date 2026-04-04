@@ -47,7 +47,7 @@ cu_rep1way(ddep, dgp, dsub, depvar, groupvar, Subject, itrans, minimal = F,
 
 \item{barcolor}{="black" (default) for bar outline color}
 
-\item{barfill}{="colors" (default) for bar fill color}
+\item{barfill}{="colors" (default) for fill color. "colors" for colors by group ("lancet" for 2 factors, other journal options "aaas", "jco", "uchicago", "npg"}
 
 \item{plot}{="bar" (default) for bar graphs; "box" "violin" "rod" "no"}
 

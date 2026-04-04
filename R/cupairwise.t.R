@@ -8,6 +8,9 @@
 #' @param paired logical, if TRUE perform paired tests
 #' @param alternative character specifying the alternative ("two.sided", "less", "greater")
 #' @param ... additional arguments passed to t.test
+#' @returns An object of class \code{"pairwise.htest"}, a list with components
+#'   \code{method}, \code{data.name}, \code{p.value} (matrix of p-values), and
+#'   \code{p.adjust.method}.
 #' @export
 cupairwise.t = function (x, g, p.adjust.method = stats::p.adjust.methods, pool.sd = !paired, 
                 paired = FALSE, alternative = c("two.sided", "less", 

@@ -80,7 +80,7 @@ cucov2way(depvar, covar, group1, group2, xs = NULL, interact = T,
 
 \item{posd}{NULL (default) set to values around 0.9 to fine-tune group2 bar spacing}
 
-\item{shape}{(default=closed circle): numeric value from 0 to 25 [rest below for cu2way]}
+\item{shape}{=16 (default closed circle) (see http://www.sthda.com/english/wiki/ggplot2-point-shapes)}
 
 \item{dotcolor}{="black" (default) for point symbol color (="red" ="blue" etc)}
 

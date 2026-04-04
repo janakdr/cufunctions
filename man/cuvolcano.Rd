@@ -47,6 +47,10 @@ cuvolcano(dsomics, gpairs, xdash = 0.5, psig = 0.05, psigmin = 0.2,
 
 \item{suff}{=NULL suffix for file name}
 }
+\value{
+Called for its side effect of producing volcano plots. Returns
+  invisible \code{NULL}.
+}
 \description{
 Volcano plot
 }

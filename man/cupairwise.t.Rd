@@ -25,6 +25,11 @@ cupairwise.t(x, g, p.adjust.method = stats::p.adjust.methods,
 
 \item{...}{additional arguments passed to t.test}
 }
+\value{
+An object of class \code{"pairwise.htest"}, a list with components
+  \code{method}, \code{data.name}, \code{p.value} (matrix of p-values), and
+  \code{p.adjust.method}.
+}
 \description{
 pairwise.t.test to handle group(s) with just 1 observation
 same arguments as pairwise.t.test, same code (Nov.20) with added:
