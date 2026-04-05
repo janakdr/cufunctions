@@ -124,7 +124,6 @@ curoc = function(LRobj, depvar, twolev=TRUE, xs=NULL, namedep=NULL, logitlog="lo
     options(warn = -1)
     perfPlot = performance(PredObj, "tpr", "fpr")
     graphics::par(font.lab=2)
-    # TODO(janakr): Add a test that hits this line.
     ROCR::plot(perfPlot, add=F, main=AUCtitle, xlab=xlabroc, ylab=ylabroc, col=color)
     options(warn = oldw)
     grDevices::dev.off()
