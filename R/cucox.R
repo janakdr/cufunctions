@@ -209,6 +209,8 @@ cucox = function(dsgiven, timnam, depnam, formula, dopredkm=T, doroc=T, docoxkm=
     }
     else cm75e = NULL
     #print(dsroc); print(dsord); print(doroc)
+    oldpar <- graphics::par(no.readonly = TRUE)
+    on.exit(graphics::par(oldpar), add = TRUE)
     graphics::par(font.lab=2, mfrow=c(nverroc,nhorroc))
     for (iroc in 1:length(doroc)) {
       timroc = doroc[iroc]

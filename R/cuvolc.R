@@ -59,9 +59,6 @@ cuvolc = function(ds, xdash=0.5, psig = 0.05, psigmin = 0.2, pfactor=1,
     geom_text(label=ds$varnam, nudge_x=0.17, nudge_y=0.1, 
               check_overlap=T, show.legend=F) +
     guides(color="none")
-  oldw <- getOption("warn")
-  options(warn = -1)
-  volc
-  options(warn = oldw)
+  suppressWarnings(volc)
   return(volc)
 }

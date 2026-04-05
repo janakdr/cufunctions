@@ -57,10 +57,9 @@ cuvolcano = function(dsomics, gpairs, xdash=0.5, psig = 0.05, psigmin = 0.2, pfa
     namepval = paste(gp1,"vs",gp2)
     #ds$C= dsomics[,jpv]
     for (iv in 1:nvars) {
-      oldw <- getOption("warn"); options(warn = -1)
-      val1 = as.numeric(dsomics[iv,jgp1]); val2 = as.numeric(dsomics[iv,jgp2])
-      pv=ifelse(grepl("ns",dsomics[iv,jpv]), 1, as.numeric(dsomics[iv,jpv]))
-      options(warn = oldw)
+      val1 = suppressWarnings(as.numeric(dsomics[iv,jgp1]))
+      val2 = suppressWarnings(as.numeric(dsomics[iv,jgp2]))
+      pv=ifelse(grepl("ns",dsomics[iv,jpv]), 1, suppressWarnings(as.numeric(dsomics[iv,jpv])))
       if (is.na(val1) || is.na(val2) || is.na(pv) || val1<=0 || val2<=0) {
         message(namepval,":",ds[iv,1]," bad:",
             dsomics[iv,jgp1],dsomics[iv,jgp2],dsomics[iv,jpv])
