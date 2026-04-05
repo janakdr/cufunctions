@@ -1,6 +1,9 @@
 # Tests for cu1way
 # Golden values are in tests/testthat/golden/*.csv
 
+options(cufunctions.hints_defaults = FALSE)
+
+
 
 # --- cu1way(tcchange, Diet) — standard ANOVA path ---
 
@@ -153,14 +156,18 @@ test_that("cu1way(hcstudy, Diet) post-hoc matches golden", {
 })
 
 test_that("cu1way(hcstudy, Diet) warns about normality failure", {
-  expect_message(
-    capture.output(with(NEJM, cu1way(hcstudy, Diet, plot = "no", ebars = 1, pnorm = 0.05))),
-    "DATA FAIL NORMALITY TEST IN 1 OF 3 GROUPs"
+  msgs <- testthat::capture_messages(with(NEJM, cu1way(hcstudy, Diet, plot = "no", ebars = 1, pnorm = 0.05)))
+  
+  expect_equal(length(msgs), 2)
+  expect_match(msgs[1], "DATA FAIL NORMALITY TEST IN 1 OF 3 GROUPs. SMALLEST P-VALUE 0.027", fixed = TRUE)
+  
+  expected_details <- paste(
+    "LOOK FOR DATA ERRORS IN 'Min' AND 'Max' VALUES.",
+    "IF DATA ARE NOT NORMAL,",
+    "YOU SHOULD USE THE NONPARAMETRIC DUNN TEST (ebars=4)",
+    sep = "\n"
   )
-  expect_message(
-    capture.output(with(NEJM, cu1way(hcstudy, Diet, plot = "no", ebars = 1, pnorm = 0.05))),
-    "LOOK FOR DATA ERRORS"
-  )
+  expect_match(msgs[2], expected_details, fixed = TRUE)
 })
 
 # --- cu1way(diffvar, Diet) — Bartlett failure, unequal variances ---
@@ -194,14 +201,18 @@ test_that("cu1way(diffvar, Diet) post-hoc matches golden", {
 })
 
 test_that("cu1way(diffvar, Diet) reports Bartlett failure", {
-  expect_message(
-    capture.output(with(NEJM, cu1way(diffvar, Diet, plot = "no"))),
-    "Data fail the Bartlett test for homogeneity of variances"
+  msgs <- testthat::capture_messages(with(NEJM, cu1way(diffvar, Diet, plot = "no")))
+  
+  expect_equal(length(msgs), 2)
+  expect_match(msgs[1], "Data fail the Bartlett test for homogeneity of variances (p=0.000272 for chi-sq=16.4 with 2 df)", fixed = TRUE)
+  
+  expected_details <- paste(
+    "COULD NOT USE POOLED SD DUE TO UNEQUAL VARIANCES.",
+    "LOOK FOR DATA ERRORS, FOCUSING ON GROUP(S) WITH LARGE SD AND UNEXPECTED MIN/MAX IN SUMMARY ABOVE.",
+    "If you wish to pool variances despite failing Bartlett, redo cu1way adding pbart=x, where x<0.000272",
+    sep = "\n"
   )
-  expect_message(
-    capture.output(with(NEJM, cu1way(diffvar, Diet, plot = "no"))),
-    "COULD NOT USE POOLED SD DUE TO UNEQUAL VARIANCES"
-  )
+  expect_match(msgs[2], expected_details, fixed = TRUE)
 })
 
 # --- cu1way(badtcp, Diet) — normality + Bartlett failure ---
