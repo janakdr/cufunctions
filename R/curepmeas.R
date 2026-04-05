@@ -312,12 +312,10 @@ curepmeas = function(dsgiven, dnam, repnam, fac2=NULL, idnam=NULL, minimal=F,
     if (!is.null(ordinal)&&!is.logical(ordinal)) {
       if (length(ordinal) != nlevdep) {
         i = 0; 
-
         warning("ordinal must have exactly ",nlevdep," ",depname," names. ordinal ignored")
       }
       else for (i in (1:nlevdep)) {
         if (!(levsdep[i] %in% ordinal)) {
-
           warning(depname," '",levsdep[i],"' not in ordinal. ordinal ignored")
           i = 0; break
       } }
@@ -524,7 +522,6 @@ curepmeas = function(dsgiven, dnam, repnam, fac2=NULL, idnam=NULL, minimal=F,
     }
     if (!is.null(fac2)) {  # needed? See earlier test on fac2 and g2col
       warning("Second factor name <",fac2,"> not recognized - ignored");
-
     }
   }
   else { # second factor given
