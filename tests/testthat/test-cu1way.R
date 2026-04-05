@@ -217,7 +217,23 @@ test_that("cu1way(diffvar, Diet) reports Bartlett failure", {
 })
 
 # --- cu1way(badtcp, Diet) — normality + Bartlett failure ---
-# to do: Janak to add ebars=0 default case
+test_that("cu1way(badtcp, Diet) default ebars switches to nonparametric due to normality failure", {
+  withr::local_options(cufunctions.hints_defaults = FALSE)
+  msgs <- testthat::capture_messages(with(NEJM, cu1way(badtcp, Diet, plot = "no")))
+  
+  expect_equal(length(msgs), 2)
+  expect_match(msgs[1], "DATA FAIL NORMALITY TEST IN 1 OF 3 GROUPs. SMALLEST P-VALUE <0.001", fixed = TRUE)
+  expect_match(msgs[2], "NONPARAMETRIC ANALYSIS WILL BE DONE.", fixed = TRUE)
+  
+  # Also verify that it prints Kruskal-Wallis results
+  out <- capture.output(with(NEJM, cu1way(badtcp, Diet, plot = "no")))
+  expect_match(paste(out, collapse = "\n"), "Kruskal-Wallis rank sum test", fixed = TRUE)
+})
+
+test_that("cu1way(badtcp, Diet) default ebars renders plot without error (testing ebars=4 fallback)", {
+  expect_no_error(capture.output(with(NEJM, cu1way(badtcp, Diet))))
+})
+
 
 test_that("cu1way(badtcp, Diet) summary table matches golden", {
   out <- capture.output(with(NEJM, cu1way(badtcp, Diet, plot = "no")))
