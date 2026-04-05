@@ -201,12 +201,11 @@ culogist = function(dsgiven, depnam, formula, xs=NULL, ordinal=NULL,
       }
     }
   }
-  oldw <- getOption("warn")
-  options(warn = -1)
-  if (twolev) LRobj = stats::glm(forla, family=stats::binomial(link=logitlog), start=start,
-                          data=dscopy, na.action="na.exclude", weights=wts)
-  else LRobj = polr(forla, dsnomiss, method="logistic", Hess=T, na.action="na.exclude", weights=wts)
-  options(warn = oldw)
+  LRobj <- suppressWarnings({
+    if (twolev) stats::glm(forla, family=stats::binomial(link=logitlog), start=start,
+                           data=dscopy, na.action="na.exclude", weights=wts)
+    else polr(forla, dsnomiss, method="logistic", Hess=T, na.action="na.exclude", weights=wts)
+  })
   if (printfit) {
     cat ("\n",depnam," and Fitted probabilities for all subjects\n",sep="")
     ch12 = ""

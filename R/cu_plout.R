@@ -8,12 +8,11 @@ cu_plout = function(plotobj,funcname,ftype=NULL,fname=NULL,suff=NULL,seq=0,
   if (!is.null(remove)) 
     for (k in 1:length(remove)) plotobj <- plotobj + ggpubr::rremove(remove[k])
   # mfr = par()$mfrow; cat("\nmmfr:"); print(mfr)
-  oldw <- getOption("warn")
-  options(warn = -1)
   #cat ("\nafter warn -1")
-  if (!avplots) print(plotobj) # plotobj produces nothing if not barplot
-   # prints $`i` for each plot, then attr(,"class") [1] list ggarrange
-  options(warn = oldw)
+  suppressWarnings({
+    if (!avplots) print(plotobj) # plotobj produces nothing if not barplot
+     # prints $`i` for each plot, then attr(,"class") [1] list ggarrange
+  })
   #cat ("\nafter warn oldw")
   if (is.character(ftype)) {
     if (avplots) ftype = "emf" # can't create anything else with lm object
@@ -26,11 +25,10 @@ cu_plout = function(plotobj,funcname,ftype=NULL,fname=NULL,suff=NULL,seq=0,
       if (!requireNamespace("devEMF", quietly = TRUE))
         stop("Package 'devEMF' is required for EMF output but is not installed.")
       devEMF::emf(fname, emfPlus=F)
-      oldw <- getOption("warn")
-      options(warn = -1)
-      if (avplots) avPlots(plotobj) #avPlots returns coordinates, so can't print object
-      else print(plotobj)  # this is writing to .emf; top wrote to screen
-      options(warn = oldw)
+      suppressWarnings({
+        if (avplots) avPlots(plotobj) #avPlots returns coordinates, so can't print object
+        else print(plotobj)  # this is writing to .emf; top wrote to screen
+      })
       grDevices::dev.off()
     }
     else {# produce a file, usually hires

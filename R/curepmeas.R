@@ -212,9 +212,7 @@ curepmeas = function(dsgiven, dnam, repnam, fac2=NULL, idnam=NULL, minimal=F,
     if (rnum==0) stop("\n",dnam,":No variable name <",repnam,"> Check and re-run\n", sep="")
     if (inum==0) stop("\n",dnam,":No variable name <",idnam,"> Check and re-run\n", sep="")
     if (ifdeb) {cat ("\nlong rml:"); print (rml)}
-    oldw <- getOption("warn"); options(warn = -1)
-    rmw = stats::reshape(dsgiven,timevar=repnam,idvar=idnam,direction="wide",v.names=dnam)
-    options(warn = oldw)
+    rmw = suppressWarnings(stats::reshape(dsgiven,timevar=repnam,idvar=idnam,direction="wide",v.names=dnam))
     if (ifdeb) {cat("\nlong rmw:"); utils::str(rmw); cat("\n"); print(rmw)}
     for (i in 1:length(rmw)) {
       if (substr(names(rmw[i]),1,dvarnc1)==dvardot) {
@@ -617,11 +615,8 @@ curepmeas = function(dsgiven, dnam, repnam, fac2=NULL, idnam=NULL, minimal=F,
       fitlm$call[[1]] <- quote(nlme::lme) # enable dredge to find lme.formula
       fitlm$call[[2]] <- formla # assign formula object instead of string
       print(summary(fitlm))
-      oldw <- getOption("warn")
-      options(warn = -1)
       if (m.min>m.max) m.min=1
-      dredobj = dredge(fitlm, m.lim=c(m.min, m.max), fixed=fixed, subset=subset)
-      options(warn = oldw)
+      dredobj = suppressWarnings(dredge(fitlm, m.lim=c(m.min, m.max), fixed=fixed, subset=subset))
       nvar = length(dredobj)-6 #always 6?
       printmax = min(nrow(dredobj), nmodshow)
       print(dredobj[1:printmax,])
