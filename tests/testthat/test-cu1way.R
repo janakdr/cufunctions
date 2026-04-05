@@ -1,7 +1,6 @@
 # Tests for cu1way
 # Golden values are in tests/testthat/golden/*.csv
 
-options(cufunctions.hints_defaults = FALSE)
 
 
 
@@ -156,6 +155,7 @@ test_that("cu1way(hcstudy, Diet) post-hoc matches golden", {
 })
 
 test_that("cu1way(hcstudy, Diet) warns about normality failure", {
+  withr::local_options(cufunctions.hints_defaults = FALSE)
   msgs <- testthat::capture_messages(with(NEJM, cu1way(hcstudy, Diet, plot = "no", ebars = 1, pnorm = 0.05)))
   
   expect_equal(length(msgs), 2)
@@ -201,6 +201,7 @@ test_that("cu1way(diffvar, Diet) post-hoc matches golden", {
 })
 
 test_that("cu1way(diffvar, Diet) reports Bartlett failure", {
+  withr::local_options(cufunctions.hints_defaults = FALSE)
   msgs <- testthat::capture_messages(with(NEJM, cu1way(diffvar, Diet, plot = "no")))
   
   expect_equal(length(msgs), 2)
@@ -247,6 +248,7 @@ test_that("cu1way(badtcp, Diet) post-hoc matches golden", {
 })
 
 test_that("cu1way(badtcp, Diet) warns about normality and Bartlett failure", {
+  withr::local_options(cufunctions.hints_defaults = FALSE)
   msgs <- testthat::capture_messages(with(NEJM, cu1way(badtcp, Diet, plot = "no", ebars = 1)))
   
   expect_equal(length(msgs), 4)
