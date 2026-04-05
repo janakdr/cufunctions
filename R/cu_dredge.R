@@ -4,7 +4,7 @@ cu_dredge = function(regobj,forlag,
              nmodshow=16, m.min=1, m.max=99, fixed=NULL, subset=as.expression(1))
 {
   coefvec = regobj$coefficients; ncoef = length(coefvec); dobj = ncoef-1; forla = forlag
-  #debug removed
+  print(coefvec); print(ncoef); print(forla); print(dobj) # TODO(sekhar): delete debugging
   if (ncoef > 2) { # no need to dredge with just one predictor
     varlist = as.null("x")
     for (i in 1:ncoef) {
@@ -16,9 +16,9 @@ cu_dredge = function(regobj,forlag,
     if (ncoef > 15) warning("PROGRAM MAY DISAPPEAR AND NOT RETURN IF TOO MANY PREDICTORS",
                         "\nIF THIS HAPPENS, USE FEWER THAN 16 PREDICTORS", call. = FALSE)
     if (m.min>m.max) {m.min=1; m.max = 99}
-    message("before dredge")
+    cat("\nbefore dredge") # TODO(sekhar): delete debugging
     dredobj = dredge(regobj, m.lim=c(m.min, m.max), fixed=fixed, subset=subset)
-    message("after dredge")
+    cat("\nafter dredge") # TODO(sekhar): delete debugging
     nvar = length(dredobj)-6 #always 6?
     printmax = min(nrow(dredobj), nmodshow)
     print(dredobj[1:printmax,]) # always prints preamble with "call" and footnote about ranking
@@ -47,6 +47,6 @@ cu_dredge = function(regobj,forlag,
     }
   }
   dobj$form = forla; dobj$ndred = length(dredvars)
-  #debug removed
+  print(dobj) # TODO(sekhar): delete debugging
   return(dobj)
 }

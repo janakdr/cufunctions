@@ -138,9 +138,10 @@ curepmeas = function(dsgiven, dnam, repnam, fac2=NULL, idnam=NULL, minimal=F,
     warning("plot='",plot,"' no good. Taken to be 'bar'", call. = FALSE); plot="bar"
   }
   dolines = function(xvar, yvar, id, title) {
-    nsubj = length(xvar)/nleva; nsdone = 0; ide = 0
+    nsubj = length(xvar)/nleva; nsdone = 0; ide = 0; cat("\nnsubj:",nsubj) # TODO(sekhar): delete debugging
     while (nsdone < nsubj) {
       ideo = ide; nlines = nleva*min(maxlines,nsubj-nsdone)
+      cat ("\nideo,nsdone,nlines", ideo,nsdone,nlines) # TODO(sekhar): delete debugging
 
       dfpl = data.frame(A=c((nlines)*0), stringsAsFactors = F); j=0; nid=0
       for (i in 1:length(xvar)) { # id's assumed monotonic up the first time through
@@ -156,6 +157,7 @@ curepmeas = function(dsgiven, dnam, repnam, fac2=NULL, idnam=NULL, minimal=F,
         }
       }
       nsdone = nsdone+nid; colnames(dfpl) = c(g1name,depname,"id")
+      cat("\nlines dfpl:\n") # TODO(sekhar): delete debugging
 
       # if (!is.null(g1order)) dfpl[,1] = factor(dfpl[,1], levels=g1order)
       print(dfpl)
@@ -394,7 +396,8 @@ curepmeas = function(dsgiven, dnam, repnam, fac2=NULL, idnam=NULL, minimal=F,
   if (sumdiff !=0) {
     f1levels = levels(fctr); diffct = 0; diffnams = c(); map1w = c(nleva*0)
     if (length(varlist) != nleva) {
-      message("Fatal error for ",depname,"\nvarlist: ",paste(varlist,collapse=" "),"\nfctr: ",paste(levels(fctr),collapse=" "))
+      cat("\nFatal error for",depname,"\nvarlist:"); print(varlist) # TODO(sekhar): delete debugging
+      cat("\nfctr:"); print(fctr) # TODO(sekhar): delete debugging
       stop("\nTell Sekhar: For ",depname,
        ", length(varlist) != nleva ",length(varlist)," ",nleva,
        "\nDoes ",depname," appear in more than one column?")
