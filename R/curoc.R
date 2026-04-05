@@ -42,6 +42,8 @@ curoc = function(LRobj, depvar, twolev=TRUE, xs=NULL, namedep=NULL, logitlog="lo
     #print(coeffs)
   }
   add = FALSE; jcolor=0
+  oldpar <- graphics::par(no.readonly = TRUE)
+  on.exit(graphics::par(oldpar), add = TRUE)
   graphics::par(font.lab=2, mfrow=c(1,1)) # in case set elsewhere
   for (jroc in 1:nroc) {
     if (!twolev) {
@@ -120,12 +122,11 @@ curoc = function(LRobj, depvar, twolev=TRUE, xs=NULL, namedep=NULL, logitlog="lo
     if (!requireNamespace("devEMF", quietly = TRUE))
       stop("Package 'devEMF' is required for EMF output but is not installed.")
     devEMF::emf(fname, emfPlus=F)
-    oldw <- getOption("warn")
-    options(warn = -1)
-    perfPlot = performance(PredObj, "tpr", "fpr")
-    graphics::par(font.lab=2)
-    ROCR::plot(perfPlot, add=F, main=AUCtitle, xlab=xlabroc, ylab=ylabroc, col=color)
-    options(warn = oldw)
+    suppressWarnings({
+      perfPlot = performance(PredObj, "tpr", "fpr")
+      graphics::par(font.lab=2)
+      ROCR::plot(perfPlot, add=F, main=AUCtitle, xlab=xlabroc, ylab=ylabroc, col=color)
+    })
     grDevices::dev.off()
   }
   cat("") #needed to avoid "RStudioGD" and 2 on next line

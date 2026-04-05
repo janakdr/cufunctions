@@ -103,22 +103,22 @@ cukm = function(timevar, statvar, ttmtvar, kmtype="survival", pvalue=T,
   }
   message("'+' on K-M curves indicates censoring (loss to follow-up)")
   PlotObj = survfit(Surv(Time,Status) ~ Factor, data=ds)
-  oldw <- getOption("warn")
-  options(warn = -1)   #  
-  p=ggsurvplot(PlotObj, data=ds, fun=fun,  pval=pvalue, pval.coord=c(pvalx, 0.1), risk.table=TRUE,
-               title=title, legend=legend, legend.title=TtmtNam, xlab=xlab, ylab=ylab,
-               risk.table.y.text=risk.table.y.text, legend.labs=legend.labs,
-               linetype=linetype, surv.scale=scale, censor=censor,censor.shape=censor.shape)
-  # p <- p + theme(plot.title = element_text(hjust = 0.5))  
-  # Safely strip unmapped legends from the risk table (which causes ggplot2 3.5.0 warnings)
-  # but DO NOT strip from $plot, as that breaks the legend title intentionally set!
-  if (!is.null(p$table)) {
-    p$table$labels$colour <- NULL
-    p$table$labels$shape <- NULL
-    p$table$labels$fill <- NULL
-    p$table$labels$linetype <- NULL
-  }
-  options(warn = oldw)
+  p <- suppressWarnings({
+    p=ggsurvplot(PlotObj, data=ds, fun=fun,  pval=pvalue, pval.coord=c(pvalx, 0.1), risk.table=TRUE,
+                 title=title, legend=legend, legend.title=TtmtNam, xlab=xlab, ylab=ylab,
+                 risk.table.y.text=risk.table.y.text, legend.labs=legend.labs,
+                 linetype=linetype, surv.scale=scale, censor=censor,censor.shape=censor.shape)
+    # p <- p + theme(plot.title = element_text(hjust = 0.5))  
+    # Safely strip unmapped legends from the risk table (which causes ggplot2 3.5.0 warnings)
+    # but DO NOT strip from $plot, as that breaks the legend title intentionally set!
+    if (!is.null(p$table)) {
+      p$table$labels$colour <- NULL
+      p$table$labels$shape <- NULL
+      p$table$labels$fill <- NULL
+      p$table$labels$linetype <- NULL
+    }
+    p
+  })
   if (is.character(ftype)) ftype = "emf" # no other is possible
   cu_plout(p,"cukm",ftype=ftype, fname=fname, scale=fscale,
            width=fwidth, height=fheight, dpi=dpi, remove=remove)
