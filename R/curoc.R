@@ -42,6 +42,8 @@ curoc = function(LRobj, depvar, twolev=TRUE, xs=NULL, namedep=NULL, logitlog="lo
     #print(coeffs)
   }
   add = FALSE; jcolor=0
+  oldpar <- graphics::par(no.readonly = TRUE)
+  on.exit(graphics::par(oldpar), add = TRUE)
   graphics::par(font.lab=2, mfrow=c(1,1)) # in case set elsewhere
   for (jroc in 1:nroc) {
     if (!twolev) {
