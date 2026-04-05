@@ -26,9 +26,17 @@ test_that("curoc emf=TRUE writes EMF file without error", {
   # Verify file has some content.
   expect_gt(file.size(file.path(tmpdir, "culogist.emf")), 1000)
 
-  # Verify ROC output still appears
-  full_out <- paste(output, collapse = "\n")
-  expect_match(full_out, "AUC")
+  # Verify ROC output values appear correctly in console output
+  expect_format_match(
+    output, 
+    "Accuracy %n%; Sensitivity %n%; Specificity %n%", 
+    c(84.7, 45, 96.9), 
+  )
+  expect_format_match(
+    output, 
+    "AUC =  %n", 
+    c(0.799), 
+  )
 })
 
 test_that("curoc emf=<name> writes named EMF file without error", {
