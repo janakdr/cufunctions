@@ -8,7 +8,7 @@ cu_letbar = function(pvalue,psignif,mapord,nlev,nletbarmax=3) {
     # pvalue is (nlev-1)x(nlev-1) matrix with p-values diagonal and below
     # first column has first level compared to all other levels, 2nd has 2nd vs rest, etc
     #    print(pvalue)
-    if (nlev > 15) cat("\nWorking on CLD letters for bars. With",nlev,"groups, this may take a while.",
+    if (nlev > 15) message("Working on CLD letters for bars. With ",nlev," groups, this may take a while.",
                        "\n   Each letter and its bars will be shown to indicate progress")
     ipo = -1; nsmat = matrix(c(rep(0,nlev*nlev)),nrow=nlev,ncol=nlev)
     whichcl = nsmat; nclbar = c(rep(0,nlev)) # nletb set to whichcl just to declare
@@ -59,8 +59,8 @@ cu_letbar = function(pvalue,psignif,mapord,nlev,nletbarmax=3) {
             }
           }
           if (oknew) {
-            if (nlev > 15) cat("\n",letfromcliq(nclique),":",
-                               whichin[1:nincl],"after",ntry); ntry=0
+            if (nlev > 15) message(letfromcliq(nclique),":",
+                               paste(whichin[1:nincl], collapse=" ")," after ",ntry); ntry=0
                                for (iin in 1:nincl) {
                                  j = whichin[iin]; nclbar[j] = nclbar[j]+1; whichcl[j,nclbar[j]] = nclique
                                }

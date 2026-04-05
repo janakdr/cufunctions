@@ -209,16 +209,16 @@ curepmany = function(dsgiven, dnamf, dnaml, repnam, fac2=NULL, idnam=NULL, minim
     }
     else 
       if (lenrep != length(repout)) 
-      cat("\n",ivar,namlist[ivar],"has different size",
-          length(repout),"not",lenrep,"\n")
+      message(ivar," ",namlist[ivar]," has different size ",
+          length(repout)," not ",lenrep)
     repmat[ivar,] = repout
   }
   # print(repmat)
-  if (is.null(repout)) cat("\nNo results. Only one visit?")
+  if (is.null(repout)) message("No results. Only one visit?")
     else utils::write.csv(repmat,file=fname, row.names=F)
   if (normvisit > 0) {
     filenorm = paste(normway,".",fname,sep="")
     utils::write.csv(rmwall,file=filenorm, row.names=F)
-    cat ("\nTransformed data in",filenorm)
+    message("Transformed data in ",filenorm)
   }
 }

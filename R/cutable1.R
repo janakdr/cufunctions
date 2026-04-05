@@ -248,13 +248,13 @@ cutable1 = function(ds, group1=NULL, group2=NULL, doAll=T, brief=F,
   if (is.null(plot)) {plot = "no"}
   else if (plot %in% c("n","no","N","NO","No")) {plot="no"}
   else if (!(plot %in% c("bar","box","violin"))) {
-    cat("\nplot='",plot,"' no good. Taken to be 'box'",sep=""); plot="box"
+    message("plot='",plot,"' no good. Taken to be 'box'"); plot="box"
   }
   nrowmax = 16; yesfoot = T; chall = NULL; if (doAll) chall = "All"
   if (is.null(ylab)) ylab=deparse(substitute(ds))
   if (is.null(group1)) {
     groupvar = NULL; nlev = 0; namgrvar = ""
-    if (compare) {cat("\nno groupvar; compare ignored.\n"); compare=F}
+    if (compare) {message("no groupvar; compare ignored."); compare=F}
   }
   else {
     depsubg1 = deparse(substitute(group1)); if (is.null(g1name)) g1name=depsubg1
@@ -269,7 +269,7 @@ cutable1 = function(ds, group1=NULL, group2=NULL, doAll=T, brief=F,
       groupvar = group1; g12names = g1names; namgrvar = g1name; nlev = nlev1
     }
     else {
-      if (compare&&!brief) {cat("\ncompare=T, so brief set to T.\n"); brief=T}
+      if (compare&&!brief) {message("compare=T, so brief set to T."); brief=T}
       depsubg2 = deparse(substitute(group2)); if (is.null(g2name)) g2name=depsubg2
       if (is.numeric(group2)) {
         nlev = nlevels(as.factor(group2))
@@ -417,8 +417,8 @@ cutable1 = function(ds, group1=NULL, group2=NULL, doAll=T, brief=F,
                   chnotall,
                   ".\nMean\u00B1SD if normal, Median(25th %ile, 75th %ile) if not",sep="")
     if (compare) {
-      if (anyt) cat("\nComparisons by Fisher LSD if normal, by Dunn if not")
-      if (any2x2) cat("\nComparisons by Fisher exact if any expected<11 or any 0")
+      if (anyt) message("Comparisons by Fisher LSD if normal, by Dunn if not")
+      if (any2x2) message("Comparisons by Fisher exact if any expected<11 or any 0")
     }
   }
   else if (anyt) cat("Skewness, Kurtosis & Normality testing not done if SD=0 or n<6 or n>4000",

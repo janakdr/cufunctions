@@ -161,12 +161,12 @@ cu_rep2way = function(ddep,dgp1,dgp2,dsub,depvar, group1, group2, Subject,
         }
       }
       if (nfail > 0) { # concerned only with normality of within-subj changes
-        cat("\nDATA FAIL NORMALITY TEST IN",nfail,"OF",ndifft,"GROUP Differences.",
-            "SMALLEST P-VALUE",ifelse(pnormin==0,"<0.001",pnormin))
-        if (ebars<=0) {ebars=4; cat("\nNONPARAMETRIC ANALYSIS WILL BE DONE.\n")}
-        else cat("\nLOOK FOR DATA ERRORS IN 'Min' AND 'Max' VALUES.",
+        message("DATA FAIL NORMALITY TEST IN ",nfail," OF ",ndifft," GROUP Differences. ",
+            "SMALLEST P-VALUE ",ifelse(pnormin==0,"<0.001",pnormin))
+        if (ebars<=0) {ebars=4; message("NONPARAMETRIC ANALYSIS WILL BE DONE.")}
+        else message("LOOK FOR DATA ERRORS IN 'Min' AND 'Max' VALUES.",
                  "\nIF DATA ARE NOT NORMAL,",
-                 "\nYOU SHOULD USE THE NONPARAMETRIC DUNN TEST (ebars=4)\n")
+                 "\nYOU SHOULD USE THE NONPARAMETRIC DUNN TEST (ebars=4)")
       }
       else if (ebars<=0) ebars = min(3,max(1,-ebars))
     }
@@ -343,12 +343,12 @@ cu_rep2way = function(ddep,dgp1,dgp2,dsub,depvar, group1, group2, Subject,
       repout[jrepo] = ifelse(pnormin<=pnorm,pnormin," "); repn[jrepo] = "pnormin"
       # cat("\nrepout:\n"); print(repout)
       if (!minimal) {
-        cat("Note:",g2name,"differences between repeats of",g1name,
-            "are same as\n     ",g1name,"differences between",g2name,
-            "groups\ne.g.,",g2names[gp2],"minus",g2names[gp21],"between",
-            g1names[gp1],"and",g1names[gp11],"is identical to\n     ",
-            g1names[gp1],"minus",g1names[gp11],"between",
-            g2names[gp2],"and",g2names[gp21])
+        message("Note: ",g2name," differences between repeats of ",g1name,
+            " are same as\n      ",g1name," differences between ",g2name,
+            " groups\ne.g., ",g2names[gp2]," minus ",g2names[gp21]," between ",
+            g1names[gp1]," and ",g1names[gp11]," is identical to\n      ",
+            g1names[gp1]," minus ",g1names[gp11]," between ",
+            g2names[gp2]," and ",g2names[gp21])
         cat("\n\nRest of the pairwise comparisons (unlikely to be of interest)\n")
         for (ipv in 1:nlev12m1){
           i1 = (ipv-1) %/% gp2 + 1;  i2 = (ipv-1) %% gp2 + 1
@@ -416,7 +416,7 @@ cu_rep2way = function(ddep,dgp1,dgp2,dsub,depvar, group1, group2, Subject,
     npairsgp1 = (gp1*(gp1-1))/2;  ndifbar = gp2*npairsgp1
     nd2 = (ndifbar-1)**2; pvalsdiff = rep(NA,nd2)  # above 2 to go with interact=T
     if (anyNA(depvar)) {
-      if (!minimal) cat("\nSome missing data, so no overall p-value by Friedman.")
+      if (!minimal) message("Some missing data, so no overall p-value by Friedman.")
       dss = data.frame(Subject, depvar,group2,group1)
       #print(dss)
       rmw = stats::reshape(dss, direction="wide", idvar="Subject",timevar="group1", v.names="depvar")
@@ -495,17 +495,17 @@ cu_rep2way = function(ddep,dgp1,dgp2,dsub,depvar, group1, group2, Subject,
     fitg1 = lme(depvar ~ group1, random=~1|Subject/group1, na.action=stats::na.omit)
     pval1 = partfout(fitg1, paste("no",g2name))
     if (pvalnoi > 0.05 || pval1 > 0.05) {
-      cat("\nModel is overly complex. Consider dropping the second factor.")
-      if (pvminint > 0.05) cat("\nThis is consistent with the smallest interaction p-value of",
+      message("Model is overly complex. Consider dropping the second factor.")
+      if (pvminint > 0.05) message("This is consistent with the smallest interaction p-value of ",
                                signif(pvminint,3))
-      else cat("\nPuzzling since the smallest interaction p-value is",
+      else message("Puzzling since the smallest interaction p-value is ",
                signif(pvminint,3),". Do discuss with someone.")
     }
     else if (pvminint > 0.05) {
-      cat(", but smallest interaction p-value is",signif(pvminint,3),
-          "\nThe significant partial F-test shows value of",g2name,
-          "in the model,\nbut without any interaction with",g1name,
-          "reaching significance.")
+      message(", but smallest interaction p-value is ",signif(pvminint,3),
+          "\nThe significant partial F-test shows value of ",g2name,
+          " in the model,\nbut without any interaction with ",g1name,
+          " reaching significance.")
     }
     cat("\n")
   }

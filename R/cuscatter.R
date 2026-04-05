@@ -100,7 +100,7 @@ cuscatter = function(yvar,xvar, doline=T, showr2eqn="both", minimal=F,
   #cat ("\nyname,xname,title:",yname,"/",xname,"/",title,"/")
   if (is.null(theme)) theme = "bw"
   if (!(theme %in% c("grey","gray","bw","linedraw","light","dark","minimal","classic","void"))) {
-    cat("\ntheme='",theme,"' no good. Taken to be 'bw'",sep=""); theme = "bw"
+    message("theme='",theme,"' no good. Taken to be 'bw'"); theme = "bw"
   }
   xv = transz(xvar,xscale); fnx = fnz(xscale)
   yv = transz(yvar,yscale); fny = fnz(yscale)
@@ -135,7 +135,7 @@ cuscatter = function(yvar,xvar, doline=T, showr2eqn="both", minimal=F,
       if (showr2eqn=="r2") legtex = r2tex
       else if (showr2eqn=="eqn") legtex = eqtex
       else {
-        if (showr2eqn!="both") cat("\nshowr2eqn taken to be 'both'\n")
+        if (showr2eqn!="both") message("showr2eqn taken to be 'both'")
         legtex = paste(r2tex,"\n",eqtex,sep="")
       } # need to recode below if either axis is reversed by zmax<zmin
       # cat ("\ngeomtext\n") no text if scale set before or after

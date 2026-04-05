@@ -41,6 +41,6 @@ cu_plout = function(plotobj,funcname,ftype=NULL,fname=NULL,suff=NULL,seq=0,
              units=units,dpi=dpi)
     }
   }
-  else if (!is.null(ftype)) print("ftype has to be set to something within quotes")
+  else if (!is.null(ftype)) message("ftype has to be set to something within quotes")
   cat("") #needed to avoid "RStudioGD" and 2 on next line
 }

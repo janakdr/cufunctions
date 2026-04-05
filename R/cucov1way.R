@@ -118,8 +118,8 @@ cucov1way = function(depvar, covar, group1, xs=NULL, breakpt=F,
   if (length(ebars)>1) stop("\n",deparse(substitute(ebars)),
     "??? cucov1way is for only one factor. Did you intend cucov2way?\n")
   if (length(depvar) != length(group1) || length(depvar) != length(covar)) {
-    cat("\n#observations of dependent variable, covariate and group factors not equal:\n",
-        length(depvar), length(covar), length(group1),"\n\n")
+    message("#observations of dependent variable, covariate and group factors not equal: ",
+        length(depvar), " ", length(covar), " ", length(group1))
     stop("\nquitting")
   }
   if (is.null(fontmain)) fontmain=c(14,"bold","black")
@@ -265,7 +265,7 @@ cucov1way = function(depvar, covar, group1, xs=NULL, breakpt=F,
       pvalco = partfout(fitco, paste("just ",depsubcov," - lm(",depsubdep," ~ ",
                                      depsubcov,")",sep=""))
       if (pvalss > 0.05 || pval1 > 0.05|| pvalco > 0.05)
-        cat("\nModel is overly complex. Consider a simpler model")
+        message("Model is overly complex. Consider a simpler model")
       cat("\n")
     }
   }
@@ -288,7 +288,7 @@ cucov1way = function(depvar, covar, group1, xs=NULL, breakpt=F,
     } # what follows is same as in cov2way but for name in cu_plout
     if (is.null(theme)) theme = "bw"
     if (!(theme %in% c("grey","gray","bw","linedraw","light","dark","minimal","classic","void"))) {
-      cat("\ntheme='",theme,"' no good. Taken to be 'bw'",sep=""); theme = "bw"
+      message("theme='",theme,"' no good. Taken to be 'bw'"); theme = "bw"
     }
     funtheme = get(paste("theme_",theme,sep=""))
     p <- p + labs(x=covname, y=depname) + funtheme()

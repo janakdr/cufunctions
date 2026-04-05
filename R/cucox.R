@@ -123,8 +123,8 @@ cucox = function(dsgiven, timnam, depnam, formula, dopredkm=T, doroc=T, docoxkm=
       stop("\n\nUnestimable predictor(s) (due to perfect correlation with some others):\n",
            varlist,"\nRe-run without the variable(s).\n\n")
     if (ncoef > 2) { # no need to dredge with just one predictor
-      if (ncoef > 15) cat("\nPROGRAM MAY DISAPPEAR AND NOT RETURN IF TOO MANY PREDICTORS",
-                          "\nIF THIS HAPPENS, USE FEWER THAN 16 PREDICTORS\n")
+      if (ncoef > 15) message("PROGRAM MAY DISAPPEAR AND NOT RETURN IF TOO MANY PREDICTORS",
+                          "\nIF THIS HAPPENS, USE FEWER THAN 16 PREDICTORS")
       if (m.min>m.max) m.min=1
       dredobj = dredge(fitcox, m.lim=c(m.min, m.max), fixed=fixed, subset=subset)
       nvar = length(dredobj)-6 #always 6?

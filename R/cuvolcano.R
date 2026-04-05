@@ -62,7 +62,7 @@ cuvolcano = function(dsomics, gpairs, xdash=0.5, psig = 0.05, psigmin = 0.2, pfa
       pv=ifelse(grepl("ns",dsomics[iv,jpv]), 1, as.numeric(dsomics[iv,jpv]))
       options(warn = oldw)
       if (is.na(val1) || is.na(val2) || is.na(pv) || val1<=0 || val2<=0) {
-        cat("\n",namepval,":",ds[iv,1],"bad:",
+        message(namepval,":",ds[iv,1]," bad:",
             dsomics[iv,jgp1],dsomics[iv,jgp2],dsomics[iv,jpv])
         rat = 1; pv = 1
       }

@@ -73,10 +73,10 @@ cusum.data.frame = function (object, maxsum = 7L, digits = max(3L, getOption("di
     dim(z) <- c(nr, nv)
   }
   attr(z, "class") <- c("table")
-  msage="Skewness, Kurtosis & Normality testing not done if SD=0 or n<6 or n>4000.\n"
-  cat(msage)
-  msage="Normality test is by Shapiro-Wilk\n"
-  cat(msage)
+  msage="Skewness, Kurtosis & Normality testing not done if SD=0 or n<6 or n>4000."
+  message(msage)
+  msage="Normality test is by Shapiro-Wilk"
+  message(msage)
   if (length(rownames(z))==15) rownames(z)=c("N","Mean","SD","CV%","SEM","Min.","1st Q","Median","3rd Q","Max.","Skew","Kurt.","Skew p","Kurt p","norm ?")
   if (length(rownames(z))==12) rownames(z)=c("N","Mean","SD","CV%","SEM","Min.","1st Q","Median","3rd Q","Max.","Skew","Kurt.")
   # <12 assumes all categorical

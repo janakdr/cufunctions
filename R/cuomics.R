@@ -56,7 +56,7 @@ cuomics = function(funcname, dsgiven, dnamf, dnaml, fnom, ...)
       if (is.null(namlist)) {
         ilocb = i-1 # used by all but repmeas
         namlist = c(dnamf) #; cat("\nnamlist:",namlist)
-        if (dnamf == dnaml) {cat("\nRunning",funcname,"just once:\n"); break}
+        if (dnamf == dnaml) {message("Running ",funcname," just once:"); break}
         if (ifun < nfuncpos) dvardot = dnaml
         else {dvardot = paste(dnaml,".",sep=""); dvarnc1 = nchar(dnaml)+1}
       }
@@ -95,8 +95,8 @@ cuomics = function(funcname, dsgiven, dnamf, dnaml, fnom, ...)
     }
     else 
       if (lenrep != length(repout)) 
-        cat("\n",ivar,namlist[ivar],"has different size",
-            length(repout),"not",lenrep,"\n")
+        message(ivar," ",namlist[ivar]," has different size ",
+            length(repout)," not ",lenrep)
     # print(repout); print(lenrep); print(repmat)
     # for (j in 1:lenrep) repmat[ivar,j] = repout[2,j]
     repmat[ivar,] = repout
@@ -104,12 +104,12 @@ cuomics = function(funcname, dsgiven, dnamf, dnaml, fnom, ...)
   }
   #print(repmat)
   if (ifun>=nfuncpos-1) {
-    if (is.null(repout)) cat("\nNo results. Only one visit?")
+    if (is.null(repout)) message("No results. Only one visit?")
     else utils::write.csv(repmat,file=fnom, row.names=F)
     if (normvisit > 0) {
       filenorm = paste(normway,".",fnom,sep="")
       utils::write.csv(rmwall,file=filenorm, row.names=F)
-      cat ("\nTransformed data in",filenorm)
+      message("Transformed data in ",filenorm)
     }
   }
   else utils::write.csv(repmat, file=fnom, row.names=F)

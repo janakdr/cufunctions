@@ -194,14 +194,14 @@ cu2way = function(depvar,group1,group2, interact=TRUE, dosimpler=F, partialF=TRU
   Allfirst = F
   if (!is.logical(doAll)) {
     if (doAll=="I") Allfirst = T
-    else cat ("\ndoAll='",doAll,"' no good. Ignored",sep="")
+    else message("doAll='",doAll,"' no good. Ignored")
     doAll = T
   }
   else if (!doAll) doAll = T # too much work to suppress All
   if (is.null(plot)) {plot = "no"}
   else if (plot %in% c("n","no","N","NO","No")) {plot="no"}
   else if (!(plot %in% c("bar","box","violin","rod"))) {
-    cat("\nplot='",plot,"' no good. Taken to be 'bar'",sep=""); plot="bar"
+    message("plot='",plot,"' no good. Taken to be 'bar'"); plot="bar"
   }
   nrowmax = 16; irmean=3; irmed=9 # constants
   # minimal needs SD to do Bartlett and pairwise.t
@@ -227,16 +227,16 @@ cu2way = function(depvar,group1,group2, interact=TRUE, dosimpler=F, partialF=TRU
   }
   itrans = 0
   if (ytrans != "none") if (is.factor(depvar) || ebars == 4)
-  {cat("\nytrans ignored for contingency or ebars=4.\n"); ytrans="none"} # no need for transforms
+  {message("ytrans ignored for contingency or ebars=4."); ytrans="none"} # no need for transforms
   else {
     izneg = anyzneg(depvar)
     if (ytrans=="sqrt") if (izneg<0)
-    {cat("\nNo sqrt if any negative values.\n"); ytrans="none"}
+    {message("No sqrt if any negative values."); ytrans="none"}
     else itrans=1
     else if (ytrans=="log" || ytrans=="log10") if (izneg<=0)
-    {cat("\nNo log unless all positive values.\n"); ytrans="none"}
+    {message("No log unless all positive values."); ytrans="none"}
     else itrans=2
-    else {cat("\nytrans no good:",ytrans,"\n"); ytrans="none"}
+    else {message("ytrans no good: ",ytrans); ytrans="none"}
   }
   if (is.null(depname)) depname=deparse(substitute(depvar))
   depnact = depname
@@ -252,8 +252,8 @@ cu2way = function(depvar,group1,group2, interact=TRUE, dosimpler=F, partialF=TRU
   if (is.character(depvar)) depvar = as.factor(depvar)
   # print(group1); print(group2) # need logic to test valid order's
   if (length(depvar) != length(group1) || length(depvar) != length(group2)) {
-    cat("\n#observations of dependent variable and group factors not equal:",
-        length(depvar), length(group1), length(group2),"\n")
+    message("#observations of dependent variable and group factors not equal: ",
+        length(depvar), " ", length(group1), " ", length(group2))
     stop("\nquitting")
   }
   group1 = cu_reorder(group1, g1order); g1order = NULL
@@ -269,7 +269,7 @@ cu2way = function(depvar,group1,group2, interact=TRUE, dosimpler=F, partialF=TRU
     }
   }
   if (anyxmiss) {
-    cat("\nDropping observations",cmiss,"with missing data\n")
+    message("Dropping observations ",paste(cmiss, collapse=" ")," with missing data")
     group1 = group1[-cmiss]; group2 = group2[-cmiss]; depvar = depvar[-cmiss]; 
   }
   # find a way to deal with missing combinations of levels
@@ -297,12 +297,12 @@ cu2way = function(depvar,group1,group2, interact=TRUE, dosimpler=F, partialF=TRU
     nlevdep = nlevels(depvar)
     if (nlevdep<=1) stop (depname,' has only one level. No good')
     if (nlevdep>2 && casecontrol) {
-      casecontrol=F; cat("\nCase-Control ignored: impossible with >2 levels\n")
+      casecontrol=F; message("Case-Control ignored: impossible with >2 levels")
     }
     if (is.null(ordinal)) ifordinal = F
     else if (nlevdep<=2) {
       if (!is.null(ordinal)) 
-        cat("\nNo need for ordinal with only two dependent variable levels.",
+        message("No need for ordinal with only two dependent variable levels.",
             whatintend())
       ifordinal = F
     }
@@ -311,13 +311,13 @@ cu2way = function(depvar,group1,group2, interact=TRUE, dosimpler=F, partialF=TRU
       ifordinal = T
       if (length(ordinal) != nlevdep) {
         i = 0; 
-        cat("\nordinal must have exactly",nlevdep,depname,"names.",
+        message("ordinal must have exactly ",nlevdep," ",depname," names.",
             whatintend())
       }
       else for (i in (1:nlevdep)) {
         if (!(levels(depvar)[i] %in% ordinal)) {
-          cat("\n",depname," '",levels(depvar)[i],"' not in ordinal. Typo?",
-              whatintend(),sep="")
+          message(depname," '",levels(depvar)[i],"' not in ordinal. Typo?",
+              whatintend())
           i = 0; break
         } }
       if (i==0) ordinal = T  # why?
@@ -325,7 +325,7 @@ cu2way = function(depvar,group1,group2, interact=TRUE, dosimpler=F, partialF=TRU
     } # reorder depvar before tables and barplot
     # cat("\n",ifordinal)
     if (scale != "frequency") if (scale != "percent") {
-      cat("\n scale can only be frequency or percent, in quotes\n")
+      message("scale can only be frequency or percent, in quotes")
       scale="frequency"
     }
   }
@@ -503,12 +503,12 @@ cu2way = function(depvar,group1,group2, interact=TRUE, dosimpler=F, partialF=TRU
         }
       }
       if (nfail > 0) {
-        cat("\nDATA FAIL NORMALITY TEST IN",nfail,"OF",nlevboth12,"GROUPs.",
-            "SMALLEST P-VALUE",ifelse(pnormin==0,"<0.001",pnormin))
-        if (ebars<=0) {ebars=4; cat("\nNONPARAMETRIC ANALYSIS WILL BE DONE.\n")}
-        else cat("\nLOOK FOR DATA ERRORS IN 'Min' AND 'Max' VALUES.",
+        message("DATA FAIL NORMALITY TEST IN ",nfail," OF ",nlevboth12," GROUPs. ",
+            "SMALLEST P-VALUE ",ifelse(pnormin==0,"<0.001",pnormin))
+        if (ebars<=0) {ebars=4; message("NONPARAMETRIC ANALYSIS WILL BE DONE.")}
+        else message("LOOK FOR DATA ERRORS IN 'Min' AND 'Max' VALUES.",
                  "\nIF DATA ARE NOT NORMAL,",
-                 "\nYOU SHOULD USE THE NONPARAMETRIC DUNN TEST (ebars=4)\n")
+                 "\nYOU SHOULD USE THE NONPARAMETRIC DUNN TEST (ebars=4)")
       } # code parallels cu1way
       else if (ebars<=0) ebars = min(3,max(1,-ebars))
     } # end of ebars != 4
@@ -541,14 +541,14 @@ cu2way = function(depvar,group1,group2, interact=TRUE, dosimpler=F, partialF=TRU
     if(pval<pbart) pool.sd=F
     if(pval<0.05 && !minimal) {
       #  print(bt)
-      cat("\nData fail the Bartlett test for homogeneity of variances (p=",
+      message("Data fail the Bartlett test for homogeneity of variances (p=",
           signif(pval,digits=3)," for chi-sq=",signif(chisq,digits=3),
-          " with ",nlevact-1," df)", sep="")
-      if (pool.sd) cat ("\nNevertheless, using pooled SD because pbart is set low. We trust you want that.")
-      else cat("\nCOULD NOT USE POOLED SD DUE TO UNEQUAL VARIANCES.",
+          " with ",nlevact-1," df)")
+      if (pool.sd) message("Nevertheless, using pooled SD because pbart is set low. We trust you want that.")
+      else message("COULD NOT USE POOLED SD DUE TO UNEQUAL VARIANCES.",
            "\nLOOK FOR DATA ERRORS, FOCUSING ON GROUP(S) WITH LARGE SD AND UNEXPECTED MIN/MAX IN SUMMARY ABOVE.",
            "\nIf you wish to pool variances despite failing Bartlett,", 
-           "redo cu2way adding pbart=x, where x<",signif(pval,digits=3),"\n")
+           " redo cu2way adding pbart=x, where x<",signif(pval,digits=3))
     }
     if (pool.sd) {
       pairout = cupairwise.t(dsnomiss$A,dsnomiss$B,p.adjust=padj)
@@ -790,9 +790,9 @@ cu2way = function(depvar,group1,group2, interact=TRUE, dosimpler=F, partialF=TRU
       pval2 = partfout(fitg2, paste("just ",g2name," - cu1way(",depsubdep,",",
                                     depsubg2,")",sep=""))
       if (pvalni > 0.05 || pval1 > 0.05 || pval2 > 0.05)
-        cat("\nModel is overly complex. Consider a simpler model")
+        message("Model is overly complex. Consider a simpler model")
       else if (interact && pvminint > 0.05)
-        cat("\nbut smallest interaction p-value is",signif(pvminint,3),
+        message("but smallest interaction p-value is ",signif(pvminint,3),
             "\nYou have a dilemma with a significant partial F-test,",
             "\nbut without any interaction reaching significance.")
       cat("\n")

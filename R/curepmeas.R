@@ -135,13 +135,14 @@ curepmeas = function(dsgiven, dnam, repnam, fac2=NULL, idnam=NULL, minimal=F,
   if (is.null(plot)) {plot = "no"}
   else if (plot %in% c("n","no","N","NO","No")) {plot="no"}
   else if (!(plot %in% c("bar","box","violin","rod"))) {
-    cat("\nplot='",plot,"' no good. Taken to be 'bar'",sep=""); plot="bar"
+    message("plot='",plot,"' no good. Taken to be 'bar'"); plot="bar"
   }
   dolines = function(xvar, yvar, id, title) {
-    nsubj = length(xvar)/nleva; nsdone = 0; ide = 0; cat("\nnsubj:",nsubj)
+    nsubj = length(xvar)/nleva; nsdone = 0; ide = 0; cat("\nnsubj:",nsubj) # TODO(sekhar): delete debugging
     while (nsdone < nsubj) {
       ideo = ide; nlines = nleva*min(maxlines,nsubj-nsdone)
-      cat ("\nideo,nsdone,nlines", ideo,nsdone,nlines)
+      cat ("\nideo,nsdone,nlines", ideo,nsdone,nlines) # TODO(sekhar): delete debugging
+
       dfpl = data.frame(A=c((nlines)*0), stringsAsFactors = F); j=0; nid=0
       for (i in 1:length(xvar)) { # id's assumed monotonic up the first time through
         idi = id[i]
@@ -156,7 +157,8 @@ curepmeas = function(dsgiven, dnam, repnam, fac2=NULL, idnam=NULL, minimal=F,
         }
       }
       nsdone = nsdone+nid; colnames(dfpl) = c(g1name,depname,"id")
-      cat("\nlines dfpl:\n")
+      cat("\nlines dfpl:\n") # TODO(sekhar): delete debugging
+
       # if (!is.null(g1order)) dfpl[,1] = factor(dfpl[,1], levels=g1order)
       print(dfpl)
       titl = paste(title," (",idb,"-",ide,")",sep="")
@@ -310,19 +312,17 @@ curepmeas = function(dsgiven, dnam, repnam, fac2=NULL, idnam=NULL, minimal=F,
     if (!is.null(ordinal)&&!is.logical(ordinal)) {
       if (length(ordinal) != nlevdep) {
         i = 0; 
-        cat("\nordinal must have exactly",nlevdep,depname,"names. ordinal ignored\n")
         warning("ordinal must have exactly ",nlevdep," ",depname," names. ordinal ignored")
       }
       else for (i in (1:nlevdep)) {
         if (!(levsdep[i] %in% ordinal)) {
-          cat("\n",depname," '",levsdep[i],"' not in ordinal. ordinal ignored\n",sep="")
           warning(depname," '",levsdep[i],"' not in ordinal. ordinal ignored")
           i = 0; break
       } }
       if (i>0) {rml[,dnum] = factor(rml[,dnum], levels=ordinal); levsdep=ordinal}
     } # reorder depvar before tables and barplot
     if (scale != "frequency") if (scale != "percent") {
-      cat("\n scale can only be frequency or percent, in quotes\n")
+      message("scale can only be frequency or percent, in quotes")
       scale="frequency"
     }
     chyparr = "->"
@@ -331,16 +331,16 @@ curepmeas = function(dsgiven, dnam, repnam, fac2=NULL, idnam=NULL, minimal=F,
     chyparr = "-"
     # cat("\nrml[,dnum] before:",rml[,dnum])
     if (ytrans != "none") if (ebars == 4)
-      {cat("\nytrans ignored for contingency or ebars=4.\n"); ytrans="none"} # no need for transforms
+      {message("ytrans ignored for contingency or ebars=4."); ytrans="none"} # no need for transforms
     else {
       izneg = anyzneg(rml[,dnum])
       if (ytrans=="sqrt") if (izneg<0)
-        {cat("\nNo sqrt if any negative values.\n"); ytrans="none"}
+        {message("No sqrt if any negative values."); ytrans="none"}
       else itrans=1
       else if (ytrans=="log" || ytrans=="log10") if (izneg<=0)
-        {cat("\nNo log unless all positive values.\n"); ytrans="none"}
+        {message("No log unless all positive values."); ytrans="none"}
       else itrans=2
-      else {cat("\nytrans no good:",ytrans,"\n"); ytrans="none"}
+      else {message("ytrans no good: ",ytrans); ytrans="none"}
       if (itrans>0) for (j in 1:nrow(rml)) {
         depj = rml[j,dnum]
         if (!is.na(depj)) rml[j,dnum] = ifelse(itrans==1,sqrt(depj),log10(depj))
@@ -361,7 +361,7 @@ curepmeas = function(dsgiven, dnam, repnam, fac2=NULL, idnam=NULL, minimal=F,
       }
       #cat("\nvarlist:"); print(varlist)
       cat("\nScatter plots of repeated measures should have slopes close to 1.")
-      if (g2cow>0) cat("\n   (separate slopes for",fac2,"=",levels(as.factor(rmw[,g2cow])),")")
+      if (g2cow>0) cat("   (separate slopes for ",fac2,"= ",paste(levels(as.factor(rmw[,g2cow])), collapse=" "),")")
       nscat = 0
       for (i in 1:(nrepm-1)) for (j in (i+1):nrepm) {
         ix = varlist[i]; iy = varlist[j] #; cat("\nix,iy",ix,iy)
@@ -394,8 +394,8 @@ curepmeas = function(dsgiven, dnam, repnam, fac2=NULL, idnam=NULL, minimal=F,
   if (sumdiff !=0) {
     f1levels = levels(fctr); diffct = 0; diffnams = c(); map1w = c(nleva*0)
     if (length(varlist) != nleva) {
-      cat("\nFatal error for",depname,"\nvarlist:"); print(varlist)
-      cat("\nfctr:"); print(fctr)
+      message("Fatal error for ",depname,"\nvarlist:"); print(varlist)
+      message("fctr:"); print(fctr)
       stop("\nTell Sekhar: For ",depname,
        ", length(varlist) != nleva ",length(varlist)," ",nleva,
        "\nDoes ",depname," appear in more than one column?")
@@ -522,7 +522,6 @@ curepmeas = function(dsgiven, dnam, repnam, fac2=NULL, idnam=NULL, minimal=F,
     }
     if (!is.null(fac2)) {  # needed? See earlier test on fac2 and g2col
       warning("Second factor name <",fac2,"> not recognized - ignored");
-      cat("\nSecond factor name <",fac2,"> not recognized - ignored\n",sep="")
     }
   }
   else { # second factor given
@@ -598,7 +597,7 @@ curepmeas = function(dsgiven, dnam, repnam, fac2=NULL, idnam=NULL, minimal=F,
        ticklength=ticklength, xticks.by=xticks.by, yticks.by=yticks.by, 
        ftype=ftype,fname=fname, fscale=fscale,fwidth=fwidth,fheight=fheight,dpi=dpi,remove=remove)
       if (!interact) 
-        cat("\nIn repeated measures analysis, with each subject as their own control,",
+        message("In repeated measures analysis, with each subject as their own control,",
             "\nit is pointless to have a second factor without interaction.",
             "\nEffects and p-values are the same as without the second factor.")
     }

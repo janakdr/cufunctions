@@ -143,8 +143,8 @@ cucov2way = function(depvar, covar, group1, group2, xs=NULL,
   # print(group1); print(group2) # need logic to test valid order's
   if (length(depvar) != length(group1) || length(depvar) != length(covar) 
       || length(depvar) != length(group2)) {
-    cat("\n#observations of dependent variable, covariate and group factors not equal:\n",
-        length(depvar), length(covar), length(group1), length(group2),"\n")
+    message("#observations of dependent variable, covariate and group factors not equal: ",
+        length(depvar), " ", length(covar), " ", length(group1), " ", length(group2))
     stop("\nquitting")
   }
   if (is.null(fontmain)) fontmain=c(14,"bold","black")
@@ -170,7 +170,7 @@ cucov2way = function(depvar, covar, group1, group2, xs=NULL,
     }
   }
   if (anyxmiss) {
-    cat("\nDropping observations",cmiss,"with missing data\n")
+    message("Dropping observations ",paste(cmiss, collapse=" ")," with missing data")
     group1 = group1[-cmiss]; group2 = group2[-cmiss]
     depvar = depvar[-cmiss]; covar  = covar[-cmiss]
   }
@@ -341,8 +341,8 @@ cucov2way = function(depvar, covar, group1, group2, xs=NULL,
       }
     }
     if (pvminint > 0.05) {
-      cat("Smallest interaction p-value is",signif(pvminint,3),
-          "\nYou may wish to try a non-interaction anova (interact=F)\n")
+      message("Smallest interaction p-value is ",signif(pvminint,3),
+          "\nYou may wish to try a non-interaction anova (interact=F)")
     }
   }  # end of interact=T
 
@@ -436,9 +436,9 @@ cucov2way = function(depvar, covar, group1, group2, xs=NULL,
     if (pvalssi > 0.05 || pvalvsni > 0.05 || pvalssni > 0.05 || 
         pval1c  > 0.05 || pval2c   > 0.05 || pvalnoc  > 0.05 || 
         pval1   > 0.05 || pval2    > 0.05 || pvalco   > 0.05)
-    cat("\nModel is overly complex. Consider a simpler model")
+    message("Model is overly complex. Consider a simpler model")
     else if (interact && pvminint > 0.05)
-      cat("\nbut smallest interaction p-value is",signif(pvminint,3),
+      message("but smallest interaction p-value is ",signif(pvminint,3),
           "\nYou have a dilemma with a significant partial F-test,",
           "\nbut without any interaction reaching significance.")
     cat("\n")
@@ -461,7 +461,7 @@ cucov2way = function(depvar, covar, group1, group2, xs=NULL,
   } # what follows is same as in cov1way but for name in cu_plout
   if (is.null(theme)) theme = "bw"
   if (!(theme %in% c("grey","gray","bw","linedraw","light","dark","minimal","classic","void"))) {
-    cat("\ntheme='",theme,"' no good. Taken to be 'bw'",sep=""); theme = "bw"
+    message("theme='",theme,"' no good. Taken to be 'bw'"); theme = "bw"
   }
   funtheme = get(paste("theme_",theme,sep=""))
   p <- p + labs(x=covname, y=depname) + funtheme()
