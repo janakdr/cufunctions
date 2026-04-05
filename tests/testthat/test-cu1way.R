@@ -247,22 +247,29 @@ test_that("cu1way(badtcp, Diet) post-hoc matches golden", {
 })
 
 test_that("cu1way(badtcp, Diet) warns about normality and Bartlett failure", {
-  expect_message(
-    capture.output(with(NEJM, cu1way(badtcp, Diet, plot = "no", ebars = 1))),
-    "DATA FAIL NORMALITY TEST IN 1 OF 3 GROUPs"
+  msgs <- testthat::capture_messages(with(NEJM, cu1way(badtcp, Diet, plot = "no", ebars = 1)))
+  
+  expect_equal(length(msgs), 4)
+  
+  expect_match(msgs[1], "DATA FAIL NORMALITY TEST IN 1 OF 3 GROUPs. SMALLEST P-VALUE <0.001", fixed = TRUE)
+  
+  expected_norm_details <- paste(
+    "LOOK FOR DATA ERRORS IN 'Min' AND 'Max' VALUES.",
+    "IF DATA ARE NOT NORMAL,",
+    "YOU SHOULD USE THE NONPARAMETRIC DUNN TEST (ebars=4)",
+    sep = "\n"
   )
-  expect_message(
-    capture.output(with(NEJM, cu1way(badtcp, Diet, plot = "no", ebars = 1))),
-    "LOOK FOR DATA ERRORS"
+  expect_match(msgs[2], expected_norm_details, fixed = TRUE)
+  
+  expect_match(msgs[3], "Data fail the Bartlett test for homogeneity of variances (p=0.00176 for chi-sq=12.7 with 2 df)", fixed = TRUE)
+  
+  expected_bartlett_details <- paste(
+    "COULD NOT USE POOLED SD DUE TO UNEQUAL VARIANCES.",
+    "LOOK FOR DATA ERRORS, FOCUSING ON GROUP(S) WITH LARGE SD AND UNEXPECTED MIN/MAX IN SUMMARY ABOVE.",
+    "If you wish to pool variances despite failing Bartlett, redo cu1way adding pbart=x, where x<0.00176",
+    sep = "\n"
   )
-  expect_message(
-    capture.output(with(NEJM, cu1way(badtcp, Diet, plot = "no", ebars = 1))),
-    "Data fail the Bartlett test for homogeneity of variances"
-  )
-  expect_message(
-    capture.output(with(NEJM, cu1way(badtcp, Diet, plot = "no", ebars = 1))),
-    "COULD NOT USE POOLED SD DUE TO UNEQUAL VARIANCES"
-  )
+  expect_match(msgs[4], expected_bartlett_details, fixed = TRUE)
 })
 
 # --- cu1way with Ordinal Outcomes ---
