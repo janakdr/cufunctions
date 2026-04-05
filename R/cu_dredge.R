@@ -13,8 +13,8 @@ cu_dredge = function(regobj,forlag,
     if (!is.null(varlist))
       stop("\n\nUnestimable predictor(s) (due to perfect correlation with some others):\n",
            varlist,"\nRe-run without the variable(s).\n\n")
-    if (ncoef > 15) warning("PROGRAM MAY DISAPPEAR AND NOT RETURN IF TOO MANY PREDICTORS",
-                        "\nIF THIS HAPPENS, USE FEWER THAN 16 PREDICTORS", call. = FALSE)
+    if (ncoef > 15) message("PROGRAM MAY DISAPPEAR AND NOT RETURN IF TOO MANY PREDICTORS",
+                        "\nIF THIS HAPPENS, USE FEWER THAN 16 PREDICTORS")
     if (m.min>m.max) {m.min=1; m.max = 99}
     cat("\nbefore dredge") # TODO(sekhar): delete debugging
     dredobj = dredge(regobj, m.lim=c(m.min, m.max), fixed=fixed, subset=subset)

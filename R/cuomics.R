@@ -95,8 +95,8 @@ cuomics = function(funcname, dsgiven, dnamf, dnaml, fnom, ...)
     }
     else 
       if (lenrep != length(repout)) 
-        warning(ivar," ",namlist[ivar]," has different size ",
-            length(repout)," not ",lenrep, call. = FALSE)
+        message(ivar," ",namlist[ivar]," has different size ",
+            length(repout)," not ",lenrep)
     # print(repout); print(lenrep); print(repmat)
     # for (j in 1:lenrep) repmat[ivar,j] = repout[2,j]
     repmat[ivar,] = repout

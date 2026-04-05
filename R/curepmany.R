@@ -209,8 +209,8 @@ curepmany = function(dsgiven, dnamf, dnaml, repnam, fac2=NULL, idnam=NULL, minim
     }
     else 
       if (lenrep != length(repout)) 
-      warning(ivar," ",namlist[ivar]," has different size ",
-          length(repout)," not ",lenrep, call. = FALSE)
+      message(ivar," ",namlist[ivar]," has different size ",
+          length(repout)," not ",lenrep)
     repmat[ivar,] = repout
   }
   # print(repmat)

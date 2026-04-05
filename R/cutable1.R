@@ -248,13 +248,13 @@ cutable1 = function(ds, group1=NULL, group2=NULL, doAll=T, brief=F,
   if (is.null(plot)) {plot = "no"}
   else if (plot %in% c("n","no","N","NO","No")) {plot="no"}
   else if (!(plot %in% c("bar","box","violin"))) {
-    warning("plot='",plot,"' no good. Taken to be 'box'", call. = FALSE); plot="box"
+    message("plot='",plot,"' no good. Taken to be 'box'"); plot="box"
   }
   nrowmax = 16; yesfoot = T; chall = NULL; if (doAll) chall = "All"
   if (is.null(ylab)) ylab=deparse(substitute(ds))
   if (is.null(group1)) {
     groupvar = NULL; nlev = 0; namgrvar = ""
-    if (compare) {warning("no groupvar; compare ignored.", call. = FALSE); compare=F}
+    if (compare) {message("no groupvar; compare ignored."); compare=F}
   }
   else {
     depsubg1 = deparse(substitute(group1)); if (is.null(g1name)) g1name=depsubg1

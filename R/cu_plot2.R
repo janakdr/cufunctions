@@ -44,7 +44,7 @@ cu_plot2 = function(progname,depvar,group1,group2,nlev1,nlev2, g1order, g1name, 
   if (is.null(dotsize)) dotsize = ifelse(is.null(yrange),0.8,0.3+0.005*yrange)
   if (is.null(dotshape)) dotshape = c(4,5,3,6,8,2,0,1,4,5,3,6,8,2,0,1)
   else if (length(dotshape) != nlev2) {
-    warning("dotshape no good: ",dotshape,". Need to specify ",nlev2, call. = FALSE)
+    message("dotshape no good: ",dotshape,". Need to specify ",nlev2)
     dotshape = c(4,5,3,6,8,2,0,1,4,5,3,6,8,2,0,1)
   }
   # dotshape doesn't do anything except with dots=1 (jitter)
@@ -202,7 +202,7 @@ cu_plot2 = function(progname,depvar,group1,group2,nlev1,nlev2, g1order, g1name, 
   if (pal == "colors") pal="lancet"
   if (is.null(theme)) theme = "bw"
   if (!(theme %in% c("grey","gray","bw","linedraw","light","dark","minimal","classic","void"))) {
-    warning("theme='",theme,"' no good. Taken to be 'bw'", call. = FALSE); theme = "bw"
+    message("theme='",theme,"' no good. Taken to be 'bw'"); theme = "bw"
   }
   funtheme = get(paste("theme_",theme,sep=""))
   # cu_plout(p); p

@@ -4,16 +4,16 @@ cu_mapord = function(order,levnams,nlev) {
   mapord = rep(0,nlev); locord = rep(0,nlev)
   if (!is.null(order)) {
     if (length(order) != nlev) {
-      warning("order must list ",nlev," names", call. = FALSE); order=NULL
+      message("order must list ",nlev," names"); order=NULL
     }
     else {
       for (i in 1:nlev) {
         loco = match(levnams[i],order)
         if (is.na(loco)) {
-          warning("order is missing ",levnams[i], call. = FALSE); break
+          message("order is missing ",levnams[i]); break
         }
         if (locord[loco] > 0) {
-          warning(levnams[i]," appears more than once", call. = FALSE); break
+          message(levnams[i]," appears more than once"); break
         }
         mapord[i] = loco; locord[loco] = i
       }

@@ -135,7 +135,7 @@ curepmeas = function(dsgiven, dnam, repnam, fac2=NULL, idnam=NULL, minimal=F,
   if (is.null(plot)) {plot = "no"}
   else if (plot %in% c("n","no","N","NO","No")) {plot="no"}
   else if (!(plot %in% c("bar","box","violin","rod"))) {
-    warning("plot='",plot,"' no good. Taken to be 'bar'", call. = FALSE); plot="bar"
+    message("plot='",plot,"' no good. Taken to be 'bar'"); plot="bar"
   }
   dolines = function(xvar, yvar, id, title) {
     nsubj = length(xvar)/nleva; nsdone = 0; ide = 0; cat("\nnsubj:",nsubj) # TODO(sekhar): delete debugging
@@ -322,7 +322,7 @@ curepmeas = function(dsgiven, dnam, repnam, fac2=NULL, idnam=NULL, minimal=F,
       if (i>0) {rml[,dnum] = factor(rml[,dnum], levels=ordinal); levsdep=ordinal}
     } # reorder depvar before tables and barplot
     if (scale != "frequency") if (scale != "percent") {
-      warning("scale can only be frequency or percent, in quotes", call. = FALSE)
+      message("scale can only be frequency or percent, in quotes")
       scale="frequency"
     }
     chyparr = "->"
@@ -331,16 +331,16 @@ curepmeas = function(dsgiven, dnam, repnam, fac2=NULL, idnam=NULL, minimal=F,
     chyparr = "-"
     # cat("\nrml[,dnum] before:",rml[,dnum])
     if (ytrans != "none") if (ebars == 4)
-      {warning("ytrans ignored for contingency or ebars=4.", call. = FALSE); ytrans="none"} # no need for transforms
+      {message("ytrans ignored for contingency or ebars=4."); ytrans="none"} # no need for transforms
     else {
       izneg = anyzneg(rml[,dnum])
       if (ytrans=="sqrt") if (izneg<0)
-        {warning("No sqrt if any negative values.", call. = FALSE); ytrans="none"}
+        {message("No sqrt if any negative values."); ytrans="none"}
       else itrans=1
       else if (ytrans=="log" || ytrans=="log10") if (izneg<=0)
-        {warning("No log unless all positive values.", call. = FALSE); ytrans="none"}
+        {message("No log unless all positive values."); ytrans="none"}
       else itrans=2
-      else {warning("ytrans no good: ",ytrans, call. = FALSE); ytrans="none"}
+      else {message("ytrans no good: ",ytrans); ytrans="none"}
       if (itrans>0) for (j in 1:nrow(rml)) {
         depj = rml[j,dnum]
         if (!is.na(depj)) rml[j,dnum] = ifelse(itrans==1,sqrt(depj),log10(depj))
@@ -360,8 +360,8 @@ curepmeas = function(dsgiven, dnam, repnam, fac2=NULL, idnam=NULL, minimal=F,
         }
       }
       #cat("\nvarlist:"); print(varlist)
-      message("Scatter plots of repeated measures should have slopes close to 1.")
-      if (g2cow>0) message("   (separate slopes for ",fac2,"= ",paste(levels(as.factor(rmw[,g2cow])), collapse=" "),")")
+      cat("\nScatter plots of repeated measures should have slopes close to 1.")
+      if (g2cow>0) cat("   (separate slopes for ",fac2,"= ",paste(levels(as.factor(rmw[,g2cow])), collapse=" "),")")
       nscat = 0
       for (i in 1:(nrepm-1)) for (j in (i+1):nrepm) {
         ix = varlist[i]; iy = varlist[j] #; cat("\nix,iy",ix,iy)
@@ -394,8 +394,8 @@ curepmeas = function(dsgiven, dnam, repnam, fac2=NULL, idnam=NULL, minimal=F,
   if (sumdiff !=0) {
     f1levels = levels(fctr); diffct = 0; diffnams = c(); map1w = c(nleva*0)
     if (length(varlist) != nleva) {
-      cat("\nFatal error for",depname,"\nvarlist:"); print(varlist) # TODO(sekhar): delete debugging
-      cat("\nfctr:"); print(fctr) # TODO(sekhar): delete debugging
+      message("Fatal error for ",depname,"\nvarlist:"); print(varlist)
+      message("fctr:"); print(fctr)
       stop("\nTell Sekhar: For ",depname,
        ", length(varlist) != nleva ",length(varlist)," ",nleva,
        "\nDoes ",depname," appear in more than one column?")

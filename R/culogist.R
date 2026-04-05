@@ -86,12 +86,12 @@ culogist = function(dsgiven, depnam, formula, xs=NULL, ordinal=NULL,
   twolev = nlevdep<3
   if (!is.null(ordinal)) if (length(ordinal) != nlevdep) {
     i = 0; 
-    warning("ordinal must have exactly ",nlevdep," ",depnam," names. ordinal ignored", call. = FALSE)
+    message("ordinal must have exactly ",nlevdep," ",depnam," names. ordinal ignored")
   }
   else {
     for (i in (1:nlevdep)) {
       if (!(levels(depvar)[i] %in% ordinal)) {
-        warning(depnam," '",levels(depvar)[i],"' not in ordinal. ordinal ignored", call. = FALSE)
+        message(depnam," '",levels(depvar)[i],"' not in ordinal. ordinal ignored")
         i = 0; break
       }
     }
@@ -134,7 +134,7 @@ culogist = function(dsgiven, depnam, formula, xs=NULL, ordinal=NULL,
   forla = stats::as.formula(paste(depnam, "~", formula))
   if (logitlog=="log") start = getstartRR() 
   else if (logitlog!="logit")
-    {warning("logitlog can only be 'logit' or 'log'. Ignored", call. = FALSE); logitlog="logit"}
+    {message("logitlog can only be 'logit' or 'log'. Ignored"); logitlog="logit"}
   #cat(idep,levnames,nlevdep,names(dscopy)); print(forla)
   
   # if (twolev) tryCatch(summary(glm(f, family=binomial(link=logitlog), start=start)),
@@ -158,8 +158,8 @@ culogist = function(dsgiven, depnam, formula, xs=NULL, ordinal=NULL,
       if (!is.null(varlist))
         stop("\n\nUnestimable predictor(s) (due to perfect correlation with some others):\n",
              varlist,"\nRe-run without the variable(s).\n\n")
-      if (ncoef > 15) warning("PROGRAM MAY DISAPPEAR AND NOT RETURN IF TOO MANY PREDICTORS",
-                          "\nIF THIS HAPPENS, USE FEWER THAN 16 PREDICTORS", call. = FALSE)
+      if (ncoef > 15) message("PROGRAM MAY DISAPPEAR AND NOT RETURN IF TOO MANY PREDICTORS",
+                          "\nIF THIS HAPPENS, USE FEWER THAN 16 PREDICTORS")
       if (m.min>m.max) m.min=1
       dredobj = dredge(LRobj, m.lim=c(m.min, m.max), fixed=fixed, subset=subset)
       nvar = length(dredobj)-6 #always 6?

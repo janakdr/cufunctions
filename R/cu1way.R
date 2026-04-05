@@ -151,14 +151,14 @@ cu1way = function(depvar, group1, ebars=0, ordinal=NULL, plot="bar", ytrans="non
   Allfirst = F
   if (!is.logical(doAll)) {
     if (doAll=="I") Allfirst = T
-    else warning("doAll='",doAll,"' no good. Ignored", call. = FALSE)
+    else message("doAll='",doAll,"' no good. Ignored")
     doAll = T
   }
   else if (!doAll) doAll = T # too much work to suppress All
   if (is.null(plot)) {plot = "no"}
   else if (plot %in% c("n","no","N","NO","No")) {plot="no"}
   else if (!(plot %in% c("bar","box","violin","rod"))) {
-    warning("plot='",plot,"' no good. Taken to be 'bar'", call. = FALSE); plot="bar"
+    message("plot='",plot,"' no good. Taken to be 'bar'"); plot="bar"
   }
   if (minimal) {irmean = 2; pnorm = 0}  # not needed any more, unlike in 2way
   else {nrowmax=16; irmean=3; irmed=9} # constants
@@ -174,16 +174,16 @@ cu1way = function(depvar, group1, ebars=0, ordinal=NULL, plot="bar", ytrans="non
   }
   itrans = 0
   if (ytrans != "none") if (is.factor(depvar) || ebars <= 0 || ebars == 4)
-    {warning("ytrans ignored for contingency or ebars=4.", call. = FALSE); ytrans="none"} # no need for transforms
+    {message("ytrans ignored for contingency or ebars=4."); ytrans="none"} # no need for transforms
   else {
     izneg = anyzneg(depvar)
     if (ytrans=="sqrt") if (izneg<0)
-      {warning("No sqrt if any negative values.", call. = FALSE); ytrans="none"}
+      {message("No sqrt if any negative values."); ytrans="none"}
     else itrans=1
     else if (ytrans=="log" || ytrans=="log10") if (izneg<=0)
-      {warning("No log unless all positive values.", call. = FALSE); ytrans="none"}
+      {message("No log unless all positive values."); ytrans="none"}
     else itrans=2
-    else {warning("ytrans no good: ",ytrans, call. = FALSE); ytrans="none"}
+    else {message("ytrans no good: ",ytrans); ytrans="none"}
   }
   if (is.null(depname)) depname=deparse(substitute(depvar))
   depnact = depname
@@ -227,13 +227,13 @@ cu1way = function(depvar, group1, ebars=0, ordinal=NULL, plot="bar", ytrans="non
     nlevdep = nlevels(depvar)
     if (nlevdep<=1) stop (depname,' has only one level. No good')
     if (nlevdep>2 && casecontrol) {
-      casecontrol=F; warning("Case-Control ignored: impossible with >2 levels", call. = FALSE)
+      casecontrol=F; message("Case-Control ignored: impossible with >2 levels")
     }
     if (is.null(ordinal)) ifordinal = F
     else if (nlevdep<=2) {
       if (!is.null(ordinal)) 
-        warning("No need for ordinal with only two dependent variable levels.",
-            whatintend(), call. = FALSE)
+        message("No need for ordinal with only two dependent variable levels.",
+            whatintend())
       ifordinal = F
     }
     else if (is.logical(ordinal)) ifordinal = ordinal
@@ -241,13 +241,13 @@ cu1way = function(depvar, group1, ebars=0, ordinal=NULL, plot="bar", ytrans="non
       ifordinal = T
       if (length(ordinal) != nlevdep) {
         i = 0; 
-        warning("ordinal must have exactly ",nlevdep," ",depname," names.",
-            whatintend(), call. = FALSE)
+        message("ordinal must have exactly ",nlevdep," ",depname," names.",
+            whatintend())
       }
       else for (i in (1:nlevdep)) {
         if (!(levels(depvar)[i] %in% ordinal)) {
-          warning(depname," '",levels(depvar)[i],"' not in ordinal. Typo?",
-              whatintend(), call. = FALSE)
+          message(depname," '",levels(depvar)[i],"' not in ordinal. Typo?",
+              whatintend())
           i = 0; break
         } }
       if (i==0) ordinal = T  # why?
@@ -255,7 +255,7 @@ cu1way = function(depvar, group1, ebars=0, ordinal=NULL, plot="bar", ytrans="non
     } # reorder depvar before tables and barplot
     # cat("\n",ifordinal)
     if (scale != "frequency") if (scale != "percent") {
-      warning("scale can only be frequency or percent, in quotes", call. = FALSE)
+      message("scale can only be frequency or percent, in quotes")
       scale="frequency"
     }
   }

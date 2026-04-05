@@ -2,8 +2,6 @@
 # Golden values are in tests/testthat/golden/*.csv
 
 
-
-
 # --- cu1way(tcchange, Diet) — standard ANOVA path ---
 
 test_that("cu1way(tcchange, Diet) summary table matches golden", {

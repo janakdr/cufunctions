@@ -461,7 +461,7 @@ cucov2way = function(depvar, covar, group1, group2, xs=NULL,
   } # what follows is same as in cov1way but for name in cu_plout
   if (is.null(theme)) theme = "bw"
   if (!(theme %in% c("grey","gray","bw","linedraw","light","dark","minimal","classic","void"))) {
-    warning("theme='",theme,"' no good. Taken to be 'bw'", call. = FALSE); theme = "bw"
+    message("theme='",theme,"' no good. Taken to be 'bw'"); theme = "bw"
   }
   funtheme = get(paste("theme_",theme,sep=""))
   p <- p + labs(x=covname, y=depname) + funtheme()

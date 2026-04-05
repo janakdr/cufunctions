@@ -157,7 +157,7 @@ cu_plot1 = function(progname, depvar,group1, g1order, g1name, depname, title,
   pal = "lancet"
   if (is.null(theme)) theme = "bw"
   if (!(theme %in% c("grey","gray","bw","linedraw","light","dark","minimal","classic","void"))) {
-    warning("theme='",theme,"' no good. Taken to be 'bw'", call. = FALSE); theme = "bw"
+    message("theme='",theme,"' no good. Taken to be 'bw'"); theme = "bw"
   }
   funtheme = get(paste("theme_",theme,sep=""))
   p <- p + funtheme() 
