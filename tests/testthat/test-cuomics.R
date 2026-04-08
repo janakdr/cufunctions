@@ -56,3 +56,23 @@ test_that("cuomics 2way generates matching csv", {
   # Cleanup
   unlink(actual_file)
 })
+
+test_that("cuomics repmeasw runs without normvisit crash", {
+  data(delta, envir = environment())
+
+  fname <- tempfile("tctgrep")
+  actual_file <- paste0(fname, "-cuomics.csv")
+
+  # This would crash with "object 'normvisit' not found" before the fix
+  capture.output(suppressWarnings(suppressMessages(
+    cuomics("repmeasw", delta, "TC", "TG", fname, "Diet", "sex")
+  )))
+
+  expect_true(file.exists(actual_file))
+
+  actual <- read.csv(actual_file, stringsAsFactors = FALSE, check.names = FALSE)
+  expect_true(nrow(actual) > 0)
+  expect_true("Variable" %in% colnames(actual))
+
+  unlink(actual_file)
+})
